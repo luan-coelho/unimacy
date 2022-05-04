@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite">
+<composite:interface>
+</composite:interface>
+<composite:implementation>
+	<p:panel id="confirmar" header="Revise os dados">
+		<div class="ui-fluid p-formgrid p-grid">
+			<div class="p-field p-col-12 p-md-6">
+				<p:outputLabel value="Nome: " />
+				<h:outputText
+					value="#{fornecedorController.entity.pessoaJuridica.nomeFantasia}"
+					styleClass="outputLabel" />
+			</div>
+
+			<div class="p-field p-col-12 p-md-6">
+				<p:outputLabel value="CNPJ: " />
+				<h:outputText value="#{fornecedorController.entity.pessoaJuridica.cnpj}"
+					styleClass="outputLabel" />
+			</div>
+
+			<div class="p-field p-col-12 p-md-6">
+				<p:outputLabel value="Email: " />
+				<h:outputText value="#{fornecedorController.entity.pessoaJuridica.email}"
+					styleClass="outputLabel" />
+			</div>
+			<div class="p-field p-col-12 p-md-6">
+				<p:outputLabel value="Telefone: " />
+				<h:outputText value="#{fornecedorController.entity.pessoaJuridica.telefone}"
+					styleClass="outputLabel" />
+			</div>
+			
+			 <p:divider />
+			 	<h4>Endereço</h4>
+			  <p:divider />
+			
+			<div class="p-field p-col-12 p-md-3">
+				<p:outputLabel value="CEP: " />
+				<h:outputText value="#{fornecedorController.entity.pessoaJuridica.endereco.cep}"
+					styleClass="outputLabel" />
+			</div>
+			<div class="p-field p-col-12 p-md-6">
+				<p:outputLabel value="Rua: " />
+				<h:outputText value="#{fornecedorController.entity.pessoaJuridica.endereco.rua}"
+					styleClass="outputLabel" />
+			</div>
+			<div class="p-field p-col-12 p-md-2">
+				<p:outputLabel value="Número: " />
+				<h:outputText value="#{fornecedorController.entity.pessoaJuridica.endereco.numero}"
+					styleClass="outputLabel" />
+			</div>
+			<div class="p-field p-col-12 p-md-4">
+				<p:outputLabel value="Bairro: " />
+				<h:outputText value="#{fornecedorController.entity.pessoaJuridica.endereco.bairro}"
+					styleClass="outputLabel" />
+			</div>
+			<div class="p-field p-col-12 p-md-6">
+				<p:outputLabel value="Cidade: " />
+				<h:outputText
+					value="#{fornecedorController.entity.pessoaJuridica.endereco.cidade.nome}-#{fornecedorController.entity.pessoaJuridica.endereco.cidade.estado.nome}"
+					styleClass="outputLabel" />
+			</div>
+		</div>
+	</p:panel>
+</composite:implementation>
+</html>

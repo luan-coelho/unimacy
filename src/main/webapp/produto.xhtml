@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:components="http://java.sun.com/jsf/composite/components">
+
+<ui:composition template="template.xhtml">
+
+	<ui:define name="head">
+		<h:outputStylesheet library="webjars"
+			name="primeflex/2.0.0/primeflex.min.css" />
+		<h:outputStylesheet library="css" name="crud.css" />
+	</ui:define>
+
+	<ui:define name="conteudo">
+
+		<p:growl id="growl" />
+
+		<div class="p-d-flex p-jc-center p-flex-column p-m-4 shadow-2xl shadow-gray-700 rounded-lg p-5 w-9/12 m-0">
+
+			<p:commandButton value="Todos os Produtos" icon="pi pi-box"
+				styleClass="ui-button-success p-mb-4" actionListener="#{cadastroProdutoController.telaGerenciaProdutos}"/>
+
+			<p:panel id="produto" header="Informações do Produto">
+				<p:wizard nextLabel="Prosseguir" backLabel="Voltar" widgetVar="wiz">
+					<p:tab id="tab0" title="Dados Básicos">
+
+						<p:messages id="messages" closable="true" />
+
+						<div class="ui-fluid p-formgrid p-grid p-mt-3">
+							<div class="p-field p-col-12 p-md-3">
+								<p:outputLabel value="Fornecedor: " />
+								<h:outputText id="nome-fornecedor"
+									value="#{cadastroProdutoController.entity.fornecedor}" />
+								<p:commandButton value="Selecionar"
+									actionListener="#{cadastroProdutoController.abrirFornecedorListing}"
+									process="@this" update="@form:produto"
+									styleClass="ui-button-warning link">
+									<p:ajax event="dialogReturn"
+										listener="#{cadastroProdutoController.obterFornecedorListing}"
+										update="@form:produto" />
+								</p:commandButton>
+							</div>
+
+							<div class="p-field p-col-12 p-md-5">
+								<p:outputLabel for="nome" value="Nome" />
+								<p:inputText id="nome" type="text"
+									value="#{cadastroProdutoController.entity.nome}" />
+							</div>
+
+							<div class="ui-inputgroup p-field p-md-3">
+								<p:selectOneMenu id="categoria" filter="true"
+									value="#{cadastroProdutoController.entity.categoria}"
+									converter="categoriaConverter"
+									hideNoSelectionOption="#{not empty null}">
+									<p:ajax update="@this" process="@this" />
+									<f:selectItem itemLabel="Categoria" itemValue="#{null}"
+										noSelectionOption="true" />
+									<f:selectItems value="#{categoriaController.listaCategoria}"
+										itemValue="#{categoria}" />
+								</p:selectOneMenu>
+								<p:commandButton type="button" styleClass="ui-confirmdialog-yes"
+									icon="pi pi-plus" onclick="PF('cadastro-categoria').show()" />
+							</div>
+
+							<div class="p-field p-col-12 p-md-3">
+								<p:outputLabel for="unidade" value="Unidade" />
+
+								<p:selectOneMenu id="unidade" filter="true"
+									value="#{cadastroProdutoController.entity.unidade.unidadeMedida}">
+									<f:selectItems value="#{cadastroProdutoController.unidadeMedida}"
+										var="unidade" itemLabel="#{unidade}" itemValue="#{unidade}" />
+								</p:selectOneMenu>
+								<p:inputText type="text" placeholder="Informe"
+									value="#{cadastroProdutoController.entity.unidade.qtd}" />
+							</div>
+
+							<div class="p-field p-col-12 p-md-3">
+								<p:outputLabel for="estoque" value="Quantidade Estoque" />
+								<p:spinner id="estoque"
+									value="#{cadastroProdutoController.entity.quantEstoque}"
+									buttons="horizontal" />
+							</div>
+
+							<div class="p-field p-col-12 p-md-3">
+								<p:outputLabel for="preco" value="Preço" />
+								<p:inputNumber id="preco" placeholder="R$"
+									value="#{cadastroProdutoController.entity.preco}" symbol="R$"
+									symbolPosition="p" decimalSeparator="," thousandSeparator="." />
+							</div>
+
+							<div class="p-field p-col-12 p-md-3">
+								<p:outputLabel for="peso" value="Peso" />
+								<p:inputNumber id="peso"
+									value="#{cadastroProdutoController.entity.peso}" symbolPosition="p"
+									decimalSeparator="," thousandSeparator="." />
+							</div>
+
+							<div class="p-field p-col-12 p-md-3">
+								<p:outputLabel for="fabricacao" value="Data de Fabricação" />
+								<p:datePicker id="fabricacao"
+									value="#{cadastroProdutoController.entity.fabricacao}"
+									monthNavigator="true" pattern="dd/MM/yyyy" mask="99/99/9999"
+									showIcon="true" showButtonBar="true" showOnFocus="false" />
+							</div>
+
+							<div class="p-field p-col-12 p-md-3">
+								<p:outputLabel for="validade" value="Data de Validade" />
+								<p:datePicker id="validade"
+									value="#{cadastroProdutoController.entity.validade}"
+									monthNavigator="true" pattern="dd/MM/yyyy" mask="99/99/9999"
+									showIcon="true" showOnFocus="false" />
+							</div>
+
+							<div class="p-field p-col-12 p-md-4">
+								<p:outputLabel for="lote" value="Lote" />
+								<p:inputText id="lote" type="text"
+									value="#{cadastroProdutoController.entity.lote}" />
+							</div>
+
+							<div class="p-field p-col-12 p-md-12">
+								<p:outputLabel for="descricao" value="Descrição" />
+								<p:inputTextarea rows="3" cols="10" id="descricao" type="text"
+									maxlength="255" value="#{cadastroProdutoController.entity.descricao}" />
+							</div>
+						</div>
+
+					</p:tab>
+
+					<p:tab title="Confirmar Dados">
+						<components:SummaryProduto />
+						<div class="p-d-flex p-jc-md-end p-mt-2">
+							<p:commandButton value="Salvar" icon="pi pi-save"
+								styleClass="ui-button-success"
+								action="#{cadastroProdutoController.incluir}" process="@this"
+								update="@form:growl" onclick="PF('editar-produto').hide()"
+								oncomplete="PF('wiz').loadStep('tab0', false)" />
+						</div>
+					</p:tab>
+
+				</p:wizard>
+			</p:panel>
+
+			<p:dialog header="Adicionar Categoria" widgetVar="cadastro-categoria"
+				width="550" draggable="false" showEffect="fade">
+				<p:panel id="cadastro-categoria">
+					<div class="ui-fluid p-formgrid p-grid">
+						<div class="ui-inputgroup p-mt-4">
+							<p:inputText id="nome-categoria" type="text"
+								placeholder="Digite o nome..."
+								value="#{categoriaController.entity.nome}" />
+							<p:commandButton value="Salvar" icon="pi pi-save"
+								styleClass="ui-button-success"
+								actionListener="#{categoriaController.incluir}"
+								process="@this @this:nome-categoria"
+								update="@form:categoria @form:growl @form:cadastro-categoria" />
+						</div>
+					</div>
+
+					<p:dataTable id="categoria-table" var="categoria"
+						value="#{categoriaController.listaCategoria}">
+						<p:column headerText="Nome">
+							<h:outputText value="#{categoria.nome}" />
+						</p:column>
+						<p:column>
+							<p:commandButton icon="pi pi-pencil"
+								styleClass="edit-button rounded-button ui-button-info p-mr-1"
+								actionListener="#{categoriaController.selecionarItem(categoria)}"
+								process="@this" update="@form:nome-categoria @form:growl">
+							</p:commandButton>
+							<p:commandButton class="ui-button-danger rounded-button"
+								icon="pi pi-trash"
+								action="#{categoriaController.excluir(categoria)}"
+								process="@this"
+								update="@form:categoria-table @form:categoria @form:growl">
+							</p:commandButton>
+						</p:column>
+					</p:dataTable>
+				</p:panel>
+			</p:dialog>
+		</div>
+
+	</ui:define>
+</ui:composition>
+</html>

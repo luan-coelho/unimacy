@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite">
+<composite:interface>
+</composite:interface>
+<composite:implementation>
+	<p:panel id="confirmar" header="Revise os dados">
+		<div class="ui-fluid p-formgrid p-grid">
+			<div class="p-field p-col-12 p-md-4">
+				<p:outputLabel value="Nome: " />
+				<h:outputText value="#{produtoController.entity.nome}"
+					styleClass="outputLabel" />
+			</div>
+
+			<div class="p-field p-col-12 p-md-4">
+				<p:outputLabel value="Categoria: " />
+				<h:outputText value="#{produtoController.entity.categoria.nome}"
+					styleClass="outputLabel" />
+			</div>
+			
+			<div class="p-field p-col-12 p-md-4">
+				<p:outputLabel value="Fornecedor: " />
+				<h:outputText value="#{produtoController.entity.fornecedor}"
+					styleClass="outputLabel" />
+			</div>
+
+			<div class="p-field p-col-12 p-md-4">
+				<p:outputLabel value="Descrição: " />
+				<h:outputText value="#{produtoController.entity.descricao}"
+					styleClass="outputLabel" />
+			</div>
+
+			<div class="p-field p-col-12 p-md-3">
+				<p:outputLabel value="Estoque: " />
+				<h:outputText value="#{produtoController.entity.quantEstoque}"
+					styleClass="outputLabel" />
+			</div>
+
+			<div class="p-field p-col-12 p-md-3">
+				<p:outputLabel value="Preço: " />
+				<h:outputText value="R$#{produtoController.entity.preco}"
+					styleClass="outputLabel" />
+			</div>
+
+			<div class="p-field p-col-12 p-md-3">
+				<h:outputLabel value="Data de Fabricação: " />
+				<h:outputText value="#{produtoController.entity.fabricacao}"
+					styleClass="outputLabel">
+					<f:convertDateTime type="localDate" pattern="dd/MM/yyyy" />
+				</h:outputText>
+			</div>
+
+			<div class="p-field p-col-12 p-md-3">
+				<h:outputLabel value="Data de Validade " />
+				<h:outputText value="#{produtoController.entity.validade}"
+					styleClass="outputLabel">
+					<f:convertDateTime type="localDate" pattern="dd/MM/yyyy" />
+				</h:outputText>
+			</div>
+
+			<div class="p-field p-col-12 p-md-4">
+				<p:outputLabel value="Lote: " />
+				<h:outputText value="#{produtoController.entity.lote}"
+					styleClass="outputLabel" />
+			</div>
+		</div>
+	</p:panel>
+</composite:implementation>
+</html>

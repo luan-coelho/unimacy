@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:components="http://java.sun.com/jsf/composite/components">
+
+<ui:composition template="template.xhtml">
+
+	<ui:define name="head">
+		<h:outputStylesheet library="webjars"
+			name="primeflex/2.0.0/primeflex.min.css" />
+		<h:outputStylesheet library="css" name="crud.css" />
+	</ui:define>
+
+	<ui:define name="conteudo">
+
+		<p:growl id="growl" />
+
+		<div class="p-d-flex p-jc-center">
+			<p:dataTable id="dataTable" var="cliente" style="width: 80%;"
+				value="#{clientePjController.listaCliente}" paginator="true"
+				rows="10" styleClass="products-table p-mt-5 p-mb-5"
+				rowSelectMode="add" paginatorPosition="bottom" allowUnsorting="true"
+				sortMode="single" stickyTopAt=".layout-topbar" stripedRows="true">
+
+				<f:facet name="header">
+					<div class="products-table-header">
+
+						<p:toolbar>
+							<p:toolbarGroup align="center">
+								<h2 class="p-mb-2">Gerência de Clientes - Pessoa Jurídica</h2>
+
+								<p:commandButton value="Cadastrar Cliente" icon="pi pi-plus"
+									styleClass="ui-button-success"
+									onclick="PF('editar-cliente').show()">
+
+									<p:ajax listener="#{clientePjController.limpar}"
+										process="@this" update="@form:pessoa" />
+								</p:commandButton>
+							</p:toolbarGroup>
+						</p:toolbar>
+					</div>
+				</f:facet>
+
+				<p:column sortBy="#{cliente.pessoa.nomeFantasia}"
+					headerText="Nome Fantasia">
+					<h:outputText value="#{cliente.pessoa.nomeFantasia.trim()}" />
+				</p:column>
+
+				<p:column sortBy="#{cliente.pessoa.cnpj}" headerText="CNPJ">
+					<h:outputText value="#{cliente.pessoa.cnpj}" />
+				</p:column>
+
+				<p:column sortBy="#{cliente.pessoa.ativo}" headerText="Ativo">
+					<p:toggleSwitch value="#{cliente.pessoa.ativo}">
+						<p:ajax listener="#{clientePjController.alterar(cliente)}"
+							process="@this" update="@form:dataTable" />
+					</p:toggleSwitch>
+				</p:column>
+
+				<p:column>
+					<p:commandButton icon="pi pi-search"
+						styleClass="edit-button rounded-button ui-button-help p-mr-1"
+						onclick="PF('resumo-cliente').show()">
+						<p:ajax process="@this" update="@form:confirmar"
+							listener="#{clientePjController.selecionarItem(cliente)}" />
+					</p:commandButton>
+					<p:commandButton icon="pi pi-pencil"
+						onclick="PF('editar-cliente').show()"
+						styleClass="edit-button rounded-button ui-button-info p-mr-1">
+						<p:ajax process="@this" update="@form:pessoa"
+							listener="#{clientePjController.selecionarItem(cliente)}" />
+					</p:commandButton>
+					<p:commandButton class="ui-button-danger rounded-button"
+						icon="pi pi-trash"
+						action="#{clientePjController.excluir(cliente)}" process="@this"
+						update="@form:dataTable">
+						<p:confirm header="Você tem certeza?"
+							message="O registro deste cliente será excluído definitivamente"
+							icon="pi pi-exclamation-triangle" />
+					</p:commandButton>
+				</p:column>
+
+			</p:dataTable>
+
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade"
+				responsive="true" width="450">
+				<p:commandButton value="Cancelar" type="button"
+					styleClass="ui-confirmdialog-no" />
+				<p:commandButton value="Confirmar" type="button"
+					update="@form:dataTable"
+					styleClass="ui-confirmdialog-yes ui-button-flat" />
+			</p:confirmDialog>
+
+			<p:dialog id="cliente-info" widgetVar="editar-cliente" modal="true"
+				onHide="PF('wiz').loadStep('tab0', false)" draggable="false"
+				header="Informações do Cliente" showEffect="fade" minHeight="40"
+				width="750">
+
+				<p:wizard nextLabel="Prosseguir" backLabel="Voltar" widgetVar="wiz">
+					<p:tab id="tab0" title="Dados Pessoais">
+						<p:panel id="pessoa">
+
+							<div class="ui-fluid p-formgrid p-grid">
+								<div class="p-field p-col-12 p-md-4">
+									<p:outputLabel value="CNPJ" />
+									<p:inputMask value="#{clientePjController.entity.pessoa.cnpj}"
+										mask="99.999.999/9999-99" id="cnpj" maxlength="18" />
+								</div>
+
+								<div class="p-field p-col-12 p-md-5">
+									<p:outputLabel for="nome-fantasia" value="Nome Fantasia" />
+									<p:inputText id="nome-fantasia" type="text"
+										value="#{clientePjController.entity.pessoa.nomeFantasia}" />
+								</div>
+								<div class="p-field p-col-12 p-md-7">
+									<p:outputLabel for="razao-social" value="Razão Social" />
+									<p:inputText id="razao-social" type="text"
+										value="#{clientePjController.entity.pessoa.razaoSocial}" />
+								</div>
+
+								<div class="p-field p-col-12 p-md-6">
+									<p:outputLabel for="email" value="Email" />
+									<p:inputText value="#{clientePjController.entity.pessoa.email}"
+										placeholder="exemplo@email.com" id="email" type="email" />
+								</div>
+
+								<div class="p-field p-col-12 p-md-3">
+									<p:outputLabel for="phone" value="Telefone" />
+									<p:inputMask mask="(99) 99999-9999" id="phone" maxlength="15"
+										value="#{clientePjController.entity.pessoa.telefone}" />
+								</div>
+							</div>
+						</p:panel>
+					</p:tab>
+					<p:tab title="Endereço">
+						<p:panel id="endereco" header="Informe os dados do Endereço">
+							<div class="ui-fluid p-formgrid p-grid">
+
+								<div class="p-field p-col-12 p-md-2">
+									<p:outputLabel value="CEP " />
+									<p:inputMask mask="99999-999" id="cep" maxlength="9"
+										value="#{clientePjController.entity.pessoa.endereco.cep}">
+										<p:ajax listener="#{clientePjController.buscarCep}"
+											event="blur" process="@this @form:cep"
+											update="@form:endereco @form:growl" />
+									</p:inputMask>
+								</div>
+
+								<div class="p-field p-col-12 p-md-6">
+									<p:outputLabel value="Rua" />
+									<p:inputText id="rua"
+										value="#{clientePjController.entity.pessoa.endereco.rua}" />
+								</div>
+
+								<div class="p-field p-col-12 p-md-2">
+									<p:outputLabel value="Número" />
+									<p:inputText id="numero"
+										value="#{clientePjController.entity.pessoa.endereco.numero}" />
+								</div>
+
+								<div class="p-field p-col-12 p-md-3">
+									<p:outputLabel value="Bairro" />
+									<p:inputText id="bairro"
+										value="#{clientePjController.entity.pessoa.endereco.bairro}" />
+								</div>
+
+								<div class="p-field p-col-12 p-md-5">
+									<p:outputLabel value="Complemento" />
+									<p:inputText id="complemento"
+										value="#{clientePjController.entity.pessoa.endereco.complemento}" />
+								</div>
+
+								<div class="p-field p-col-12 p-md-5">
+									<p:outputLabel value="Estado" />
+									<p:autoComplete id="estado"
+										value="#{clientePjController.entity.pessoa.endereco.cidade.estado.nome}"
+										completeMethod="#{estadoUtil.completeText}" scrollHeight="250"
+										placeholder="Digite o Estado" forceSelection="true">
+
+										<p:ajax event="itemSelect"
+											listener="#{clientePjController.onItemSelect}"
+											process="@form:endereco" update="@form:endereco" />
+									</p:autoComplete>
+								</div>
+
+								<div class="p-field p-col-12 p-md-4">
+									<p:outputLabel value="Cidade " />
+									<p:autoComplete id="cidade"
+										value="#{clientePjController.entity.pessoa.endereco.cidade.nome}"
+										completeMethod="#{cidadeUtil.completeText}" scrollHeight="250"
+										placeholder="Digite a Cidade"
+										disabled="#{clientePjController.entity.pessoa.endereco.cidade.estado.nome == null}" />
+								</div>
+							</div>
+						</p:panel>
+					</p:tab>
+					<p:tab title="Confirmar Dados">
+						<components:SummaryClientePJ />
+						<div class="p-d-flex p-jc-md-end p-mt-2">
+							<p:commandButton value="Salvar" icon="pi pi-save"
+								styleClass="ui-button-success"
+								action="#{clientePjController.incluir}" update="@form"
+								process="@this" onclick="PF('editar-cliente').hide()"
+								oncomplete="PF('wiz').loadStep('tab0', false)" />
+						</div>
+					</p:tab>
+
+				</p:wizard>
+			</p:dialog>
+
+			<p:dialog id="cliente-info-resumo" widgetVar="resumo-cliente"
+				modal="true" draggable="false" header="Informações do Cliente"
+				showEffect="fade" minHeight="40" width="750">
+				<h:panelGroup id="confirmar">
+					<components:SummaryClientePJ />
+				</h:panelGroup>
+			</p:dialog>
+
+		</div>
+
+
+	</ui:define>
+</ui:composition>
+</html>

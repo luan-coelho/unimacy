@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+	<meta charset="UTF-8" />
+	<title>Acesso ao Sistema</title>
+
+	<h:outputStylesheet library="webjars"
+		name="primeflex/2.0.0/primeflex.min.css" />
+	<h:outputStylesheet library="css" name="login.css" />
+	<link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css"/>
+</h:head>
+<h:body>
+	<h:form>
+		<div class="container">
+			<div class="forms">
+				<div class="form login">
+
+					<div class="form-image-container">
+						<p:graphicImage styleClass="form-image" library="images"
+							name="logo.png" />
+					</div>
+
+					<div>
+						<h2 class="title">Acesso ao Sistema</h2>
+						<form action="#">
+							<div class="input-field">
+								<div class="input-field">
+									<p:inputText type="text" placeholder="Login" required="true" />
+									 <i class="uil uil-envelope icon"></i>
+								</div>
+							</div>
+							<div class="input-field">
+								<p:password styleClass="password" type="password"
+									placeholder="Senha" required="true" />
+								<i class="uil uil-lock icon"></i> 
+								<i class="uil uil-eye-slash showHidePw"></i>
+							</div>
+
+							<div class="input-field button">
+								<input type="button" value="Entrar" />
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</h:form>
+
+	<h:outputScript library="js" name="login.js" />
+</h:body>
+</html>

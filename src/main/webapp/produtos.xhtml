@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:components="http://java.sun.com/jsf/composite/components">
+
+<ui:composition template="template.xhtml">
+
+	<ui:define name="head">
+		<h:outputStylesheet library="webjars"
+			name="primeflex/2.0.0/primeflex.min.css" />
+		<h:outputStylesheet library="css" name="crud.css" />
+	</ui:define>
+
+	<ui:define name="conteudo">
+
+		<p:growl id="growl" />
+
+		<div class="p-d-flex p-jc-center p-m-3">
+			<p:dataTable id="dataTable" var="produto"
+				value="#{produtoController.listaProduto}" paginator="true" rows="10"
+				styleClass="products-table p-mt-5 p-mb-5 shadow-2xl shadow-gray-700 rounded-lg p-5 w-11/12 m-0"
+				rowSelectMode="add" paginatorPosition="bottom" allowUnsorting="true"
+				sortMode="single" stickyTopAt=".layout-topbar" stripedRows="true">
+
+				<f:facet name="header">
+					<div class="products-table-header">
+
+						<p:toolbar>
+							<p:toolbarGroup align="center">
+								<h2 class="p-mb-2">Gerência de Produtos</h2>
+
+								<p:linkButton value="Cadastrar produto" icon="pi pi-plus"
+									styleClass="ui-button-success" href="produto.xhtml" />
+
+								<div class="ui-inputgroup mt-4">
+									<p:inputText id="pesquisa" value="#{produtoController.pesquisa}"
+										placeholder="Pesquisar por..." />
+									<p:selectOneMenu id="filtro"
+										value="#{produtoController.filtro}">
+										<f:selectItems value="#{produtoController.filtroProduto}"
+											itemValue="#{filtro}" />
+									</p:selectOneMenu>
+									<p:commandButton icon="pi pi-search"
+										styleClass="ui-button-warning"
+										actionListener="#{produtoController.pesquisar}"
+										process="pesquisa filtro @this" update="@form">
+									</p:commandButton>
+								</div>
+							</p:toolbarGroup>
+						</p:toolbar>
+					</div>
+				</f:facet>
+
+				<p:column sortBy="#{produto.nome}" headerText="Nome">
+					<h:outputText value="#{produto.nome}" />
+				</p:column>
+
+				<p:column sortBy="#{produto.quantEstoque}" headerText="Quantidade">
+					<h:outputText value="#{produto.quantEstoque}" />
+				</p:column>
+
+				<p:column sortBy="#{produto.preco}" headerText="Preço">
+					<h:outputText value="R$#{produto.preco}" />
+				</p:column>
+
+				<p:column sortBy="#{produto.categoria}" headerText="Categoria">
+					<h:outputText value="#{produto.categoria.nome}" />
+				</p:column>
+
+				<p:column sortBy="#{produto.lote}" headerText="Lote">
+					<h:outputText value="#{produto.lote}" />
+				</p:column>
+
+				<p:column headerText="Fornecedor">
+					<h:outputText value="#{produto.fornecedor}" />
+				</p:column>
+
+				<p:column exportable="false">
+					<p:commandButton icon="pi pi-search"
+						styleClass="edit-button rounded-button ui-button-help p-mr-1"
+						onclick="PF('resumo-produto').show()">
+						<p:ajax process="@this" update="@form:confirmar"
+							listener="#{produtoController.selecionarItem(produto)}" />
+					</p:commandButton>
+					<p:commandButton icon="pi pi-pencil" href="produto.xhtml"
+						action="#{produtoController.editarItem(produto)}"
+						styleClass="edit-button rounded-button ui-button-info p-mr-1 p-mb-1">
+					</p:commandButton>
+					<p:commandButton class="ui-button-danger rounded-button"
+						icon="pi pi-trash" action="#{produtoController.excluir(produto)}"
+						process="@this" update="@form:dataTable">
+						<p:confirm header="Você tem certeza?"
+							message="O registro deste produto será excluído definitivamente"
+							icon="pi pi-exclamation-triangle" />
+					</p:commandButton>
+				</p:column>
+
+			</p:dataTable>
+
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade"
+				responsive="true" width="450">
+				<p:commandButton value="Cancelar" type="button"
+					styleClass="ui-confirmdialog-no" />
+				<p:commandButton value="Confirmar" type="button"
+					update="@form:dataTable"
+					styleClass="ui-confirmdialog-yes ui-button-flat" />
+			</p:confirmDialog>
+
+			<p:dialog id="produto-info-resumo" widgetVar="resumo-produto"
+				closeOnEscape="true" closable="true" modal="true" draggable="false"
+				header="Informações do Produto" showEffect="fade" minHeight="40"
+				width="750">
+				<h:panelGroup id="confirmar">
+					<components:SummaryProduto />
+				</h:panelGroup>
+			</p:dialog>
+
+		</div>
+
+	</ui:define>
+</ui:composition>
+</html>

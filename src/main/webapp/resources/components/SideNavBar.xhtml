@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite">
+<composite:interface>
+</composite:interface>
+<composite:implementation>
+	<nav>
+		<header>
+			<div class="image-text">
+				<span class="image"> <img src="resources/images/logo.png"
+					alt="" /></span>
+
+				<div class="text logo-text">
+					<span class="name">Unimacy</span> <span class="profession">Gestão</span>
+				</div>
+			</div>
+
+			<i class='bx bx-chevron-right toggle'></i>
+		</header>
+
+		<div class="menu-bar">
+			<div class="menu">
+
+				<ul class="menu-links">
+					<li class="nav-link"><a href="produtos.xhtml"> <i
+							class='bx bx-package bx-md icon'></i> <span class="text nav-text">Produtos</span>
+					</a></li>
+
+					<li class="nav-link"><a href="pessoa-fisica.xhtml"> <i
+							class='bx bxs-user-circle bx-md icon'></i> <span
+							class="text nav-text">Clientes - PF</span>
+					</a></li>
+					
+					<li class="nav-link"><a href="pessoa-juridica.xhtml"> <i
+							class='bx bxs-user-circle bx-md icon'></i> <span
+							class="text nav-text">Clientes - PJ</span>
+					</a></li>
+					
+					<li class="nav-link"><a href="fornecedores.xhtml"> <i class='bx bxs-group bx-md icon'></i> <span class="text nav-text">Fornecedores</span>
+					</a></li>
+				</ul>
+			</div>
+
+			<div class="bottom-content">
+				<li><a href="login.xhtml"> <i class='bx bx-log-out icon'></i>
+						<span class="text nav-text">Sair</span>
+				</a></li>
+			</div>
+		</div>
+	</nav>
+	
+</composite:implementation>
+</html>

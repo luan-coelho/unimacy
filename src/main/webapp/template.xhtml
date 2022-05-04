@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:components="http://java.sun.com/jsf/composite/components">
+
+<h:head>
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<meta name="author" content="Luan Coêlho" />
+	<h:outputStylesheet library="css" name="sidebar.css" />
+	<h:outputStylesheet library="css" name="template.css" />
+	<h:outputStylesheet library="webjars"
+		name="primeflex/2.0.0/primeflex.min.css" />
+
+	<link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css'
+		rel='stylesheet' />
+	<ui:insert name="head">
+
+	</ui:insert>
+</h:head>
+
+<h:body class="dark">
+	<h:form id="form" styleClass="form-menu-bar">
+
+		<div class="wrapper">
+			<div class="box sidebar">
+				<components:SideNavBar />
+			</div>
+			<div class="box content">
+				<ui:insert name="conteudo">
+
+				</ui:insert>
+			</div>
+		</div>
+		<div class="box footer">
+			<components:Footer />
+		</div>
+	</h:form>
+
+	<script src="https://cdn.tailwindcss.com"></script>
+</h:body>
+</html>
