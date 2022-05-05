@@ -21,7 +21,6 @@ import br.unitins.unimacy.model.Estado;
 import br.unitins.unimacy.model.api.CidadeAux;
 import br.unitins.unimacy.model.api.EnderecoAux;
 import br.unitins.unimacy.model.api.EstadoAux;
-import br.unitins.unimacy.repository.CidadeRepository;
 
 public class ApiCep {
 
@@ -35,9 +34,7 @@ public class ApiCep {
 		try {
 			HttpClient httpClient = HttpClient.newBuilder().connectTimeout(Duration.ofMinutes(1L)).build();
 
-			HttpRequest httpRequest = HttpRequest.newBuilder()
-					.GET()
-					.uri(URI.create(viaCepUrl + cepString + "/json"))
+			HttpRequest httpRequest = HttpRequest.newBuilder().GET().uri(URI.create(viaCepUrl + cepString + "/json"))
 					.build();
 
 			HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
@@ -54,25 +51,19 @@ public class ApiCep {
 	}
 
 	private static Endereco organizarCep(EnderecoAux enderecoAux, EstadoAux estadoAux) {
-		CidadeRepository repo = new CidadeRepository();
-		
-		
+		//CidadeRepository repo = new CidadeRepository();
+
 		Endereco endereco = new Endereco(new Cidade(new Estado()));
 
 		endereco.setCep(enderecoAux.getCep());
 		endereco.setRua(enderecoAux.getLogradouro());
 		endereco.setBairro(enderecoAux.getBairro());
 
-		Cidade cidade = repo.findOneResultByNome(enderecoAux.getLocalidade(), estadoAux.getNome());
-		if(cidade == null) {
-			endereco.getCidade().setNome(enderecoAux.getLocalidade());
-			endereco.getCidade().getEstado().setNome(estadoAux.getNome());
-			endereco.getCidade().getEstado().setUf(enderecoAux.getUf());
-			
-			return endereco;
-		}
-		
-		endereco.setCidade(cidade);
+		// Cidade cidade = repo.findOneResultByNome(enderecoAux.getLocalidade(),
+		// estadoAux.getNome());
+		endereco.getCidade().setNome(enderecoAux.getLocalidade());
+		endereco.getCidade().getEstado().setNome(estadoAux.getNome());
+		endereco.getCidade().getEstado().setUf(enderecoAux.getUf());
 
 		return endereco;
 	}
@@ -166,13 +157,13 @@ public class ApiCep {
 
 		List<Estado> listaEstados = new ArrayList<>();
 
-		for (EstadoAux estadoAux: estados) {
+		for (EstadoAux estadoAux : estados) {
 			Estado estado = new Estado();
-			
+
 			estado.setId(estadoAux.getId());
 			estado.setNome(estadoAux.getNome());
 			estado.setUf(estadoAux.getSigla());
-			
+
 			listaEstados.add(estado);
 		}
 
@@ -181,28 +172,26 @@ public class ApiCep {
 
 	public static Estado converterAuxParaEstado(EstadoAux estadoAux) {
 		Estado estado = new Estado();
-		
+
 		estado.setId(estadoAux.getId());
 		estado.setNome(estadoAux.getNome());
 		estado.setUf(estadoAux.getSigla());
-		
+
 		return estado;
 	}
-	
+
 	public static String pegarUfEstadoporNome(String nome) {
-		List <Estado> listaEstados = pegarEstados();
-		
-		List <Estado> estado = listaEstados.stream()
-				.filter(e -> e.getNome().equals(nome)).collect(Collectors.toList());
-		
-		if(!estado.isEmpty()) {
+		List<Estado> listaEstados = pegarEstados();
+
+		List<Estado> estado = listaEstados.stream().filter(e -> e.getNome().equals(nome)).collect(Collectors.toList());
+
+		if (!estado.isEmpty()) {
 			return estado.get(0).getUf();
 		}
-		
+
 		return null;
 	}
 
-	
 	public static List<Cidade> converterAuxParaCidade(CidadeAux cidades[]) {
 
 		List<Cidade> listaCidades = new ArrayList<>();

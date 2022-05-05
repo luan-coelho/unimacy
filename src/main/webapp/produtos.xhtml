@@ -39,16 +39,11 @@
 
 								<div class="ui-inputgroup mt-4">
 									<p:inputText id="pesquisa" value="#{produtoController.pesquisa}"
-										placeholder="Pesquisar por..." />
-									<p:selectOneMenu id="filtro"
-										value="#{produtoController.filtro}">
-										<f:selectItems value="#{produtoController.filtroProduto}"
-											itemValue="#{filtro}" />
-									</p:selectOneMenu>
+										placeholder="Pesquisar por nome" />
 									<p:commandButton icon="pi pi-search"
 										styleClass="ui-button-warning"
 										actionListener="#{produtoController.pesquisar}"
-										process="pesquisa filtro @this" update="@form">
+										process="@this pesquisa" update="@form">
 									</p:commandButton>
 								</div>
 							</p:toolbarGroup>

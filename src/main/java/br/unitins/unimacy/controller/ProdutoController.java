@@ -24,7 +24,7 @@ public class ProdutoController extends Controller<Produto> {
 	private List<Produto> listaProduto;
 
 	private String pesquisa;
-	private FiltroProduto filtro;
+	private FiltroProduto filtro = FiltroProduto.NOME;
 
 	public ProdutoController() {
 		super(new ProdutoRepository());
@@ -75,16 +75,11 @@ public class ProdutoController extends Controller<Produto> {
 		return UnidadeMedida.values();
 	}
 
+	
 	@Override
 	public void limpar() {
 		super.limpar();
 		listaProduto = null;
-	}
-
-	public void alterar(Produto produto) {
-		entity = produto;
-
-		super.alterar();
 	}
 
 	public void excluir(Produto produto) {
@@ -118,7 +113,7 @@ public class ProdutoController extends Controller<Produto> {
 			break;
 		}
 
-		if (listaProdutoAux != null) {
+		if (listaProdutoAux == null) {
 			Util.addInfoMessage("Nenhum produto encontrado");
 			return;
 		}

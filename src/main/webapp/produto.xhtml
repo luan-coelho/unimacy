@@ -20,10 +20,14 @@
 
 		<p:growl id="growl" />
 
-		<div class="p-d-flex p-jc-center p-flex-column p-m-4 shadow-2xl shadow-gray-700 rounded-lg p-5 w-9/12 m-0">
+		<div
+			class="p-d-flex p-jc-center p-flex-column p-m-4 shadow-2xl shadow-gray-700 rounded-lg p-5 w-9/12 m-0">
 
-			<p:commandButton value="Todos os Produtos" icon="pi pi-box"
-				styleClass="ui-button-success p-mb-4" actionListener="#{cadastroProdutoController.telaGerenciaProdutos}"/>
+
+			<p:commandButton value="Voltar para todos os produtos" icon="pi pi-box"
+				styleClass="ui-button-success p-mb-4"
+				onclick="history.go(-1)" />
+
 
 			<p:panel id="produto" header="Informações do Produto">
 				<p:wizard nextLabel="Prosseguir" backLabel="Voltar" widgetVar="wiz">
@@ -72,7 +76,8 @@
 
 								<p:selectOneMenu id="unidade" filter="true"
 									value="#{cadastroProdutoController.entity.unidade.unidadeMedida}">
-									<f:selectItems value="#{cadastroProdutoController.unidadeMedida}"
+									<f:selectItems
+										value="#{cadastroProdutoController.unidadeMedida}"
 										var="unidade" itemLabel="#{unidade}" itemValue="#{unidade}" />
 								</p:selectOneMenu>
 								<p:inputText type="text" placeholder="Informe"
@@ -96,8 +101,8 @@
 							<div class="p-field p-col-12 p-md-3">
 								<p:outputLabel for="peso" value="Peso" />
 								<p:inputNumber id="peso"
-									value="#{cadastroProdutoController.entity.peso}" symbolPosition="p"
-									decimalSeparator="," thousandSeparator="." />
+									value="#{cadastroProdutoController.entity.peso}"
+									symbolPosition="p" decimalSeparator="," thousandSeparator="." />
 							</div>
 
 							<div class="p-field p-col-12 p-md-3">
@@ -125,7 +130,8 @@
 							<div class="p-field p-col-12 p-md-12">
 								<p:outputLabel for="descricao" value="Descrição" />
 								<p:inputTextarea rows="3" cols="10" id="descricao" type="text"
-									maxlength="255" value="#{cadastroProdutoController.entity.descricao}" />
+									maxlength="255"
+									value="#{cadastroProdutoController.entity.descricao}" />
 							</div>
 						</div>
 
@@ -137,8 +143,7 @@
 							<p:commandButton value="Salvar" icon="pi pi-save"
 								styleClass="ui-button-success"
 								action="#{cadastroProdutoController.incluir}" process="@this"
-								update="@form:growl" onclick="PF('editar-produto').hide()"
-								oncomplete="PF('wiz').loadStep('tab0', false)" />
+								update="@form:growl"/>
 						</div>
 					</p:tab>
 

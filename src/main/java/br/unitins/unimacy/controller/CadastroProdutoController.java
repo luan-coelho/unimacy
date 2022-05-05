@@ -36,6 +36,16 @@ public class CadastroProdutoController extends Controller<Produto> {
 		return entity;
 	}
 
+	@Override
+	public void incluir() {
+		if(entity.getFornecedor().getId() == null) {
+			Util.addWarnMessage("Selecione um fornecedor para este produto");
+			return;
+		}
+			
+		super.incluir();
+	}
+	
 	public UnidadeMedida[] getUnidadeMedida() {
 		return UnidadeMedida.values();
 	}
@@ -47,10 +57,5 @@ public class CadastroProdutoController extends Controller<Produto> {
 
 	public void obterFornecedorListing(SelectEvent<Fornecedor> event) {
 		getEntity().setFornecedor(event.getObject());
-	}
-	
-	public void telaGerenciaProdutos() {
-		Util.redirect("produtos.xhtml");
-		System.out.println("Entrou na carniça");
 	}
 }
