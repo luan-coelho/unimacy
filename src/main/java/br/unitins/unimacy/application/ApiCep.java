@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import javax.persistence.NoResultException;
+
 import com.google.gson.Gson;
 import com.gtbr.exception.ViaCepException;
 import com.gtbr.exception.ViaCepFormatException;
@@ -21,6 +23,8 @@ import br.unitins.unimacy.model.Estado;
 import br.unitins.unimacy.model.api.CidadeAux;
 import br.unitins.unimacy.model.api.EnderecoAux;
 import br.unitins.unimacy.model.api.EstadoAux;
+import br.unitins.unimacy.repository.CidadeRepository;
+import br.unitins.unimacy.repository.EstadoRepository;
 
 public class ApiCep {
 
@@ -41,7 +45,7 @@ public class ApiCep {
 
 			EnderecoAux enderecoAux = gson.fromJson(httpResponse.body(), EnderecoAux.class);
 
-			return organizarCep(enderecoAux, pegarEstadoPorUf(enderecoAux.getUf()));
+			return montarObjetoEndereco(enderecoAux, pegarEstadoPorUf(enderecoAux.getUf()));
 
 		} catch (IOException e) {
 			throw new RuntimeException(e.getMessage());
@@ -50,20 +54,38 @@ public class ApiCep {
 		}
 	}
 
-	private static Endereco organizarCep(EnderecoAux enderecoAux, EstadoAux estadoAux) {
-		//CidadeRepository repo = new CidadeRepository();
-
+	private static Endereco montarObjetoEndereco(EnderecoAux enderecoAux, EstadoAux estadoAux) {
+		CidadeRepository cidadeRepository = new CidadeRepository();
+		EstadoRepository estadoRepository = new EstadoRepository();
+		
+		
 		Endereco endereco = new Endereco(new Cidade(new Estado()));
 
 		endereco.setCep(enderecoAux.getCep());
 		endereco.setRua(enderecoAux.getLogradouro());
 		endereco.setBairro(enderecoAux.getBairro());
 
-		// Cidade cidade = repo.findOneResultByNome(enderecoAux.getLocalidade(),
-		// estadoAux.getNome());
-		endereco.getCidade().setNome(enderecoAux.getLocalidade());
-		endereco.getCidade().getEstado().setNome(estadoAux.getNome());
-		endereco.getCidade().getEstado().setUf(enderecoAux.getUf());
+		Cidade cidade = null;
+				
+		try {
+			cidade = cidadeRepository.findOneResultByNome(enderecoAux.getLocalidade(), estadoAux.getNome());
+		} catch (NoResultException e) {
+			endereco.getCidade().setNome(enderecoAux.getLocalidade());
+			endereco.getCidade().getEstado().setNome(estadoAux.getNome());
+			endereco.getCidade().getEstado().setUf(enderecoAux.getUf());
+			return endereco;
+		}
+		
+		Estado estado = null;
+		
+		try {
+			estado = estadoRepository.findOneResultByNome(estadoAux.getNome());
+			endereco.getCidade().setEstado(estado);
+		} catch (NoResultException e) {
+			return endereco;
+		}
+		
+		endereco.setCidade(cidade);
 
 		return endereco;
 	}

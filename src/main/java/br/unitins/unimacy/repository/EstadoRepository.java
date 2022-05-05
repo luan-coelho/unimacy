@@ -3,31 +3,28 @@ package br.unitins.unimacy.repository;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
-import br.unitins.unimacy.model.Cidade;
+import br.unitins.unimacy.model.Estado;
 
-public class CidadeRepository extends Repository<Cidade> {
+public class EstadoRepository extends Repository<Estado> {
 
-	public Cidade findOneResultByNome(String nomeCidade, String nomeEstado) throws NoResultException {
-		Cidade cidade = null;
+	public Estado findOneResultByNome(String nomeEstado) throws NoResultException {
+		Estado estado = null;
 
 		try {
 			StringBuffer jpsql = new StringBuffer();
 			jpsql.append("SELECT ");
-			jpsql.append("c ");
+			jpsql.append("e ");
 			jpsql.append("FROM ");
-			jpsql.append("Cidade c ");
+			jpsql.append("Estado e ");
 			jpsql.append("WHERE ");
-			jpsql.append("c.nome LIKE :cidade ");
-			jpsql.append("AND ");
-			jpsql.append("c.estado.nome ");
+			jpsql.append("e.nome ");
 			jpsql.append("LIKE ");
 			jpsql.append(":estado ");
 
 			Query query = getEntityManager().createQuery(jpsql.toString());
-			query.setParameter("cidade", "%" + nomeCidade + "%");
 			query.setParameter("estado", "%" + nomeEstado + "%");
 
-			cidade = (Cidade) query.getSingleResult();
+			estado = (Estado) query.getSingleResult();
 		}catch (NoResultException e) {
 			throw new NoResultException();
 		} 
@@ -37,8 +34,8 @@ public class CidadeRepository extends Repository<Cidade> {
 			return null;
 		}
 
-		if (cidade != null)
-			return cidade;
+		if (estado != null)
+			return estado;
 		return null;
 	}
 }
