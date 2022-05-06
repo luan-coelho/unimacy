@@ -5,6 +5,8 @@ import java.util.List;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
+import org.hibernate.validator.constraints.br.CPF;
+
 import com.gtbr.exception.ViaCepException;
 import com.gtbr.exception.ViaCepFormatException;
 
@@ -19,6 +21,7 @@ import br.unitins.unimacy.model.Estado;
 import br.unitins.unimacy.model.PessoaFisica;
 import br.unitins.unimacy.model.Sexo;
 import br.unitins.unimacy.repository.ClienteRepository;
+import br.unitins.unimacy.repository.PessoaFisicaRepository;
 
 @Named
 @ViewScoped
@@ -50,8 +53,7 @@ public class ClientePfController extends Controller<Cliente> {
 	public List<Cliente> getListaCliente() {
 		if (listaCliente == null) {
 			try {
-				listaCliente = getRepository().findAll()
-						.stream()
+				listaCliente = getRepository().findAll().stream()
 						.filter(cliente -> cliente.getPessoa() instanceof PessoaFisica).toList();
 			} catch (RepositoryException e) {
 				Util.addErrorMessage("Falha ao buscar os dados no banco");
@@ -70,7 +72,7 @@ public class ClientePfController extends Controller<Cliente> {
 		super.limpar();
 		listaCliente = null;
 	}
-	
+
 	public void excluir(Cliente cliente) {
 		entity = cliente;
 		super.excluir();
@@ -101,12 +103,16 @@ public class ClientePfController extends Controller<Cliente> {
 			e.printStackTrace();
 		}
 	}
-	
-	public void cpfExiste() {
-		PessoaFisica pessoa = (PessoaFisica) entity.getPessoa();
-		Cliente cliente = ((ClienteRepository) getRepository()).findByCpf(pessoa.getCpf());
-		
-		if(cliente != null) {
+
+	public void verificarCpf() {
+		PessoaFisicaRepository repo = new PessoaFisicaRepository();
+
+		@CPF
+		String cpf = ((PessoaFisica) entity.getPessoa()).getCpf();
+
+		PessoaFisica cliente = repo.findByCpf(cpf);
+
+		if (cliente != null) {
 			Util.addErrorMessage("Já existe um cliente cadastrado com esse CPF");
 		}
 	}

@@ -58,7 +58,6 @@ public class ApiCep {
 		CidadeRepository cidadeRepository = new CidadeRepository();
 		EstadoRepository estadoRepository = new EstadoRepository();
 		
-		
 		Endereco endereco = new Endereco(new Cidade(new Estado()));
 
 		endereco.setCep(enderecoAux.getCep());
@@ -69,24 +68,22 @@ public class ApiCep {
 				
 		try {
 			cidade = cidadeRepository.findOneResultByNome(enderecoAux.getLocalidade(), estadoAux.getNome());
+			endereco.setCidade(cidade);
+			
+			return endereco;
 		} catch (NoResultException e) {
 			endereco.getCidade().setNome(enderecoAux.getLocalidade());
 			endereco.getCidade().getEstado().setNome(estadoAux.getNome());
 			endereco.getCidade().getEstado().setUf(enderecoAux.getUf());
-			return endereco;
 		}
-		
-		Estado estado = null;
 		
 		try {
-			estado = estadoRepository.findOneResultByNome(estadoAux.getNome());
+			Estado estado = estadoRepository.findOneResultByNome(estadoAux.getNome());
 			endereco.getCidade().setEstado(estado);
-		} catch (NoResultException e) {
+		} catch (Exception e) {
 			return endereco;
 		}
 		
-		endereco.setCidade(cidade);
-
 		return endereco;
 	}
 

@@ -38,12 +38,18 @@
 									styleClass="ui-button-success" href="produto.xhtml" />
 
 								<div class="ui-inputgroup mt-4">
-									<p:inputText id="pesquisa" value="#{produtoController.pesquisa}"
-										placeholder="Pesquisar por nome" />
+									<p:inputText id="pesquisa"
+										value="#{produtoController.pesquisa}"
+										placeholder="Pesquisar por..." />
+									<p:selectOneMenu id="filtro"
+										value="#{produtoController.filtro}">
+										<f:selectItems value="#{produtoController.filtroProduto}"
+											itemValue="#{filtro}" />
+									</p:selectOneMenu>
 									<p:commandButton icon="pi pi-search"
 										styleClass="ui-button-warning"
 										actionListener="#{produtoController.pesquisar}"
-										process="@this pesquisa" update="@form">
+										process="pesquisa filtro @this" update="@form">
 									</p:commandButton>
 								</div>
 							</p:toolbarGroup>
@@ -51,23 +57,23 @@
 					</div>
 				</f:facet>
 
-				<p:column sortBy="#{produto.nome}" headerText="Nome">
+				<p:column headerText="Nome">
 					<h:outputText value="#{produto.nome}" />
 				</p:column>
 
-				<p:column sortBy="#{produto.quantEstoque}" headerText="Quantidade">
+				<p:column headerText="Quantidade">
 					<h:outputText value="#{produto.quantEstoque}" />
 				</p:column>
 
-				<p:column sortBy="#{produto.preco}" headerText="Preço">
+				<p:column headerText="Preço">
 					<h:outputText value="R$#{produto.preco}" />
 				</p:column>
 
-				<p:column sortBy="#{produto.categoria}" headerText="Categoria">
+				<p:column headerText="Categoria">
 					<h:outputText value="#{produto.categoria.nome}" />
 				</p:column>
 
-				<p:column sortBy="#{produto.lote}" headerText="Lote">
+				<p:column headerText="Lote">
 					<h:outputText value="#{produto.lote}" />
 				</p:column>
 

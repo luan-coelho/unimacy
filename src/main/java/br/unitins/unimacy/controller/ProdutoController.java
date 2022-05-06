@@ -109,6 +109,22 @@ public class ProdutoController extends Controller<Produto> {
 			}
 			break;
 		}
+		case LOTE: {
+			try {
+				listaProdutoAux = repo.findByLote(this.pesquisa);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			break;
+		}
+		case FORNECEDOR: {
+			try {
+				listaProdutoAux = repo.findByFornecedor(this.pesquisa);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			break;
+		}
 		default:
 			break;
 		}

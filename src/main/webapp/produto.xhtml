@@ -21,11 +21,11 @@
 		<p:growl id="growl" />
 
 		<div
-			class="p-d-flex p-jc-center p-flex-column p-m-4 shadow-2xl shadow-gray-700 rounded-lg p-5 w-9/12 m-0">
+			class="p-d-flex p-flex-column p-m-5 shadow-2xl shadow-gray-700 rounded-lg w-9/12">
 
 
-			<p:commandButton value="Voltar para todos os produtos" icon="pi pi-box"
-				styleClass="ui-button-success p-mb-4"
+			<p:commandButton value="Voltar para todos os produtos"
+				icon="pi pi-box" styleClass="ui-button-success p-mb-4"
 				onclick="history.go(-1)" />
 
 
@@ -143,7 +143,7 @@
 							<p:commandButton value="Salvar" icon="pi pi-save"
 								styleClass="ui-button-success"
 								action="#{cadastroProdutoController.incluir}" process="@this"
-								update="@form:growl"/>
+								update="@form:growl" />
 						</div>
 					</p:tab>
 

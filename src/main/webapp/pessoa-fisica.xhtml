@@ -23,7 +23,8 @@
 		<div class="p-d-flex p-jc-center">
 			<p:dataTable id="dataTable" var="cliente" style="width: 80%;"
 				value="#{clientePfController.listaCliente}" paginator="true"
-				rows="10" styleClass="products-table p-mt-5 p-mb-5 shadow-2xl shadow-gray-700 rounded-lg p-5 w-9/12 m-0"
+				rows="10"
+				styleClass="products-table p-mt-5 p-mb-5 shadow-2xl shadow-gray-700 rounded-lg p-5 w-9/12 m-0"
 				rowSelectMode="add" paginatorPosition="bottom" allowUnsorting="true"
 				sortMode="single" stickyTopAt=".layout-topbar" stripedRows="true">
 
@@ -122,6 +123,10 @@
 									<p:inputMask mask="999.999.999-99" id="cpf" maxlength="14"
 										value="#{clientePfController.entity.pessoa.cpf}"
 										placeholder="xxx.xxx.xxx-xx">
+										<p:ajax event="blur"
+											listener="#{clientePfController.verificarCpf}" 
+											process="@this"
+											update="@form:pessoa form:growl"/>
 									</p:inputMask>
 								</div>
 

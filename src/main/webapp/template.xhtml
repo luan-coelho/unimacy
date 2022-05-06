@@ -9,11 +9,12 @@
 	xmlns:components="http://java.sun.com/jsf/composite/components">
 
 <h:head>
-	<meta charset="UTF-8"/>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta name="author" content="Luan Coêlho" />
 	<h:outputStylesheet library="css" name="sidebar.css" />
 	<h:outputStylesheet library="css" name="template.css" />
+
 	<h:outputStylesheet library="webjars"
 		name="primeflex/2.0.0/primeflex.min.css" />
 
@@ -27,19 +28,17 @@
 <h:body class="dark">
 	<h:form id="form" styleClass="form-menu-bar">
 
-		<div class="wrapper">
-			<div class="box sidebar">
+		<div class="p-grid p-m-0">
+			<div class="p-col-2">
 				<components:SideNavBar />
 			</div>
-			<div class="box content">
+			<div class="p-col-10 p-d-flex p-jc-center">
 				<ui:insert name="conteudo">
 
 				</ui:insert>
 			</div>
 		</div>
-		<div class="box footer">
-			<components:Footer />
-		</div>
+		
 	</h:form>
 
 	<script src="https://cdn.tailwindcss.com"></script>
