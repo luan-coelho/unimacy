@@ -24,7 +24,8 @@
 
 			<p:dataTable id="dataTable" var="fornecedor" style="width: 80%;"
 				value="#{fornecedorController.listaFornecedor}" paginator="true"
-				rows="10" styleClass="products-table p-mt-5 p-mb-5 shadow-2xl shadow-gray-700 rounded-lg p-5 w-9/12 m-0"
+				rows="10"
+				styleClass="products-table p-mt-5 p-mb-5 shadow-2xl shadow-gray-700 rounded-lg p-5 w-9/12 m-0"
 				rowSelectMode="add" paginatorPosition="bottom" allowUnsorting="true"
 				sortMode="single" stickyTopAt=".layout-topbar" stripedRows="true">
 
@@ -35,13 +36,8 @@
 							<p:toolbarGroup align="center">
 								<h2 class="p-mb-2">Gerência de Fornecedores</h2>
 
-								<p:commandButton value="Cadastrar Fornecedor" icon="pi pi-plus"
-									styleClass="ui-button-success"
-									onclick="PF('editar-fornecedor').show()">
-
-									<p:ajax listener="#{fornecedorController.limpar}"
-										process="@this" update="@form:fornecedor" />
-								</p:commandButton>
+								<p:linkButton value="Cadastrar Fornecedor" icon="pi pi-plus"
+									styleClass="ui-button-success" href="fornecedor.xhtml" />
 							</p:toolbarGroup>
 						</p:toolbar>
 					</div>
@@ -106,9 +102,9 @@
 				<p:wizard nextLabel="Prosseguir" backLabel="Voltar" widgetVar="wiz">
 					<p:tab id="tab0" title="Informações básicas">
 						<p:panel id="fornecedor">
-						
+
 							<p:messages id="messages" closable="true" />
-							
+
 							<h:panelGroup layout="block">
 
 								<div class="ui-fluid p-formgrid p-grid">

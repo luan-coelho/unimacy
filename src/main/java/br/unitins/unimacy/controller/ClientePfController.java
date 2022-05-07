@@ -5,8 +5,6 @@ import java.util.List;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-import org.hibernate.validator.constraints.br.CPF;
-
 import com.gtbr.exception.ViaCepException;
 import com.gtbr.exception.ViaCepFormatException;
 
@@ -107,13 +105,12 @@ public class ClientePfController extends Controller<Cliente> {
 	public void verificarCpf() {
 		PessoaFisicaRepository repo = new PessoaFisicaRepository();
 
-		@CPF
-		String cpf = ((PessoaFisica) entity.getPessoa()).getCpf();
+		String cpf = ((PessoaFisica) entity.getPessoa()).getCpf().trim();
 
-		PessoaFisica cliente = repo.findByCpf(cpf);
+		PessoaFisica pessoa = repo.findByCpf(cpf);
 
-		if (cliente != null) {
-			Util.addErrorMessage("Já existe um cliente cadastrado com esse CPF");
+		if (pessoa != null) {
+			Util.addErrorMessage("Já existe um registro cadastrado com esse CPF");
 		}
 	}
 }

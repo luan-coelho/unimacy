@@ -47,23 +47,23 @@
 					</div>
 				</f:facet>
 
-				<p:column sortBy="#{cliente.pessoa.nome}" headerText="Nome Completo">
+				<p:column headerText="Nome Completo">
 					<h:outputText
 						value="#{cliente.pessoa.nome.trim()} #{cliente.pessoa.sobreNome.trim()}" />
 				</p:column>
 
-				<p:column sortBy="#{cliente.pessoa.cpf}" headerText="CPF">
+				<p:column headerText="CPF">
 					<h:outputText value="#{cliente.pessoa.cpf}" />
 				</p:column>
 
-				<p:column sortBy="#{cliente.pessoa.ativo}" headerText="Ativo">
+				<p:column headerText="Ativo">
 					<p:toggleSwitch value="#{cliente.pessoa.ativo}">
 						<p:ajax listener="#{clientePfController.alterar(cliente)}"
 							process="@this" update="@form:dataTable" />
 					</p:toggleSwitch>
 				</p:column>
 
-				<p:column exportable="false">
+				<p:column>
 					<p:commandButton icon="pi pi-search"
 						styleClass="edit-button rounded-button ui-button-help p-mr-1"
 						onclick="PF('resumo-cliente').show()">

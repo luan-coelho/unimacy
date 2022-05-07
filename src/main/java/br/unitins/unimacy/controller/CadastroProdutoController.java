@@ -37,13 +37,13 @@ public class CadastroProdutoController extends Controller<Produto> {
 	}
 
 	@Override
-	public void incluir() {
+	public void salvar() {
 		if(entity.getFornecedor().getId() == null) {
 			Util.addWarnMessage("Selecione um fornecedor para este produto");
 			return;
 		}
 			
-		super.incluir();
+		super.salvar();
 	}
 	
 	public UnidadeMedida[] getUnidadeMedida() {

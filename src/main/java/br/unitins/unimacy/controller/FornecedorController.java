@@ -18,6 +18,7 @@ import br.unitins.unimacy.model.Estado;
 import br.unitins.unimacy.model.Fornecedor;
 import br.unitins.unimacy.model.PessoaJuridica;
 import br.unitins.unimacy.repository.FornecedorRepository;
+import br.unitins.unimacy.repository.PessoaJuridicaRepository;
 
 @Named
 @ViewScoped
@@ -90,5 +91,18 @@ public class FornecedorController extends Controller<Fornecedor> {
 	public void excluir(Fornecedor fornecedor) {
 		this.entity = fornecedor;
 		super.excluir();
+	}
+	
+	public void verificarCnpj() {
+		PessoaJuridicaRepository repo = new PessoaJuridicaRepository();
+
+		String cnpj = ((PessoaJuridica) entity.getPessoaJuridica()).getCnpj().trim();
+
+		PessoaJuridica pessoa = repo.findByCpnj(cnpj);
+
+		if (pessoa != null) {
+			Util.addErrorMessage("Já existe um registro cadastrado com esse CNPJ");
+		}
+		
 	}
 }

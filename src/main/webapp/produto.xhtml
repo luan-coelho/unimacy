@@ -13,7 +13,6 @@
 	<ui:define name="head">
 		<h:outputStylesheet library="webjars"
 			name="primeflex/2.0.0/primeflex.min.css" />
-		<h:outputStylesheet library="css" name="crud.css" />
 	</ui:define>
 
 	<ui:define name="conteudo">
@@ -142,7 +141,7 @@
 						<div class="p-d-flex p-jc-md-end p-mt-2">
 							<p:commandButton value="Salvar" icon="pi pi-save"
 								styleClass="ui-button-success"
-								action="#{cadastroProdutoController.incluir}" process="@this"
+								action="#{cadastroProdutoController.salvar}" process="@this" oncomplete="PF('wiz').loadStep('tab0', false)"
 								update="@form:growl" />
 						</div>
 					</p:tab>
@@ -160,7 +159,7 @@
 								value="#{categoriaController.entity.nome}" />
 							<p:commandButton value="Salvar" icon="pi pi-save"
 								styleClass="ui-button-success"
-								actionListener="#{categoriaController.incluir}"
+								actionListener="#{categoriaController.salvar}"
 								process="@this @this:nome-categoria"
 								update="@form:categoria @form:growl @form:cadastro-categoria" />
 						</div>

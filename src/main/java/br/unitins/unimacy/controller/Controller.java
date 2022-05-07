@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import br.unitins.unimacy.application.Util;
 import br.unitins.unimacy.exception.RepositoryException;
+import br.unitins.unimacy.exception.VersionException;
 import br.unitins.unimacy.model.DefaultEntity;
 import br.unitins.unimacy.repository.Repository;
 
@@ -19,31 +20,24 @@ public abstract class Controller <T extends DefaultEntity> implements Serializab
 		this.repository = repository;
 	}
 
-	public void incluir() {
+	//Incluir e Alterar
+	public void salvar() {
 		try {
 			getRepository().save(getEntity());
-			Util.addInfoMessage("Inclusão realizada com sucesso.");
+			Util.addInfoMessage("Operação realizada com sucesso.");
 			limpar();
 		} catch (RepositoryException e) {
+			e.printStackTrace();
+			Util.addErrorMessage(e.getMessage());
+		} catch (VersionException e) {
 			e.printStackTrace();
 			Util.addErrorMessage(e.getMessage());
 		}
 	}
 
-	public void alterar() {
-		try {
-			getRepository().save(getEntity());
-			Util.addInfoMessage("Alteração realizada com sucesso.");
-			limpar();
-		} catch (RepositoryException e) {
-			e.printStackTrace();
-			Util.addErrorMessage(e.getMessage());
-		}
-	}
-	
 	public void alterar(T obj) {
 		this.entity = obj;
-		alterar();
+		salvar();
 	}
 	
 	public void excluir() {

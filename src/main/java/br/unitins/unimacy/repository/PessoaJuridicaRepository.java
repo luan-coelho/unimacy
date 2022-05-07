@@ -1,41 +1,37 @@
 package br.unitins.unimacy.repository;
 
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import br.unitins.unimacy.model.Cliente;
+import br.unitins.unimacy.model.PessoaJuridica;
 
 public class PessoaJuridicaRepository extends Repository<Cliente> {
-	
-	public Cliente findByCpf(String cpf) {
-		Cliente cliente = null;
+
+	public PessoaJuridica findByCpnj(String cnpj) {
+		PessoaJuridica pessoa = null;
 
 		try {
-			Query query = getEntityManager().createQuery("Select c FROM PessoaFisica c WHERE c.cpf LIKE :cpf");
-			query.setParameter("cpf", "%" + cpf + "%");
+			StringBuffer jpsql = new StringBuffer();
+			jpsql.append("SELECT ");
+			jpsql.append("p ");
+			jpsql.append("FROM ");
+			jpsql.append("PessoaJuridica p ");
+			jpsql.append("WHERE ");
+			jpsql.append("p.cnpj LIKE :cnpj ");
 
-			cliente = (Cliente) query.getResultList();
+			Query query = getEntityManager().createQuery(jpsql.toString());
+			query.setParameter("cnpj", cnpj);
 
+			pessoa = (PessoaJuridica) query.getSingleResult();
+
+		} catch (NoResultException e) {
+			return null;
 		} catch (Exception e) {
 			System.out.println("Erro ao executar o método de find.");
 			e.printStackTrace();
 		}
 
-		return cliente;
+		return pessoa;
 	}
 }
-	
-//	public boolean cpfExiste(String cpf) {
-//		try {
-//			Query query = getEntityManager().createQuery("Select c FROM PessoaFisica c WHERE c.cpf LIKE :cpf");
-//			query.setParameter("cpf", "%" + cpf + "%");
-//
-//			Cliente cliente = (Cliente) query.getResultList();
-//			return true;
-//
-//		} catch (Exception e) {
-//			System.out.println("Erro ao executar o método de find.");
-//			e.printStackTrace();
-//		}
-//
-//		return false;
-//	}

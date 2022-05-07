@@ -92,4 +92,32 @@ public class ProdutoRepository extends Repository<Produto>{
 
 		return lista;
 	}
+	
+	public Produto findOneByNome(String nome) throws RepositoryException{
+		Produto produto = null;
+		
+		try {
+			StringBuffer jpsql = new StringBuffer();
+			jpsql.append("SELECT ");
+			jpsql.append("p ");
+			jpsql.append("FROM ");
+			jpsql.append("Produto p ");
+			jpsql.append("WHERE ");
+			jpsql.append("LOWER(p.lote) ");
+			jpsql.append("LIKE LOWER(:nome) ");
+			
+			Query query = getEntityManager().createQuery(jpsql.toString());
+			query.setParameter("nome", "%" + nome + "%");
+
+			produto = (Produto) query.getSingleResult();
+
+		} catch (Exception e) {
+			System.out.println("Erro ao executar o método de find.");
+			e.printStackTrace();
+			return null;
+		}
+
+		return produto;
+	}
+
 }

@@ -1,5 +1,6 @@
 package br.unitins.unimacy.repository;
 
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import br.unitins.unimacy.model.PessoaFisica;
@@ -19,11 +20,14 @@ public class PessoaFisicaRepository extends Repository<PessoaFisica> {
 			jpsql.append("p.cpf LIKE :cpf ");
 
 			Query query = getEntityManager().createQuery(jpsql.toString());
-			query.setParameter("cpf", "%" + cpf + "%");
+			query.setParameter("cpf", cpf);
 
 			pessoa = (PessoaFisica) query.getSingleResult();
 
-		} catch (Exception e) {
+		}catch (NoResultException e) {
+			return null;
+		} 
+		catch (Exception e) {
 			System.out.println("Erro ao executar o método de find.");
 			e.printStackTrace();
 		}

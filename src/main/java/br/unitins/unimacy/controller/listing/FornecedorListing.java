@@ -43,4 +43,5 @@ public class FornecedorListing extends Listing<Fornecedor> {
 	public void setFiltro(String filtro) {
 		this.filtro = filtro;
 	}
+	
 }

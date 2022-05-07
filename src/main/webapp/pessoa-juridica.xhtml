@@ -23,7 +23,8 @@
 		<div class="p-d-flex p-jc-center">
 			<p:dataTable id="dataTable" var="cliente" style="width: 80%;"
 				value="#{clientePjController.listaCliente}" paginator="true"
-				rows="10" styleClass="products-table p-mt-5 p-mb-5 shadow-2xl shadow-gray-700 rounded-lg p-5 w-9/12 m-0"
+				rows="10"
+				styleClass="products-table p-mt-5 p-mb-5 shadow-2xl shadow-gray-700 rounded-lg p-5 w-9/12 m-0"
 				rowSelectMode="add" paginatorPosition="bottom" allowUnsorting="true"
 				sortMode="single" stickyTopAt=".layout-topbar" stripedRows="true">
 
@@ -109,7 +110,11 @@
 								<div class="p-field p-col-12 p-md-4">
 									<p:outputLabel value="CNPJ" />
 									<p:inputMask value="#{clientePjController.entity.pessoa.cnpj}"
-										mask="99.999.999/9999-99" id="cnpj" maxlength="18" />
+										mask="99.999.999/9999-99" id="cnpj" maxlength="18">
+										<p:ajax event="blur"
+											listener="#{clientePjController.verificarCnpj}"
+											process="@this" update="@form:pessoa form:growl" />
+									</p:inputMask>
 								</div>
 
 								<div class="p-field p-col-12 p-md-5">

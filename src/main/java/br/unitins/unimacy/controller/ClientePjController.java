@@ -18,6 +18,7 @@ import br.unitins.unimacy.model.Endereco;
 import br.unitins.unimacy.model.Estado;
 import br.unitins.unimacy.model.PessoaJuridica;
 import br.unitins.unimacy.repository.ClienteRepository;
+import br.unitins.unimacy.repository.PessoaJuridicaRepository;
 
 @Named
 @ViewScoped
@@ -91,9 +92,15 @@ public class ClientePjController extends Controller<Cliente> {
 		Session.getInstance().set("nome-estado", nomeEstado);
 	}
 
-	public void alterar(Cliente cliente) {
-		entity = cliente;
+	public void verificarCnpj() {
+		PessoaJuridicaRepository repo = new PessoaJuridicaRepository();
 
-		super.alterar();
+		String cnpj = ((PessoaJuridica) entity.getPessoa()).getCnpj().trim();
+
+		PessoaJuridica pessoa = repo.findByCpnj(cnpj);
+
+		if (pessoa != null) {
+			Util.addErrorMessage("Já existe um registro cadastrado com esse CNPJ");
+		}
 	}
 }
