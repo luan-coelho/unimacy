@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:components="http://java.sun.com/jsf/composite/components">
+
+<ui:composition template="template.xhtml">
+
+	<ui:define name="head">
+		<h:outputStylesheet library="webjars"
+			name="primeflex/2.0.0/primeflex.min.css" />
+		<h:outputStylesheet library="css" name="crud.css" />
+	</ui:define>
+
+	<ui:define name="conteudo">
+
+		<p:growl id="growl" />
+
+		<div class="p-d-flex p-jc-center">
+			<p:dataTable id="dataTable" var="cliente" style="width: 80%;"
+				value="#{pessoaJuridicaController.listaPessoaJuridica}"
+				paginator="true" rows="10"
+				styleClass="products-table p-mt-5 p-mb-5 shadow-2xl shadow-gray-700 rounded-lg p-5 w-9/12 m-0"
+				rowSelectMode="add" paginatorPosition="bottom" allowUnsorting="true"
+				sortMode="single" stickyTopAt=".layout-topbar" stripedRows="true">
+
+				<f:facet name="header">
+					<div class="products-table-header">
+
+						<p:toolbar>
+							<p:toolbarGroup align="center">
+								<h2 class="p-mb-2">Pessoa Jurídica</h2>
+
+								<p:linkButton value="Cadastrar" icon="pi pi-plus"
+									styleClass="ui-button-success" href="pessoajuridica.xhtml" />
+							</p:toolbarGroup>
+						</p:toolbar>
+					</div>
+				</f:facet>
+
+				<p:column sortBy="#{pessoa.nomeFantasia}" headerText="Nome Fantasia">
+					<h:outputText value="#{pessoa.nomeFantasia.trim()}" />
+				</p:column>
+
+				<p:column sortBy="#{pessoa.cnpj}" headerText="CNPJ">
+					<h:outputText value="#{pessoa.cnpj}" />
+				</p:column>
+
+				<p:column sortBy="#{pessoa.ativo}" headerText="Ativo">
+					<p:toggleSwitch value="#{pessoa.ativo}">
+						<p:ajax listener="#{pessoaJuridicaController.alterar(cliente)}"
+							process="@this" update="@form:dataTable" />
+					</p:toggleSwitch>
+				</p:column>
+
+				<p:column>
+					<p:commandButton icon="pi pi-search"
+						styleClass="edit-button rounded-button ui-button-help p-mr-1"
+						onclick="PF('resumo-cliente').show()">
+						<p:ajax process="@this" update="@form:confirmar"
+							listener="#{pessoaJuridicaController.selecionarItem(cliente)}" />
+					</p:commandButton>
+					<p:commandButton icon="pi pi-pencil"
+						styleClass="edit-button rounded-button ui-button-info p-mr-1">
+						<p:ajax process="@this"
+							listener="#{pessoaJuridicaController.selecionarItem(cliente)}" />
+					</p:commandButton>
+					<p:commandButton class="ui-button-danger rounded-button"
+						icon="pi pi-trash"
+						action="#{pessoaJuridicaController.excluir(cliente)}"
+						process="@this" update="@form:dataTable">
+						<p:confirm header="Você tem certeza?"
+							message="O registro deste cliente será excluído definitivamente"
+							icon="pi pi-exclamation-triangle" />
+					</p:commandButton>
+				</p:column>
+
+			</p:dataTable>
+
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade"
+				responsive="true" width="450">
+				<p:commandButton value="Cancelar" type="button"
+					styleClass="ui-confirmdialog-no" />
+				<p:commandButton value="Confirmar" type="button"
+					update="@form:dataTable"
+					styleClass="ui-confirmdialog-yes ui-button-flat" />
+			</p:confirmDialog>
+
+			<p:dialog id="cliente-info-resumo" widgetVar="resumo-cliente"
+				modal="true" draggable="false" header="Informações do Cliente"
+				showEffect="fade" minHeight="40" width="750">
+				<h:panelGroup id="confirmar">
+					<components:SummaryPessoaJuridica />
+				</h:panelGroup>
+			</p:dialog>
+
+		</div>
+
+
+	</ui:define>
+</ui:composition>
+</html>

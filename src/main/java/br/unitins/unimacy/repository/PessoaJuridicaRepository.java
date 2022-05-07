@@ -3,10 +3,9 @@ package br.unitins.unimacy.repository;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
-import br.unitins.unimacy.model.Cliente;
 import br.unitins.unimacy.model.PessoaJuridica;
 
-public class PessoaJuridicaRepository extends Repository<Cliente> {
+public class PessoaJuridicaRepository extends Repository<PessoaJuridica> {
 
 	public PessoaJuridica findByCpnj(String cnpj) {
 		PessoaJuridica pessoa = null;

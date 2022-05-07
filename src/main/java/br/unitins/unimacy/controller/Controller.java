@@ -51,6 +51,11 @@ public abstract class Controller <T extends DefaultEntity> implements Serializab
 		}
 	}
 	
+	public void excluir(T obj) {
+		entity = obj;
+		excluir();
+	}
+	
 	public void limpar() {
 		entity = null;
 	}

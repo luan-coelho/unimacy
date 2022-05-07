@@ -1,7 +1,5 @@
 package br.unitins.unimacy.controller;
 
-import java.util.List;
-
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
@@ -9,9 +7,7 @@ import com.gtbr.exception.ViaCepException;
 import com.gtbr.exception.ViaCepFormatException;
 
 import br.unitins.unimacy.application.ApiCep;
-import br.unitins.unimacy.application.Session;
 import br.unitins.unimacy.application.Util;
-import br.unitins.unimacy.exception.RepositoryException;
 import br.unitins.unimacy.model.Cidade;
 import br.unitins.unimacy.model.Cliente;
 import br.unitins.unimacy.model.Endereco;
@@ -23,13 +19,11 @@ import br.unitins.unimacy.repository.PessoaFisicaRepository;
 
 @Named
 @ViewScoped
-public class ClientePfController extends Controller<Cliente> {
+public class CadastroClienteController extends Controller<Cliente> {
 
 	private static final long serialVersionUID = -2587172429280470098L;
 
-	private List<Cliente> listaCliente;
-
-	public ClientePfController() {
+	public CadastroClienteController() {
 		super(new ClienteRepository());
 	}
 
@@ -48,34 +42,6 @@ public class ClientePfController extends Controller<Cliente> {
 		return Sexo.values();
 	}
 
-	public List<Cliente> getListaCliente() {
-		if (listaCliente == null) {
-			try {
-				listaCliente = getRepository().findAll().stream()
-						.filter(cliente -> cliente.getPessoa() instanceof PessoaFisica).toList();
-			} catch (RepositoryException e) {
-				Util.addErrorMessage("Falha ao buscar os dados no banco");
-				e.printStackTrace();
-			}
-		}
-		return listaCliente;
-	}
-
-	public void setListaCliente(List<Cliente> listaCliente) {
-		this.listaCliente = listaCliente;
-	}
-
-	@Override
-	public void limpar() {
-		super.limpar();
-		listaCliente = null;
-	}
-
-	public void excluir(Cliente cliente) {
-		entity = cliente;
-		super.excluir();
-	}
-
 	public void buscarCep() {
 		try {
 			entity.getPessoa().setEndereco(ApiCep.findCep(entity.getPessoa().getEndereco().getCep()));
@@ -87,19 +53,6 @@ public class ClientePfController extends Controller<Cliente> {
 			Util.addErrorMessage("Falha ao buscar CEP. Digite os dados");
 		}
 
-	}
-
-	public void onItemSelect() {
-		String nomeEstado = entity.getPessoa().getEndereco().getCidade().getEstado().getNome();
-		Session.getInstance().set("nome-estado", nomeEstado);
-	}
-
-	public void pesquisarPorNome(String nome) {
-		try {
-			getRepository().findByNome(nome);
-		} catch (RepositoryException e) {
-			e.printStackTrace();
-		}
 	}
 
 	public void verificarCpf() {
