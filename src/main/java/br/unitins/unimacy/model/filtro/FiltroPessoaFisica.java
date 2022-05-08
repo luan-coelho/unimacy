@@ -1,5 +1,5 @@
 package br.unitins.unimacy.model.filtro;
 
 public enum FiltroPessoaFisica {
-	NOME, CPF, EMAIL;
+	NOME, CPF, EMAIL, TELEFONE;
 }

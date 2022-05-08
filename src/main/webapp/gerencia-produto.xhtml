@@ -41,7 +41,7 @@
 										placeholder="Pesquisar por..." />
 									<p:selectOneMenu id="filtro"
 										value="#{produtoController.filtro}">
-										<f:selectItems value="#{produtoController.filtro}"
+										<f:selectItems value="#{produtoController.filtroProduto}"
 											itemValue="#{filtro}" />
 									</p:selectOneMenu>
 									<p:commandButton icon="pi pi-search"
@@ -51,8 +51,8 @@
 									</p:commandButton>
 									<p:commandButton icon="pi pi-refresh"
 										styleClass="ui-button-success p-ml-1"
-										actionListener="#{produtoController.limpar}"
-										process="@this" update="@form">
+										actionListener="#{produtoController.limpar}" process="@this"
+										update="@form">
 									</p:commandButton>
 								</div>
 							</p:toolbarGroup>
@@ -60,23 +60,23 @@
 					</div>
 				</f:facet>
 
-				<p:column headerText="Nome">
+				<p:column headerText="Nome" sortBy="#{produto.nome}">
 					<h:outputText value="#{produto.nome}" />
 				</p:column>
 
-				<p:column headerText="Quantidade">
+				<p:column headerText="Quantidade" sortBy="#{produto.quantEstoque}">
 					<h:outputText value="#{produto.quantEstoque}" />
 				</p:column>
 
-				<p:column headerText="Preço">
+				<p:column headerText="Preço" sortBy="#{produto.preco}">
 					<h:outputText value="R$#{produto.preco}" />
 				</p:column>
 
-				<p:column headerText="Categoria">
+				<p:column headerText="Categoria" sortBy="#{produto.categoria.nome}">
 					<h:outputText value="#{produto.categoria.nome}" />
 				</p:column>
 
-				<p:column headerText="Lote">
+				<p:column headerText="Lote" sortBy="#{produto.lote}">
 					<h:outputText value="#{produto.lote}" />
 				</p:column>
 
@@ -84,15 +84,15 @@
 					<h:outputText value="#{produto.fornecedor}" />
 				</p:column>
 
-				<p:column exportable="false">
+				<p:column>
 					<p:commandButton icon="pi pi-search"
 						styleClass="edit-button rounded-button ui-button-help p-mr-1"
 						onclick="PF('resumo-produto').show()">
 						<p:ajax process="@this" update="@form:confirmar"
 							listener="#{produtoController.selecionarItem(produto)}" />
 					</p:commandButton>
-					<p:commandButton icon="pi pi-pencil" href="produto.xhtml"
-						action="#{produtoController.editarItem(produto)}"
+					<p:commandButton icon="pi pi-pencil"
+						action="#{produtoController.editarItem(produto)}" process="@this"
 						styleClass="edit-button rounded-button ui-button-info p-mr-1 p-mb-1">
 					</p:commandButton>
 					<p:commandButton class="ui-button-danger rounded-button"

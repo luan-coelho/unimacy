@@ -24,11 +24,13 @@
 
 			<p:commandButton value="Voltar para todos os Produtos"
 				icon="pi pi-box" styleClass="ui-button-success p-mb-4"
-				actionListener="#{cadastroProdutoController.telaGerenciaProduto}" process="@this"/>
+				actionListener="#{cadastroProdutoController.telaGerenciaProduto}"
+				process="@this" />
 
 
 			<p:panel id="produto" header="Informações do Produto">
-				<p:wizard nextLabel="Prosseguir" backLabel="Voltar" widgetVar="wiz">
+				<p:wizard nextLabel="Prosseguir" backLabel="Voltar" widgetVar="wiz"
+					onnext="buttonClick();">
 					<p:tab id="tab0" title="Dados Básicos">
 
 						<p:messages id="messages" closable="true" />
@@ -133,6 +135,10 @@
 							</div>
 						</div>
 
+
+						<p:commandButton id="summary"
+							actionListener="#{cadastroProdutoController.enviarObjetoParaSummary}"
+							style="display: none;" />
 					</p:tab>
 
 					<p:tab title="Confirmar Dados">
@@ -140,7 +146,8 @@
 						<div class="p-d-flex p-jc-md-end p-mt-2">
 							<p:commandButton value="Salvar" icon="pi pi-save"
 								styleClass="ui-button-success"
-								action="#{cadastroProdutoController.salvar}" process="@this" oncomplete="PF('wiz').loadStep('tab0', false)"
+								action="#{cadastroProdutoController.salvar}" process="@this"
+								oncomplete="PF('wiz').loadStep('tab0', false)"
 								update="@form:growl" />
 						</div>
 					</p:tab>
@@ -186,6 +193,12 @@
 				</p:panel>
 			</p:dialog>
 		</div>
+
+		<script>
+			function buttonClick() {
+				length = document.getElementById('form:summary').click();
+			}
+		</script>
 
 	</ui:define>
 </ui:composition>

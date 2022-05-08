@@ -7,6 +7,7 @@ import com.gtbr.exception.ViaCepException;
 import com.gtbr.exception.ViaCepFormatException;
 
 import br.unitins.unimacy.application.ApiCep;
+import br.unitins.unimacy.application.Session;
 import br.unitins.unimacy.application.Util;
 import br.unitins.unimacy.model.Cidade;
 import br.unitins.unimacy.model.Endereco;
@@ -22,6 +23,8 @@ public class CadastroPessoaJuridicaController extends Controller<PessoaJuridica>
 
 	public CadastroPessoaJuridicaController() {
 		super(new PessoaJuridicaRepository());
+		entity = (PessoaJuridica) Session.getInstance().get("pessoajuridica-crud");
+		Session.getInstance().set("pessoajuridica-crud", null);
 	}
 
 	@Override

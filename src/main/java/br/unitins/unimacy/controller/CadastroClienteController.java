@@ -8,6 +8,7 @@ import com.gtbr.exception.ViaCepFormatException;
 
 import br.unitins.unimacy.application.ApiCep;
 import br.unitins.unimacy.application.Util;
+import br.unitins.unimacy.exception.RepositoryException;
 import br.unitins.unimacy.model.Cidade;
 import br.unitins.unimacy.model.Cliente;
 import br.unitins.unimacy.model.Endereco;
@@ -60,7 +61,13 @@ public class CadastroClienteController extends Controller<Cliente> {
 
 		String cpf = ((PessoaFisica) entity.getPessoa()).getCpf().trim();
 
-		PessoaFisica pessoa = repo.findByCpf(cpf);
+		PessoaFisica pessoa = null;
+		try {
+			pessoa = repo.findByCpf(cpf);
+		} catch (RepositoryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		if (pessoa != null) {
 			Util.addErrorMessage("Já existe um registro cadastrado com esse CPF");

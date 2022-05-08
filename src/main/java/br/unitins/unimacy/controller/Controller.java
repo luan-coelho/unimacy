@@ -15,6 +15,10 @@ public abstract class Controller<T extends DefaultEntity> implements Serializabl
 	private Repository<T> repository;
 	protected T entity;
 
+	public Controller() {
+		
+	}
+	
 	public Controller(Repository<T> repository) {
 		super();
 		this.repository = repository;

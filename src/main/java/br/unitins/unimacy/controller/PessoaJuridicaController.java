@@ -13,6 +13,7 @@ import br.unitins.unimacy.model.Endereco;
 import br.unitins.unimacy.model.Estado;
 import br.unitins.unimacy.model.PessoaJuridica;
 import br.unitins.unimacy.model.Sexo;
+import br.unitins.unimacy.model.filtro.FiltroPessoaJuridica;
 import br.unitins.unimacy.repository.PessoaJuridicaRepository;
 
 @Named
@@ -20,8 +21,11 @@ import br.unitins.unimacy.repository.PessoaJuridicaRepository;
 public class PessoaJuridicaController extends Controller<PessoaJuridica> {
 
 	private static final long serialVersionUID = 4178893876749538318L;
-	
+
 	private List<PessoaJuridica> listaPessoaJuridica;
+
+	private String pesquisa;
+	private FiltroPessoaJuridica filtro = FiltroPessoaJuridica.NOME;
 
 	public PessoaJuridicaController() {
 		super(new PessoaJuridicaRepository());
@@ -39,6 +43,26 @@ public class PessoaJuridicaController extends Controller<PessoaJuridica> {
 
 	public Sexo[] getListaSexo() {
 		return Sexo.values();
+	}
+
+	public String getPesquisa() {
+		return pesquisa;
+	}
+
+	public void setPesquisa(String pesquisa) {
+		this.pesquisa = pesquisa;
+	}
+
+	public FiltroPessoaJuridica getFiltro() {
+		return filtro;
+	}
+
+	public void setFiltro(FiltroPessoaJuridica filtro) {
+		this.filtro = filtro;
+	}
+	
+	public FiltroPessoaJuridica[] getFiltroPessoaJuridica() {
+		return FiltroPessoaJuridica.values();
 	}
 
 	public List<PessoaJuridica> getListaPessoaJuridica() {
@@ -74,6 +98,62 @@ public class PessoaJuridicaController extends Controller<PessoaJuridica> {
 		} catch (RepositoryException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void pesquisaPorFiltro() {
+		List<PessoaJuridica> listaPessoaAux = null;
+
+		PessoaJuridicaRepository repo = (PessoaJuridicaRepository) getRepository();
+		
+		switch (filtro) {
+		case NOME: {
+			try {
+				listaPessoaAux = repo.findAllByNome(pesquisa);
+			} catch (RepositoryException e) {
+				Util.addErrorMessage("Falha ao realizar consulta");
+				e.printStackTrace();
+			}
+			break;
+		}case CNPJ: {
+			try {
+				listaPessoaAux = (List<PessoaJuridica>) repo.findAllByCnpj(pesquisa);
+			} catch (RepositoryException e) {
+				Util.addErrorMessage("Falha ao consultar CPF");
+				e.printStackTrace();
+			}
+			break;
+		}case EMAIL: {
+			try {
+				listaPessoaAux = repo.findByEmail(pesquisa);
+			} catch (RepositoryException e) {
+				Util.addErrorMessage("Falha ao consultar email");
+				e.printStackTrace();
+			}
+			break;
+		}case TELEFONE: {
+			try {
+				listaPessoaAux = repo.findByTelefone(pesquisa);
+			} catch (RepositoryException e) {
+				Util.addErrorMessage("Falha ao consultar telefone");
+				e.printStackTrace();
+			}
+			break;
+		}
+		default:
+			break;
+		}
+		
+		if (listaPessoaAux.isEmpty()) {
+			Util.addWarnMessage("Nenhum produto encontrado");
+			return;
+		}
+		listaPessoaJuridica = listaPessoaAux;
+	}
+	
+	@Override
+	public void editarItem(PessoaJuridica obj) {
+		Session.getInstance().set("pessoajuridica-crud", obj);
+		Util.redirect("pessoajuridica.xhtml");
 	}
 
 }

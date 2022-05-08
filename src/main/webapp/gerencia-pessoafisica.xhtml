@@ -22,7 +22,7 @@
 			<p:dataTable id="dataTable" var="pessoa" style="width: 80%;"
 				value="#{pessoaFisicaController.listaPessoaFisica}" paginator="true"
 				rows="10"
-				styleClass="products-table p-mt-5 p-mb-5 shadow-2xl shadow-gray-700 rounded-lg p-5 w-9/12 m-0"
+				styleClass="products-table p-mt-5 p-mb-5 shadow-2xl shadow-gray-700 rounded-lg p-5 w-11/12 m-0"
 				rowSelectMode="add" paginatorPosition="bottom" allowUnsorting="true"
 				sortMode="single" stickyTopAt=".layout-topbar" stripedRows="true">
 
@@ -42,7 +42,8 @@
 										placeholder="Pesquisar por..." />
 									<p:selectOneMenu id="filtro"
 										value="#{pessoaFisicaController.filtro}">
-										<f:selectItems value="#{pessoaFisicaController.filtroPessoaFisica}"
+										<f:selectItems
+											value="#{pessoaFisicaController.filtroPessoaFisica}"
 											itemValue="#{filtro}" />
 									</p:selectOneMenu>
 									<p:commandButton icon="pi pi-search"
@@ -52,8 +53,8 @@
 									</p:commandButton>
 									<p:commandButton icon="pi pi-refresh"
 										styleClass="ui-button-success p-ml-1"
-										actionListener="#{pessoaFisicaController.limpar}" process="@this"
-										update="@form">
+										actionListener="#{pessoaFisicaController.limpar}"
+										process="@this" update="@form">
 									</p:commandButton>
 								</div>
 							</p:toolbarGroup>
@@ -61,16 +62,24 @@
 					</div>
 				</f:facet>
 
-				<p:column headerText="Nome Completo">
+				<p:column headerText="Nome Completo" sortBy="#{pessoa.nome}">
 					<h:outputText
 						value="#{pessoa.nome.trim()} #{pessoa.sobreNome.trim()}" />
 				</p:column>
 
-				<p:column headerText="CPF">
+				<p:column headerText="CPF" sortBy="#{pessoa.cpf}">
 					<h:outputText value="#{pessoa.cpf}" />
 				</p:column>
 
-				<p:column headerText="Ativo">
+				<p:column headerText="Email" sortBy="#{pessoa.email}">
+					<h:outputText value="#{pessoa.email}" />
+				</p:column>
+
+				<p:column headerText="Telefone" sortBy="#{pessoa.telefone}">
+					<h:outputText value="#{pessoa.telefone}" />
+				</p:column>
+
+				<p:column headerText="Ativo" sortBy="#{pessoa.ativo}">
 					<p:toggleSwitch value="#{pessoa.ativo}">
 						<p:ajax listener="#{pessoaFisicaController.alterar(pessoa)}"
 							process="@this" update="@form:dataTable" />
@@ -85,14 +94,12 @@
 							listener="#{pessoaFisicaController.selecionarItem(pessoa)}" />
 					</p:commandButton>
 					<p:commandButton icon="pi pi-pencil"
-						styleClass="edit-button rounded-button ui-button-info p-mr-1">
-						<p:ajax process="@this"
-							listener="#{pessoaFisicaController.selecionarItem(pessoa)}" />
-					</p:commandButton>
+						styleClass="edit-button rounded-button ui-button-info p-mr-1"
+						action="#{pessoaFisicaController.editarItem(pessoa)}"/>
 					<p:commandButton class="ui-button-danger rounded-button"
 						icon="pi pi-trash"
 						action="#{pessoaFisicaController.excluir(pessoa)}" process="@this"
-						update="@form:dataTable">
+						update="@form">
 						<p:confirm header="Você tem certeza?"
 							message="O registro deste pessoa será excluído definitivamente"
 							icon="pi pi-exclamation-triangle" />

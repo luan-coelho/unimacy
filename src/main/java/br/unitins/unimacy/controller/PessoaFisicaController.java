@@ -21,9 +21,9 @@ import br.unitins.unimacy.repository.PessoaFisicaRepository;
 public class PessoaFisicaController extends Controller<PessoaFisica> {
 
 	private static final long serialVersionUID = 962841755986708363L;
-	
+
 	private List<PessoaFisica> listaPessoaFisica;
-	
+
 	private String pesquisa;
 	private FiltroPessoaFisica filtro = FiltroPessoaFisica.NOME;
 
@@ -44,23 +44,23 @@ public class PessoaFisicaController extends Controller<PessoaFisica> {
 	public Sexo[] getListaSexo() {
 		return Sexo.values();
 	}
-	
+
 	public String getPesquisa() {
 		return pesquisa;
 	}
-	
+
 	public void setPesquisa(String pesquisa) {
 		this.pesquisa = pesquisa;
 	}
-	
+
 	public FiltroPessoaFisica getFiltro() {
 		return filtro;
 	}
-	
+
 	public void setFiltro(FiltroPessoaFisica filtro) {
 		this.filtro = filtro;
 	}
-	
+
 	public FiltroPessoaFisica[] getFiltroPessoaFisica() {
 		return FiltroPessoaFisica.values();
 	}
@@ -92,15 +92,59 @@ public class PessoaFisicaController extends Controller<PessoaFisica> {
 		Session.getInstance().set("nome-estado", nomeEstado);
 	}
 
-	public void pesquisarPorNome(String nome) {
-		try {
-			getRepository().findByNome(nome);
-		} catch (RepositoryException e) {
-			e.printStackTrace();
+	public void pesquisaPorFiltro() {
+		List<PessoaFisica> listaPessoaAux = null;
+
+		PessoaFisicaRepository repo = (PessoaFisicaRepository) getRepository();
+		
+		switch (filtro) {
+		case NOME: {
+			try {
+				listaPessoaAux = repo.findByNome(pesquisa);
+			} catch (RepositoryException e) {
+				Util.addErrorMessage("Falha ao realizar consulta");
+				e.printStackTrace();
+			}
+			break;
+		}case CPF: {
+			try {
+				listaPessoaAux = (List<PessoaFisica>) repo.findAllByCpf(pesquisa);
+			} catch (RepositoryException e) {
+				Util.addErrorMessage("Falha ao consultar CPF");
+				e.printStackTrace();
+			}
+			break;
+		}case EMAIL: {
+			try {
+				listaPessoaAux = repo.findByEmail(pesquisa);
+			} catch (RepositoryException e) {
+				Util.addErrorMessage("Falha ao consultar email");
+				e.printStackTrace();
+			}
+			break;
+		}case TELEFONE: {
+			try {
+				listaPessoaAux = repo.findByTelefone(pesquisa);
+			} catch (RepositoryException e) {
+				Util.addErrorMessage("Falha ao consultar telefone");
+				e.printStackTrace();
+			}
+			break;
 		}
+		default:
+			break;
+		}
+		
+		if (listaPessoaAux.isEmpty()) {
+			Util.addWarnMessage("Nenhum produto encontrado");
+			return;
+		}
+		listaPessoaFisica = listaPessoaAux;
 	}
 	
-	public void pesquisaPorFiltro() {
-		
+	@Override
+	public void editarItem(PessoaFisica obj) {
+		Session.getInstance().set("pessoafisica-crud", obj);
+		Util.redirect("pessoafisica.xhtml");
 	}
 }

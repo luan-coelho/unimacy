@@ -11,8 +11,6 @@ public class ProdutoRepository extends Repository<Produto>{
 	
 	@SuppressWarnings("unchecked")
 	public List <Produto> findByCategoria(String nome) throws RepositoryException{
-		List <Produto> lista = null;
-		
 		try {
 			StringBuffer jpsql = new StringBuffer();
 			jpsql.append("SELECT ");
@@ -26,21 +24,17 @@ public class ProdutoRepository extends Repository<Produto>{
 			Query query = getEntityManager().createQuery(jpsql.toString());
 			query.setParameter("nome", "%" + nome + "%");
 
-			lista = query.getResultList();
+			return query.getResultList();
 
 		} catch (Exception e) {
-			System.out.println("Erro ao executar o método de find.");
+			System.out.println("Erro ao executar o método de find de categoria");
 			e.printStackTrace();
-			return null;
+			throw new RepositoryException("Problema ao buscar categoria");
 		}
-
-		return lista;
 	}
 
 	@SuppressWarnings("unchecked")
-	public List <Produto> findByLote(String nome) throws RepositoryException{
-		List <Produto> lista = null;
-		
+	public List <Produto> findByLote(String lote) throws RepositoryException{
 		try {
 			StringBuffer jpsql = new StringBuffer();
 			jpsql.append("SELECT ");
@@ -49,20 +43,17 @@ public class ProdutoRepository extends Repository<Produto>{
 			jpsql.append("Produto p ");
 			jpsql.append("WHERE ");
 			jpsql.append("LOWER(p.lote) ");
-			jpsql.append("LIKE LOWER(:nome) ");
+			jpsql.append("LIKE ");
+			jpsql.append("LOWER(:lote) ");
 			
 			Query query = getEntityManager().createQuery(jpsql.toString());
-			query.setParameter("nome", "%" + nome + "%");
+			query.setParameter("lote", "%" + lote + "%");
 
-			lista = query.getResultList();
+			return query.getResultList();
 
 		} catch (Exception e) {
-			System.out.println("Erro ao executar o método de find.");
-			e.printStackTrace();
-			return null;
+			throw new RepositoryException("Problema ao salvar.");
 		}
-
-		return lista;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -85,7 +76,7 @@ public class ProdutoRepository extends Repository<Produto>{
 			lista = query.getResultList();
 
 		} catch (Exception e) {
-			System.out.println("Erro ao executar o método de find.");
+			System.out.println("Erro ao executar o método de find de fornecedor");
 			e.printStackTrace();
 			return null;
 		}
@@ -112,7 +103,7 @@ public class ProdutoRepository extends Repository<Produto>{
 			produto = (Produto) query.getSingleResult();
 
 		} catch (Exception e) {
-			System.out.println("Erro ao executar o método de find.");
+			System.out.println("Erro ao executar o método de find de nome");
 			e.printStackTrace();
 			return null;
 		}

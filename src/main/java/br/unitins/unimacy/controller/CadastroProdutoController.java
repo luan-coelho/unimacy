@@ -20,6 +20,12 @@ public class CadastroProdutoController extends Controller<Produto> {
 
 	private static final long serialVersionUID = -7142430473023627800L;
 
+	@Override
+	public void setEntity(Object obj) {
+		// TODO Auto-generated method stub
+		super.setEntity(obj);
+	}
+	
 	public CadastroProdutoController() {
 		super(new ProdutoRepository());
 		entity = (Produto) Session.getInstance().get("produto-crud");
@@ -61,5 +67,9 @@ public class CadastroProdutoController extends Controller<Produto> {
 	
 	public void telaGerenciaProduto() {
 		Util.redirect("gerencia-produto.xhtml");
+	}
+	
+	public void enviarObjetoParaSummary() {
+		Session.getInstance().set("produto", entity);
 	}
 }

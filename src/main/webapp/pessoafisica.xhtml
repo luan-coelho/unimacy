@@ -23,10 +23,12 @@
 
 			<p:commandButton value="Voltar para a Gerência de Pessoa Física"
 				icon="pi pi-box" styleClass="ui-button-success p-mb-4"
-				actionListener="#{cadastroPessoaFisicaController.telaGerenciaPessoaFisica}" process="@this"/>
+				actionListener="#{cadastroPessoaFisicaController.telaGerenciaPessoaFisica}"
+				process="@this" />
 
 			<p:panel id="pessoa" header="Informações Pessoais">
-				<p:wizard nextLabel="Prosseguir" backLabel="Voltar" widgetVar="wiz">
+				<p:wizard nextLabel="Prosseguir" backLabel="Voltar" widgetVar="wiz"
+					onnext="buttonClick();">
 					<p:tab id="tab0" title="Dados Pessoais">
 
 
@@ -85,6 +87,9 @@
 							</div>
 						</div>
 
+						<p:commandButton id="summary"
+							actionListener="#{cadastroPessoaFisicaController.enviarObjetoParaSummary}"
+							style="display: none;" />
 					</p:tab>
 					<p:tab title="Endereço">
 						<p:panel id="endereco" header="Informe os dados do Endereço">
@@ -153,16 +158,21 @@
 						<div class="p-d-flex p-jc-md-end p-mt-2">
 							<p:commandButton value="Salvar" icon="pi pi-save"
 								styleClass="ui-button-success"
-								action="#{cadastroPessoaFisicaController.salvar}"
-								update="@form" process="@this @form:pessoa"
+								action="#{cadastroPessoaFisicaController.salvar}" update="@form"
+								process="@this @form:pessoa"
 								oncomplete="PF('wiz').loadStep('tab0', false)" />
 						</div>
 					</p:tab>
 
 				</p:wizard>
 			</p:panel>
-		</div>
 
+			<script>
+				function buttonClick() {
+					length = document.getElementById('form:summary').click();
+				}
+			</script>
+		</div>
 
 	</ui:define>
 </ui:composition>

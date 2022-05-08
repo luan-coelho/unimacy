@@ -21,12 +21,12 @@ public class Repository<T extends DefaultEntity> {
 		setEntityManager(JPAUtil.getEntityManager());
 	}
 
-	public void save(T entity) throws RepositoryException, VersionException{
+	public void save(T entity) throws RepositoryException, VersionException {
 		try {
 			getEntityManager().getTransaction().begin();
 			getEntityManager().merge(entity);
 			getEntityManager().getTransaction().commit();
-			
+
 		} catch (OptimisticLockException e) {
 			// excecao do @version
 			System.out.println("Problema com o controle de concorrencia.");
@@ -36,7 +36,7 @@ public class Repository<T extends DefaultEntity> {
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
-			throw new VersionException("As informações estão desatualizadas, atualize a página");			
+			throw new VersionException("As informações estão desatualizadas, atualize a página");
 		} catch (Exception e) {
 			System.out.println("Problema ao executar o save.");
 			e.printStackTrace();
@@ -93,9 +93,9 @@ public class Repository<T extends DefaultEntity> {
 			final ParameterizedType type = (ParameterizedType) getClass().getGenericSuperclass();
 			@SuppressWarnings("unchecked")
 			Class<T> tClass = (Class<T>) (type).getActualTypeArguments()[0];
-			
+
 			T t = (T) getEntityManager().find(tClass, id);
-			
+
 			return t;
 		} catch (Exception e) {
 			System.out.println("Erro ao executar o método de find.");
@@ -103,27 +103,34 @@ public class Repository<T extends DefaultEntity> {
 			throw new RepositoryException("Erro ao buscar os dados");
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public List <T> findByNome(String nome) throws RepositoryException{
-		List <T> lista = null;
-		
+	public List<T> findByNome(String nome) throws RepositoryException {
 		try {
 			final ParameterizedType type = (ParameterizedType) getClass().getGenericSuperclass();
 			Class<T> tClass = (Class<T>) (type).getActualTypeArguments()[0];
-			
-			Query query = getEntityManager().createQuery("Select o FROM "+ tClass.getSimpleName() +" o WHERE LOWER(o.nome) LIKE LOWER(:nome)");
+			String classe = tClass.getSimpleName();
+
+			StringBuffer jpsql = new StringBuffer();
+			jpsql.append("SELECT ");
+			jpsql.append("o ");
+			jpsql.append("FROM ");
+			jpsql.append(classe + " o ");
+			jpsql.append("WHERE ");
+			jpsql.append("LOWER(o.nome) ");
+			jpsql.append("LIKE ");
+			jpsql.append("LOWER(:nome) ");
+
+			Query query = getEntityManager().createQuery(jpsql.toString());
 			query.setParameter("nome", "%" + nome + "%");
 
-			lista = query.getResultList();
+			return query.getResultList();
 
 		} catch (Exception e) {
 			System.out.println("Erro ao executar o método de find.");
 			e.printStackTrace();
-			return null;
+			throw new RepositoryException("Erro ao buscar os dados");
 		}
-
-		return lista;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -132,16 +139,25 @@ public class Repository<T extends DefaultEntity> {
 			// obtendo o tipo da classe de forma generica (a classe deve ser publica)
 			final ParameterizedType type = (ParameterizedType) getClass().getGenericSuperclass();
 			Class<T> tClass = (Class<T>) (type).getActualTypeArguments()[0];
-			
-			return getEntityManager().createQuery("Select o FROM "+ tClass.getSimpleName() +" o").getResultList();
-			
+			String classe = tClass.getSimpleName();
+
+			StringBuffer jpsql = new StringBuffer();
+			jpsql.append("SELECT ");
+			jpsql.append("o ");
+			jpsql.append("FROM ");
+			jpsql.append(classe + " o ");
+
+			Query query = getEntityManager().createQuery(jpsql.toString());
+
+			return query.getResultList();
+
 		} catch (Exception e) {
 			System.out.println("Erro ao executar o método de find.");
 			e.printStackTrace();
 			throw new RepositoryException("Erro ao buscar os dados");
 		}
 	}
-	
+
 	protected EntityManager getEntityManager() {
 		return entityManager;
 	}

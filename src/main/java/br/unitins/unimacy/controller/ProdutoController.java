@@ -96,7 +96,7 @@ public class ProdutoController extends Controller<Produto> {
 		switch (this.filtro) {
 		case NOME: {
 			try {
-				listaProdutoAux = repo.findByNome(this.pesquisa);
+				listaProdutoAux = repo.findByNome(pesquisa);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -104,7 +104,7 @@ public class ProdutoController extends Controller<Produto> {
 		}
 		case CATEGORIA: {
 			try {
-				listaProdutoAux = repo.findByCategoria(this.pesquisa);
+				listaProdutoAux = repo.findByCategoria(pesquisa);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -112,7 +112,7 @@ public class ProdutoController extends Controller<Produto> {
 		}
 		case LOTE: {
 			try {
-				listaProdutoAux = repo.findByLote(this.pesquisa);
+				listaProdutoAux = repo.findByLote(pesquisa);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -120,7 +120,7 @@ public class ProdutoController extends Controller<Produto> {
 		}
 		case FORNECEDOR: {
 			try {
-				listaProdutoAux = repo.findByFornecedor(this.pesquisa);
+				listaProdutoAux = repo.findByFornecedor(pesquisa);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -145,5 +145,11 @@ public class ProdutoController extends Controller<Produto> {
 	public void editarItem(Produto obj) {
 		Session.getInstance().set("produto-crud", obj);
 		Util.redirect("produto.xhtml");
+	}
+	
+	@Override
+	public void selecionarItem(Produto obj) {
+		Session.getInstance().set("produto", obj);
+		super.selecionarItem(obj);
 	}
 }

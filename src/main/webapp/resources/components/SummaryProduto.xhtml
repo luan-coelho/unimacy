@@ -12,43 +12,43 @@
 		<div class="ui-fluid p-formgrid p-grid">
 			<div class="p-field p-col-12 p-md-4">
 				<p:outputLabel value="Nome: " />
-				<h:outputText value="#{cadastroProdutoController.entity.nome}"
+				<h:outputText value="#{summaryProdutoController.entity.nome}"
 					styleClass="outputLabel" />
 			</div>
 
 			<div class="p-field p-col-12 p-md-4">
 				<p:outputLabel value="Categoria: " />
-				<h:outputText value="#{cadastroProdutoController.entity.categoria.nome}"
+				<h:outputText value="#{summaryProdutoController.entity.categoria.nome}"
 					styleClass="outputLabel" />
 			</div>
 			
 			<div class="p-field p-col-12 p-md-4">
 				<p:outputLabel value="Fornecedor: " />
-				<h:outputText value="#{cadastroProdutoController.entity.fornecedor}"
+				<h:outputText value="#{summaryProdutoController.entity.fornecedor}"
 					styleClass="outputLabel" />
 			</div>
 
 			<div class="p-field p-col-12 p-md-4">
 				<p:outputLabel value="Descrição: " />
-				<h:outputText value="#{cadastroProdutoController.entity.descricao}"
+				<h:outputText value="#{summaryProdutoController.entity.descricao}"
 					styleClass="outputLabel" />
 			</div>
 
 			<div class="p-field p-col-12 p-md-3">
 				<p:outputLabel value="Estoque: " />
-				<h:outputText value="#{cadastroProdutoController.entity.quantEstoque}"
+				<h:outputText value="#{summaryProdutoController.entity.quantEstoque}"
 					styleClass="outputLabel" />
 			</div>
 
 			<div class="p-field p-col-12 p-md-3">
 				<p:outputLabel value="Preço: " />
-				<h:outputText value="R$#{cadastroProdutoController.entity.preco}"
+				<h:outputText value="R$#{summaryProdutoController.entity.preco}"
 					styleClass="outputLabel" />
 			</div>
 
 			<div class="p-field p-col-12 p-md-3">
 				<h:outputLabel value="Data de Fabricação: " />
-				<h:outputText value="#{cadastroProdutoController.entity.fabricacao}"
+				<h:outputText value="#{summaryProdutoController.entity.fabricacao}"
 					styleClass="outputLabel">
 					<f:convertDateTime type="localDate" pattern="dd/MM/yyyy" />
 				</h:outputText>
@@ -56,7 +56,7 @@
 
 			<div class="p-field p-col-12 p-md-3">
 				<h:outputLabel value="Data de Validade " />
-				<h:outputText value="#{cadastroProdutoController.entity.validade}"
+				<h:outputText value="#{summaryProdutoController.entity.validade}"
 					styleClass="outputLabel">
 					<f:convertDateTime type="localDate" pattern="dd/MM/yyyy" />
 				</h:outputText>
@@ -64,7 +64,7 @@
 
 			<div class="p-field p-col-12 p-md-4">
 				<p:outputLabel value="Lote: " />
-				<h:outputText value="#{cadastroProdutoController.entity.lote}"
+				<h:outputText value="#{summaryProdutoController.entity.lote}"
 					styleClass="outputLabel" />
 			</div>
 		</div>

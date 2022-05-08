@@ -7,6 +7,7 @@ import com.gtbr.exception.ViaCepException;
 import com.gtbr.exception.ViaCepFormatException;
 
 import br.unitins.unimacy.application.ApiCep;
+import br.unitins.unimacy.application.Session;
 import br.unitins.unimacy.application.Util;
 import br.unitins.unimacy.exception.RepositoryException;
 import br.unitins.unimacy.model.Cidade;
@@ -24,6 +25,8 @@ public class CadastroPessoaFisicaController extends Controller<PessoaFisica> {
 
 	public CadastroPessoaFisicaController() {
 		super(new PessoaFisicaRepository());
+		entity = (PessoaFisica) Session.getInstance().get("pessoafisica-crud");
+		Session.getInstance().set("pessoafisica-crud", null);
 	}
 
 	@Override
@@ -68,7 +71,13 @@ public class CadastroPessoaFisicaController extends Controller<PessoaFisica> {
 	}
 
 	public void verificarCpf() {
-		PessoaFisica pessoa = ((PessoaFisicaRepository) getRepository()).findByCpf(entity.getCpf()); 
+		PessoaFisica pessoa = null;
+		try {
+			pessoa = ((PessoaFisicaRepository) getRepository()).findByCpf(entity.getCpf());
+		} catch (RepositoryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
 
 		if (pessoa != null) {
 			Util.addErrorMessage("Já existe um registro cadastrado com esse CPF");
@@ -77,5 +86,9 @@ public class CadastroPessoaFisicaController extends Controller<PessoaFisica> {
 	
 	public void telaGerenciaPessoaFisica() {
 		Util.redirect("gerencia-pessoafisica.xhtml");
+	}
+	
+	public void enviarObjetoParaSummary() {
+		Session.getInstance().set("pessoafisica", entity);
 	}
 }
