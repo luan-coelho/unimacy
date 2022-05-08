@@ -36,7 +36,7 @@ public class Repository<T extends DefaultEntity> {
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
-			throw new VersionException("As informações estão antigas, dê um refresh.");			
+			throw new VersionException("As informações estão desatualizadas, atualize a página");			
 		} catch (Exception e) {
 			System.out.println("Problema ao executar o save.");
 			e.printStackTrace();

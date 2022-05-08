@@ -13,25 +13,25 @@
 			<div class="p-field p-col-12 p-md-6">
 				<p:outputLabel value="Nome Completo: " />
 				<h:outputText
-					value="#{clientePfController.entity.pessoa.nome.trim()} #{clientePfController.entity.pessoa.sobreNome.trim()}"
+					value="#{cadastroPessoaFisicaController.entity.nome.trim()} #{cadastroPessoaFisicaController.entity.sobreNome.trim()}"
 					styleClass="outputLabel" />
 			</div>
 
 			<div class="p-field p-col-12 p-md-6">
 				<p:outputLabel value="CPF: " />
-				<h:outputText value="#{clientePfController.entity.pessoa.cpf}"
+				<h:outputText value="#{cadastroPessoaFisicaController.entity.cpf}"
 					styleClass="outputLabel" />
 			</div>
 
 			<div class="p-field p-col-12 p-md-6">
 				<p:outputLabel value="Sexo: " />
-				<h:outputText value="#{clientePfController.entity.pessoa.sexo.label}"
+				<h:outputText value="#{cadastroPessoaFisicaController.entity.sexo.label}"
 					styleClass="outputLabel" />
 			</div>
 			<div class="p-field p-col-12 p-md-6">
 				<h:outputLabel value="Data de Nascimento: " />
 				<h:outputText
-					value="#{clientePfController.entity.pessoa.dataNascimento}"
+					value="#{cadastroPessoaFisicaController.entity.dataNascimento}"
 					styleClass="outputLabel">
 					<f:convertDateTime type="localDate" pattern="dd/MM/yyyy" />
 				</h:outputText>
@@ -39,13 +39,13 @@
 
 			<div class="p-field p-col-12 p-md-6">
 				<p:outputLabel value="Email: " />
-				<h:outputText value="#{clientePfController.entity.pessoa.email}"
+				<h:outputText value="#{cadastroPessoaFisicaController.entity.email}"
 					styleClass="outputLabel" />
 			</div>
 
 			<div class="p-field p-col-12 p-md-6">
 				<p:outputLabel value="Telefone: " />
-				<h:outputText value="#{clientePfController.entity.pessoa.telefone}"
+				<h:outputText value="#{cadastroPessoaFisicaController.entity.telefone}"
 					styleClass="outputLabel" />
 			</div>
 
@@ -55,28 +55,28 @@
 
 			<div class="p-field p-col-12 p-md-3">
 				<p:outputLabel value="CEP: " />
-				<h:outputText value="#{clientePfController.entity.pessoa.endereco.cep}"
+				<h:outputText value="#{cadastroPessoaFisicaController.entity.endereco.cep}"
 					styleClass="outputLabel" />
 			</div>
 			<div class="p-field p-col-12 p-md-6">
 				<p:outputLabel value="Rua: " />
-				<h:outputText value="#{clientePfController.entity.pessoa.endereco.rua}"
+				<h:outputText value="#{cadastroPessoaFisicaController.entity.endereco.rua}"
 					styleClass="outputLabel" />
 			</div>
 			<div class="p-field p-col-12 p-md-2">
 				<p:outputLabel value="Número: " />
-				<h:outputText value="#{clientePfController.entity.pessoa.endereco.numero}"
+				<h:outputText value="#{cadastroPessoaFisicaController.entity.endereco.numero}"
 					styleClass="outputLabel" />
 			</div>
 			<div class="p-field p-col-12 p-md-4">
 				<p:outputLabel value="Bairro: " />
-				<h:outputText value="#{clientePfController.entity.pessoa.endereco.bairro}"
+				<h:outputText value="#{cadastroPessoaFisicaController.entity.endereco.bairro}"
 					styleClass="outputLabel" />
 			</div>
 			<div class="p-field p-col-12 p-md-6">
 				<p:outputLabel value="Cidade: " />
 				<h:outputText
-					value="#{clientePfController.entity.pessoa.endereco.cidade.nome}-#{clientePfController.entity.pessoa.endereco.cidade.estado.nome}"
+					value="#{cadastroPessoaFisicaController.entity.endereco.cidade.nome}-#{cadastroPessoaFisicaController.entity.endereco.cidade.estado.nome}"
 					styleClass="outputLabel" />
 			</div>
 		</div>

@@ -11,9 +11,7 @@
 <ui:composition template="template.xhtml">
 
 	<ui:define name="head">
-		<h:outputStylesheet library="webjars"
-			name="primeflex/2.0.0/primeflex.min.css" />
-		<h:outputStylesheet library="css" name="crud.css" />
+		<title>Gerência de Pessoa Jurídica</title>
 	</ui:define>
 
 	<ui:define name="conteudo">
@@ -21,7 +19,7 @@
 		<p:growl id="growl" />
 
 		<div class="p-d-flex p-jc-center">
-			<p:dataTable id="dataTable" var="cliente" style="width: 80%;"
+			<p:dataTable id="dataTable" var="pessoa" style="width: 80%;"
 				value="#{pessoaJuridicaController.listaPessoaJuridica}"
 				paginator="true" rows="10"
 				styleClass="products-table p-mt-5 p-mb-5 shadow-2xl shadow-gray-700 rounded-lg p-5 w-9/12 m-0"
@@ -33,7 +31,7 @@
 
 						<p:toolbar>
 							<p:toolbarGroup align="center">
-								<h2 class="p-mb-2">Pessoa Jurídica</h2>
+								<h2 class="p-mb-2">Gerência de Pessoa Jurídica</h2>
 
 								<p:linkButton value="Cadastrar" icon="pi pi-plus"
 									styleClass="ui-button-success" href="pessoajuridica.xhtml" />
@@ -42,17 +40,17 @@
 					</div>
 				</f:facet>
 
-				<p:column sortBy="#{pessoa.nomeFantasia}" headerText="Nome Fantasia">
+				<p:column headerText="Nome Fantasia">
 					<h:outputText value="#{pessoa.nomeFantasia.trim()}" />
 				</p:column>
 
-				<p:column sortBy="#{pessoa.cnpj}" headerText="CNPJ">
+				<p:column headerText="CNPJ">
 					<h:outputText value="#{pessoa.cnpj}" />
 				</p:column>
 
-				<p:column sortBy="#{pessoa.ativo}" headerText="Ativo">
+				<p:column headerText="Ativo">
 					<p:toggleSwitch value="#{pessoa.ativo}">
-						<p:ajax listener="#{pessoaJuridicaController.alterar(cliente)}"
+						<p:ajax listener="#{pessoaJuridicaController.alterar(pessoa)}"
 							process="@this" update="@form:dataTable" />
 					</p:toggleSwitch>
 				</p:column>
@@ -60,21 +58,21 @@
 				<p:column>
 					<p:commandButton icon="pi pi-search"
 						styleClass="edit-button rounded-button ui-button-help p-mr-1"
-						onclick="PF('resumo-cliente').show()">
+						onclick="PF('resumo-pessoa').show()">
 						<p:ajax process="@this" update="@form:confirmar"
-							listener="#{pessoaJuridicaController.selecionarItem(cliente)}" />
+							listener="#{pessoaJuridicaController.selecionarItem(pessoa)}" />
 					</p:commandButton>
 					<p:commandButton icon="pi pi-pencil"
 						styleClass="edit-button rounded-button ui-button-info p-mr-1">
 						<p:ajax process="@this"
-							listener="#{pessoaJuridicaController.selecionarItem(cliente)}" />
+							listener="#{pessoaJuridicaController.selecionarItem(pessoa)}" />
 					</p:commandButton>
 					<p:commandButton class="ui-button-danger rounded-button"
 						icon="pi pi-trash"
-						action="#{pessoaJuridicaController.excluir(cliente)}"
+						action="#{pessoaJuridicaController.excluir(pessoa)}"
 						process="@this" update="@form:dataTable">
 						<p:confirm header="Você tem certeza?"
-							message="O registro deste cliente será excluído definitivamente"
+							message="O registro deste pessoa será excluído definitivamente"
 							icon="pi pi-exclamation-triangle" />
 					</p:commandButton>
 				</p:column>
@@ -90,8 +88,8 @@
 					styleClass="ui-confirmdialog-yes ui-button-flat" />
 			</p:confirmDialog>
 
-			<p:dialog id="cliente-info-resumo" widgetVar="resumo-cliente"
-				modal="true" draggable="false" header="Informações do Cliente"
+			<p:dialog id="pessoa-info-resumo" widgetVar="resumo-pessoa"
+				modal="true" draggable="false" header="Informações básicas"
 				showEffect="fade" minHeight="40" width="750">
 				<h:panelGroup id="confirmar">
 					<components:SummaryPessoaJuridica />

@@ -63,11 +63,6 @@ public class PessoaJuridicaController extends Controller<PessoaJuridica> {
 		listaPessoaJuridica = null;
 	}
 
-	public void excluir(PessoaJuridica PessoaJuridica) {
-		entity = PessoaJuridica;
-		super.excluir();
-	}
-
 	public void onItemSelect() {
 		String nomeEstado = entity.getEndereco().getCidade().getEstado().getNome();
 		Session.getInstance().set("nome-estado", nomeEstado);

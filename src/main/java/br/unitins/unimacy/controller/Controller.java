@@ -8,19 +8,19 @@ import br.unitins.unimacy.exception.VersionException;
 import br.unitins.unimacy.model.DefaultEntity;
 import br.unitins.unimacy.repository.Repository;
 
-public abstract class Controller <T extends DefaultEntity> implements Serializable  {
+public abstract class Controller<T extends DefaultEntity> implements Serializable {
 
 	private static final long serialVersionUID = 3495567407787733123L;
-	
+
 	private Repository<T> repository;
 	protected T entity;
-	
+
 	public Controller(Repository<T> repository) {
 		super();
 		this.repository = repository;
 	}
 
-	//Incluir e Alterar
+	// Incluir e Alterar
 	public void salvar() {
 		try {
 			getRepository().save(getEntity());
@@ -39,7 +39,7 @@ public abstract class Controller <T extends DefaultEntity> implements Serializab
 		this.entity = obj;
 		salvar();
 	}
-	
+
 	public void excluir() {
 		try {
 			getRepository().remove(getEntity());
@@ -50,29 +50,32 @@ public abstract class Controller <T extends DefaultEntity> implements Serializab
 			Util.addErrorMessage(e.getMessage());
 		}
 	}
-	
+
 	public void excluir(T obj) {
 		entity = obj;
 		excluir();
 	}
-	
+
 	public void limpar() {
 		entity = null;
 	}
-	
+
 	public void selecionarItem(T obj) {
 		this.entity = obj;
 	}
-	
+
 	public void editarItem(T obj) {
 	}
-	
+
+	public void pesquisaPorFiltro() {
+	};
+
 	public Repository<T> getRepository() {
 		return repository;
 	}
-	
+
 	public abstract T getEntity();
-	
+
 	@SuppressWarnings("unchecked")
 	public void setEntity(Object obj) {
 		this.entity = (T) obj;

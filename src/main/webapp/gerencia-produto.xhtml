@@ -11,9 +11,7 @@
 <ui:composition template="template.xhtml">
 
 	<ui:define name="head">
-		<h:outputStylesheet library="webjars"
-			name="primeflex/2.0.0/primeflex.min.css" />
-		<h:outputStylesheet library="css" name="crud.css" />
+		<title>Gerência de Produto</title>
 	</ui:define>
 
 	<ui:define name="conteudo">
@@ -34,7 +32,7 @@
 							<p:toolbarGroup align="center">
 								<h2 class="p-mb-2">Gerência de Produtos</h2>
 
-								<p:linkButton value="Cadastrar Produto" icon="pi pi-plus"
+								<p:linkButton value="Cadastrar" icon="pi pi-plus"
 									styleClass="ui-button-success" href="produto.xhtml" />
 
 								<div class="ui-inputgroup mt-4">
@@ -43,13 +41,18 @@
 										placeholder="Pesquisar por..." />
 									<p:selectOneMenu id="filtro"
 										value="#{produtoController.filtro}">
-										<f:selectItems value="#{produtoController.filtroProduto}"
+										<f:selectItems value="#{produtoController.filtro}"
 											itemValue="#{filtro}" />
 									</p:selectOneMenu>
 									<p:commandButton icon="pi pi-search"
 										styleClass="ui-button-warning"
-										actionListener="#{produtoController.pesquisar}"
+										actionListener="#{produtoController.pesquisaPorFiltro}"
 										process="pesquisa filtro @this" update="@form">
+									</p:commandButton>
+									<p:commandButton icon="pi pi-refresh"
+										styleClass="ui-button-success p-ml-1"
+										actionListener="#{produtoController.limpar}"
+										process="@this" update="@form">
 									</p:commandButton>
 								</div>
 							</p:toolbarGroup>

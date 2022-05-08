@@ -19,7 +19,7 @@ public abstract class Pessoa extends DefaultEntity {
 
 	@OneToOne(cascade = CascadeType.ALL)
 	private Endereco endereco;
-	
+
 	private boolean ativo = true;
 
 	public Pessoa() {
@@ -29,7 +29,7 @@ public abstract class Pessoa extends DefaultEntity {
 	public Pessoa(Endereco endereco) {
 		this.endereco = endereco;
 	}
-	
+
 	public Pessoa(boolean ativo) {
 		this.ativo = ativo;
 	}
@@ -61,7 +61,7 @@ public abstract class Pessoa extends DefaultEntity {
 	public boolean isAtivo() {
 		return ativo;
 	}
-	
+
 	public void setAtivo(boolean ativo) {
 		this.ativo = ativo;
 	}

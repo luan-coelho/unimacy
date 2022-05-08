@@ -11,9 +11,7 @@
 <ui:composition template="template.xhtml">
 
 	<ui:define name="head">
-		<h:outputStylesheet library="webjars"
-			name="primeflex/2.0.0/primeflex.min.css" />
-		<h:outputStylesheet library="css" name="crud.css" />
+		<title>Novo/Editar Pessoa Jurídica</title>
 	</ui:define>
 
 	<ui:define name="conteudo">
@@ -23,6 +21,11 @@
 		<div
 			class="p-d-flex p-flex-column p-m-5 shadow-2xl shadow-gray-700 rounded-lg w-9/12">
 
+			<p:commandButton value="Voltar para a Gerência de Pessoa Jurídica"
+				icon="pi pi-box" styleClass="ui-button-success p-mb-4"
+				actionListener="#{cadastroPessoaJuridicaController.telaGerenciaPessoaJuridica}"
+				process="@this" />
+
 			<p:panel id="pessoa" header="Informações Básicas">
 				<p:wizard nextLabel="Prosseguir" backLabel="Voltar" widgetVar="wiz">
 					<p:tab id="tab0" title="Dados Pessoais">
@@ -31,7 +34,7 @@
 							<div class="p-field p-col-12 p-md-4">
 								<p:outputLabel value="CNPJ" />
 								<p:inputMask
-									value="#{cadastroPessoaJuridicaController.entity.pessoa.cnpj}"
+									value="#{cadastroPessoaJuridicaController.entity.cnpj}"
 									mask="99.999.999/9999-99" id="cnpj" maxlength="18">
 									<p:ajax event="blur"
 										listener="#{cadastroPessoaJuridicaController.verificarCnpj}"
@@ -42,102 +45,103 @@
 							<div class="p-field p-col-12 p-md-5">
 								<p:outputLabel for="nome-fantasia" value="Nome Fantasia" />
 								<p:inputText id="nome-fantasia" type="text"
-									value="#{cadastroPessoaJuridicaController.entity.pessoa.nomeFantasia}" />
+									value="#{cadastroPessoaJuridicaController.entity.nomeFantasia}" />
 							</div>
 							<div class="p-field p-col-12 p-md-7">
 								<p:outputLabel for="razao-social" value="Razão Social" />
 								<p:inputText id="razao-social" type="text"
-									value="#{cadastroPessoaJuridicaController.entity.pessoa.razaoSocial}" />
+									value="#{cadastroPessoaJuridicaController.entity.razaoSocial}" />
 							</div>
 
 							<div class="p-field p-col-12 p-md-6">
 								<p:outputLabel for="email" value="Email" />
 								<p:inputText
-									value="#{cadastroPessoaJuridicaController.entity.pessoa.email}"
+									value="#{cadastroPessoaJuridicaController.entity.email}"
 									placeholder="exemplo@email.com" id="email" type="email" />
 							</div>
 
 							<div class="p-field p-col-12 p-md-3">
 								<p:outputLabel for="phone" value="Telefone" />
 								<p:inputMask mask="(99) 99999-9999" id="phone" maxlength="15"
-									value="#{cadastroPessoaJuridicaController.entity.pessoa.telefone}" />
+									value="#{cadastroPessoaJuridicaController.entity.telefone}" />
 							</div>
 						</div>
-			</p:tab>
-			<p:tab title="Endereço">
-				<p:panel id="endereco" header="Informe os dados do Endereço">
-					<div class="ui-fluid p-formgrid p-grid">
+					</p:tab>
+					<p:tab title="Endereço">
+						<p:panel id="endereco" header="Informe os dados do Endereço">
+							<div class="ui-fluid p-formgrid p-grid">
 
-						<div class="p-field p-col-12 p-md-2">
-							<p:outputLabel value="CEP " />
-							<p:inputMask mask="99999-999" id="cep" maxlength="9"
-								value="#{cadastroPessoaJuridicaController.entity.pessoa.endereco.cep}">
-								<p:ajax listener="#{cadastroPessoaJuridicaController.buscarCep}"
-									event="blur" process="@this @form:cep"
-									update="@form:endereco @form:growl" />
-							</p:inputMask>
+								<div class="p-field p-col-12 p-md-2">
+									<p:outputLabel value="CEP " />
+									<p:inputMask mask="99999-999" id="cep" maxlength="9"
+										value="#{cadastroPessoaJuridicaController.entity.endereco.cep}">
+										<p:ajax
+											listener="#{cadastroPessoaJuridicaController.buscarCep}"
+											event="blur" process="@this @form:cep"
+											update="@form:endereco @form:growl" />
+									</p:inputMask>
+								</div>
+
+								<div class="p-field p-col-12 p-md-6">
+									<p:outputLabel value="Rua" />
+									<p:inputText id="rua"
+										value="#{cadastroPessoaJuridicaController.entity.endereco.rua}" />
+								</div>
+
+								<div class="p-field p-col-12 p-md-2">
+									<p:outputLabel value="Número" />
+									<p:inputText id="numero"
+										value="#{cadastroPessoaJuridicaController.entity.endereco.numero}" />
+								</div>
+
+								<div class="p-field p-col-12 p-md-3">
+									<p:outputLabel value="Bairro" />
+									<p:inputText id="bairro"
+										value="#{cadastroPessoaJuridicaController.entity.endereco.bairro}" />
+								</div>
+
+								<div class="p-field p-col-12 p-md-5">
+									<p:outputLabel value="Complemento" />
+									<p:inputText id="complemento"
+										value="#{cadastroPessoaJuridicaController.entity.endereco.complemento}" />
+								</div>
+
+								<div class="p-field p-col-12 p-md-5">
+									<p:outputLabel value="Estado" />
+									<p:autoComplete id="estado"
+										value="#{cadastroPessoaJuridicaController.entity.endereco.cidade.estado.nome}"
+										completeMethod="#{estadoUtil.completeText}" scrollHeight="250"
+										placeholder="Digite o Estado" forceSelection="true">
+
+										<p:ajax event="itemSelect"
+											listener="#{cadastroPessoaJuridicaController.onItemSelect}"
+											process="@form:endereco" update="@form:endereco" />
+									</p:autoComplete>
+								</div>
+
+								<div class="p-field p-col-12 p-md-4">
+									<p:outputLabel value="Cidade " />
+									<p:autoComplete id="cidade"
+										value="#{cadastroPessoaJuridicaController.entity.endereco.cidade.nome}"
+										completeMethod="#{cidadeUtil.completeText}" scrollHeight="250"
+										placeholder="Digite a Cidade"
+										disabled="#{cadastroPessoaJuridicaController.entity.endereco.cidade.estado.nome == null}" />
+								</div>
+							</div>
+						</p:panel>
+					</p:tab>
+					<p:tab title="Confirmar Dados">
+						<components:SummaryPessoaJuridica />
+						<div class="p-d-flex p-jc-md-end p-mt-2">
+							<p:commandButton value="Salvar" icon="pi pi-save"
+								styleClass="ui-button-success"
+								action="#{cadastroPessoaJuridicaController.salvar}"
+								update="@form" process="@this"
+								oncomplete="PF('wiz').loadStep('tab0', false)" />
 						</div>
+					</p:tab>
 
-						<div class="p-field p-col-12 p-md-6">
-							<p:outputLabel value="Rua" />
-							<p:inputText id="rua"
-								value="#{cadastroPessoaJuridicaController.entity.pessoa.endereco.rua}" />
-						</div>
-
-						<div class="p-field p-col-12 p-md-2">
-							<p:outputLabel value="Número" />
-							<p:inputText id="numero"
-								value="#{cadastroPessoaJuridicaController.entity.pessoa.endereco.numero}" />
-						</div>
-
-						<div class="p-field p-col-12 p-md-3">
-							<p:outputLabel value="Bairro" />
-							<p:inputText id="bairro"
-								value="#{cadastroPessoaJuridicaController.entity.pessoa.endereco.bairro}" />
-						</div>
-
-						<div class="p-field p-col-12 p-md-5">
-							<p:outputLabel value="Complemento" />
-							<p:inputText id="complemento"
-								value="#{cadastroPessoaJuridicaController.entity.pessoa.endereco.complemento}" />
-						</div>
-
-						<div class="p-field p-col-12 p-md-5">
-							<p:outputLabel value="Estado" />
-							<p:autoComplete id="estado"
-								value="#{cadastroPessoaJuridicaController.entity.pessoa.endereco.cidade.estado.nome}"
-								completeMethod="#{estadoUtil.completeText}" scrollHeight="250"
-								placeholder="Digite o Estado" forceSelection="true">
-
-								<p:ajax event="itemSelect"
-									listener="#{cadastroPessoaJuridicaController.onItemSelect}"
-									process="@form:endereco" update="@form:endereco" />
-							</p:autoComplete>
-						</div>
-
-						<div class="p-field p-col-12 p-md-4">
-							<p:outputLabel value="Cidade " />
-							<p:autoComplete id="cidade"
-								value="#{cadastroPessoaJuridicaController.entity.pessoa.endereco.cidade.nome}"
-								completeMethod="#{cidadeUtil.completeText}" scrollHeight="250"
-								placeholder="Digite a Cidade"
-								disabled="#{cadastroPessoaJuridicaController.entity.pessoa.endereco.cidade.estado.nome == null}" />
-						</div>
-					</div>
-				</p:panel>
-			</p:tab>
-			<p:tab title="Confirmar Dados">
-				<components:SummaryPessoaJuridica />
-				<div class="p-d-flex p-jc-md-end p-mt-2">
-					<p:commandButton value="Salvar" icon="pi pi-save"
-						styleClass="ui-button-success"
-						action="#{cadastroPessoaJuridicaController.salvar}"
-						update="@form" process="@this"
-						oncomplete="PF('wiz').loadStep('tab0', false)" />
-				</div>
-			</p:tab>
-
-			</p:wizard>
+				</p:wizard>
 			</p:panel>
 		</div>
 

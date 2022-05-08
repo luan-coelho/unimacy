@@ -18,12 +18,12 @@ import br.unitins.unimacy.repository.ProdutoRepository;
 @ViewScoped
 public class CadastroProdutoController extends Controller<Produto> {
 
-	private static final long serialVersionUID = -2042049091495562859L;
+	private static final long serialVersionUID = -7142430473023627800L;
 
 	public CadastroProdutoController() {
 		super(new ProdutoRepository());
 		entity = (Produto) Session.getInstance().get("produto-crud");
-		Session.getInstance().invalidateSession();
+		Session.getInstance().set("produto-crud", null);
 	}
 
 	@Override
@@ -57,5 +57,9 @@ public class CadastroProdutoController extends Controller<Produto> {
 
 	public void obterFornecedorListing(SelectEvent<Fornecedor> event) {
 		getEntity().setFornecedor(event.getObject());
+	}
+	
+	public void telaGerenciaProduto() {
+		Util.redirect("gerencia-produto.xhtml");
 	}
 }

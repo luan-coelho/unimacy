@@ -74,4 +74,8 @@ public class CadastroPessoaFisicaController extends Controller<PessoaFisica> {
 			Util.addErrorMessage("Já existe um registro cadastrado com esse CPF");
 		}
 	}
+	
+	public void telaGerenciaPessoaFisica() {
+		Util.redirect("gerencia-pessoafisica.xhtml");
+	}
 }

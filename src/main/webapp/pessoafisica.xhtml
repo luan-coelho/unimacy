@@ -11,9 +11,7 @@
 <ui:composition template="template.xhtml">
 
 	<ui:define name="head">
-		<h:outputStylesheet library="webjars"
-			name="primeflex/2.0.0/primeflex.min.css" />
-		<h:outputStylesheet library="css" name="crud.css" />
+		<title>Novo/Editar Pessoa Física</title>
 	</ui:define>
 
 	<ui:define name="conteudo">
@@ -22,6 +20,10 @@
 
 		<div
 			class="p-d-flex p-flex-column p-m-5 shadow-2xl shadow-gray-700 rounded-lg w-9/12">
+
+			<p:commandButton value="Voltar para a Gerência de Pessoa Física"
+				icon="pi pi-box" styleClass="ui-button-success p-mb-4"
+				actionListener="#{cadastroPessoaFisicaController.telaGerenciaPessoaFisica}" process="@this"/>
 
 			<p:panel id="pessoa" header="Informações Pessoais">
 				<p:wizard nextLabel="Prosseguir" backLabel="Voltar" widgetVar="wiz">
@@ -47,7 +49,7 @@
 									placeholder="xxx.xxx.xxx-xx">
 									<p:ajax event="blur"
 										listener="#{cadastroPessoaFisicaController.verificarCpf}"
-										process="@this" update="@form:pessoa form:growl" />
+										process="@this" update="@this form:growl" />
 								</p:inputMask>
 							</div>
 
@@ -151,7 +153,7 @@
 						<div class="p-d-flex p-jc-md-end p-mt-2">
 							<p:commandButton value="Salvar" icon="pi pi-save"
 								styleClass="ui-button-success"
-								action="#{cadastroPessoaFisicaController.incluir}"
+								action="#{cadastroPessoaFisicaController.salvar}"
 								update="@form" process="@this @form:pessoa"
 								oncomplete="PF('wiz').loadStep('tab0', false)" />
 						</div>

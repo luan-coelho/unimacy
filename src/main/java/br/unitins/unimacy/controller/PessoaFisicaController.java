@@ -13,6 +13,7 @@ import br.unitins.unimacy.model.Endereco;
 import br.unitins.unimacy.model.Estado;
 import br.unitins.unimacy.model.PessoaFisica;
 import br.unitins.unimacy.model.Sexo;
+import br.unitins.unimacy.model.filtro.FiltroPessoaFisica;
 import br.unitins.unimacy.repository.PessoaFisicaRepository;
 
 @Named
@@ -22,6 +23,9 @@ public class PessoaFisicaController extends Controller<PessoaFisica> {
 	private static final long serialVersionUID = 962841755986708363L;
 	
 	private List<PessoaFisica> listaPessoaFisica;
+	
+	private String pesquisa;
+	private FiltroPessoaFisica filtro = FiltroPessoaFisica.NOME;
 
 	public PessoaFisicaController() {
 		super(new PessoaFisicaRepository());
@@ -39,6 +43,26 @@ public class PessoaFisicaController extends Controller<PessoaFisica> {
 
 	public Sexo[] getListaSexo() {
 		return Sexo.values();
+	}
+	
+	public String getPesquisa() {
+		return pesquisa;
+	}
+	
+	public void setPesquisa(String pesquisa) {
+		this.pesquisa = pesquisa;
+	}
+	
+	public FiltroPessoaFisica getFiltro() {
+		return filtro;
+	}
+	
+	public void setFiltro(FiltroPessoaFisica filtro) {
+		this.filtro = filtro;
+	}
+	
+	public FiltroPessoaFisica[] getFiltroPessoaFisica() {
+		return FiltroPessoaFisica.values();
 	}
 
 	public List<PessoaFisica> getListaPessoaFisica() {
@@ -63,11 +87,6 @@ public class PessoaFisicaController extends Controller<PessoaFisica> {
 		listaPessoaFisica = null;
 	}
 
-	public void excluir(PessoaFisica PessoaFisica) {
-		entity = PessoaFisica;
-		super.excluir();
-	}
-
 	public void onItemSelect() {
 		String nomeEstado = entity.getEndereco().getCidade().getEstado().getNome();
 		Session.getInstance().set("nome-estado", nomeEstado);
@@ -79,5 +98,9 @@ public class PessoaFisicaController extends Controller<PessoaFisica> {
 		} catch (RepositoryException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void pesquisaPorFiltro() {
+		
 	}
 }

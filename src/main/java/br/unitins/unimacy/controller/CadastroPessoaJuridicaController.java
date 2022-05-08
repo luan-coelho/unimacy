@@ -60,4 +60,8 @@ public class CadastroPessoaJuridicaController extends Controller<PessoaJuridica>
 			Util.addErrorMessage("Já existe um registro cadastrado com esse CNPJ");
 		}
 	}
+	
+	public void telaGerenciaPessoaJuridica() {
+		Util.redirect("gerencia-pessoajuridica.xhtml");
+	}
 }

@@ -3,8 +3,6 @@ package br.unitins.unimacy.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
-import org.hibernate.validator.constraints.br.CNPJ;
-
 @Entity
 public class PessoaJuridica extends Pessoa {
 

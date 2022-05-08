@@ -19,7 +19,7 @@ import br.unitins.unimacy.repository.ProdutoRepository;
 @ViewScoped
 public class ProdutoController extends Controller<Produto> {
 
-	private static final long serialVersionUID = -1330527356831135672L;
+	private static final long serialVersionUID = 4222738104211385697L;
 
 	private List<Produto> listaProduto;
 
@@ -87,7 +87,8 @@ public class ProdutoController extends Controller<Produto> {
 		super.excluir();
 	}
 
-	public void pesquisar() {
+	@Override
+	public void pesquisaPorFiltro() {
 		List<Produto> listaProdutoAux = null;
 
 		ProdutoRepository repo = (ProdutoRepository) getRepository();
@@ -129,8 +130,8 @@ public class ProdutoController extends Controller<Produto> {
 			break;
 		}
 
-		if (listaProdutoAux == null) {
-			Util.addInfoMessage("Nenhum produto encontrado");
+		if (listaProdutoAux.isEmpty()) {
+			Util.addWarnMessage("Nenhum produto encontrado");
 			return;
 		}
 		listaProduto = listaProdutoAux;

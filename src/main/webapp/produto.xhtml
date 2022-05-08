@@ -11,8 +11,7 @@
 <ui:composition template="template.xhtml">
 
 	<ui:define name="head">
-		<h:outputStylesheet library="webjars"
-			name="primeflex/2.0.0/primeflex.min.css" />
+		<title>Novo/Editar Produto</title>
 	</ui:define>
 
 	<ui:define name="conteudo">
@@ -23,9 +22,9 @@
 			class="p-d-flex p-flex-column p-m-5 shadow-2xl shadow-gray-700 rounded-lg w-9/12">
 
 
-			<p:commandButton value="Voltar para todos os produtos"
+			<p:commandButton value="Voltar para todos os Produtos"
 				icon="pi pi-box" styleClass="ui-button-success p-mb-4"
-				onclick="history.go(-1)" />
+				actionListener="#{cadastroProdutoController.telaGerenciaProduto}" process="@this"/>
 
 
 			<p:panel id="produto" header="Informações do Produto">
