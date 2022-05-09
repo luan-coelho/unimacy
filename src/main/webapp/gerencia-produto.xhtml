@@ -97,7 +97,7 @@
 					</p:commandButton>
 					<p:commandButton class="ui-button-danger rounded-button"
 						icon="pi pi-trash" action="#{produtoController.excluir(produto)}"
-						process="@this" update="@form:dataTable">
+						process="@this" update="@form">
 						<p:confirm header="Você tem certeza?"
 							message="O registro deste produto será excluído definitivamente"
 							icon="pi pi-exclamation-triangle" />

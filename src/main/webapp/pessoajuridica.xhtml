@@ -27,7 +27,8 @@
 				process="@this" />
 
 			<p:panel id="pessoa" header="Informações Básicas">
-				<p:wizard nextLabel="Prosseguir" backLabel="Voltar" widgetVar="wiz">
+				<p:wizard nextLabel="Prosseguir" backLabel="Voltar" widgetVar="wiz"
+					onback="buttonClickBack()" onnext="buttonClickNext();">
 					<p:tab id="tab0" title="Dados Pessoais">
 
 						<div class="ui-fluid p-formgrid p-grid">
@@ -128,6 +129,10 @@
 										disabled="#{cadastroPessoaJuridicaController.entity.endereco.cidade.estado.nome == null}" />
 								</div>
 							</div>
+
+							<p:commandButton id="summary"
+								actionListener="#{cadastroPessoaJuridicaController.enviarObjetoParaSummary}"
+								style="display: none;" />
 						</p:panel>
 					</p:tab>
 					<p:tab title="Confirmar Dados">
@@ -145,8 +150,16 @@
 			</p:panel>
 
 			<script>
-				function buttonClick() {
-					length = document.getElementById('form:summary').click();
+				var cont = 0;
+				function buttonClickNext() {
+					if (cont == 1) {
+						document.getElementById('form:summary').click();
+					}
+					cont++;
+				}
+
+				function buttonClickBack() {
+					cont--;
 				}
 			</script>
 		</div>

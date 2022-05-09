@@ -100,6 +100,7 @@ public class PessoaJuridicaController extends Controller<PessoaJuridica> {
 		}
 	}
 	
+	@Override
 	public void pesquisaPorFiltro() {
 		List<PessoaJuridica> listaPessoaAux = null;
 
@@ -154,6 +155,12 @@ public class PessoaJuridicaController extends Controller<PessoaJuridica> {
 	public void editarItem(PessoaJuridica obj) {
 		Session.getInstance().set("pessoajuridica-crud", obj);
 		Util.redirect("pessoajuridica.xhtml");
+	}
+	
+	@Override
+	public void selecionarItem(PessoaJuridica obj) {
+		Session.getInstance().set("pessoajuridica", obj);
+		super.selecionarItem(obj);
 	}
 
 }

@@ -28,7 +28,7 @@
 
 			<p:panel id="pessoa" header="Informações Pessoais">
 				<p:wizard nextLabel="Prosseguir" backLabel="Voltar" widgetVar="wiz"
-					onnext="buttonClick();">
+					onback="buttonClickBack()" onnext="buttonClickNext();">
 					<p:tab id="tab0" title="Dados Pessoais">
 
 
@@ -86,10 +86,6 @@
 									value="#{cadastroPessoaFisicaController.entity.telefone}" />
 							</div>
 						</div>
-
-						<p:commandButton id="summary"
-							actionListener="#{cadastroPessoaFisicaController.enviarObjetoParaSummary}"
-							style="display: none;" />
 					</p:tab>
 					<p:tab title="Endereço">
 						<p:panel id="endereco" header="Informe os dados do Endereço">
@@ -151,6 +147,10 @@
 										disabled="#{cadastroPessoaFisicaController.entity.endereco.cidade.estado.nome == null}" />
 								</div>
 							</div>
+
+							<p:commandButton id="summary"
+								actionListener="#{cadastroPessoaFisicaController.enviarObjetoParaSummary}"
+								style="display: none;" />
 						</p:panel>
 					</p:tab>
 					<p:tab title="Confirmar Dados">
@@ -166,13 +166,21 @@
 
 				</p:wizard>
 			</p:panel>
-
-			<script>
-				function buttonClick() {
-					length = document.getElementById('form:summary').click();
-				}
-			</script>
 		</div>
+
+		<script>
+			var cont = 0;
+			function buttonClickNext() {
+				if (cont == 1) {
+					document.getElementById('form:summary').click();
+				}
+				cont++;
+			}
+
+			function buttonClickBack() {
+				cont--;
+			}
+		</script>
 
 	</ui:define>
 </ui:composition>

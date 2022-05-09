@@ -67,4 +67,8 @@ public class CadastroPessoaJuridicaController extends Controller<PessoaJuridica>
 	public void telaGerenciaPessoaJuridica() {
 		Util.redirect("gerencia-pessoajuridica.xhtml");
 	}
+	
+	public void enviarObjetoParaSummary() {
+		Session.getInstance().set("pessoajuridica", entity);
+	}
 }

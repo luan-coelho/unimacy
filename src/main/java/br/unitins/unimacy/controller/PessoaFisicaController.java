@@ -147,4 +147,10 @@ public class PessoaFisicaController extends Controller<PessoaFisica> {
 		Session.getInstance().set("pessoafisica-crud", obj);
 		Util.redirect("pessoafisica.xhtml");
 	}
+	
+	@Override
+	public void selecionarItem(PessoaFisica obj) {
+		Session.getInstance().set("pessoafisica", obj);
+		super.selecionarItem(obj);
+	}
 }

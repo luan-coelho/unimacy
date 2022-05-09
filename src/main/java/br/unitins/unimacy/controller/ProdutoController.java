@@ -24,7 +24,7 @@ public class ProdutoController extends Controller<Produto> {
 	private List<Produto> listaProduto;
 
 	private String pesquisa;
-	private FiltroProduto filtro = FiltroProduto.NOME;
+	private FiltroProduto filtro;
 
 	public ProdutoController() {
 		super(new ProdutoRepository());
@@ -64,6 +64,9 @@ public class ProdutoController extends Controller<Produto> {
 	}
 
 	public FiltroProduto getFiltro() {
+		if(filtro == null) {
+			filtro = FiltroProduto.NOME;
+		}
 		return filtro;
 	}
 
