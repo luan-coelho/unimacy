@@ -19,7 +19,7 @@
 		<p:growl id="growl" />
 
 		<div class="p-d-flex p-jc-center">
-			<p:dataTable id="dataTable" var="pessoa" style="width: 80%;"
+			<p:dataTable id="dataTable" var="pessoa"
 				value="#{pessoaJuridicaController.listaPessoaJuridica}"
 				paginator="true" rows="10"
 				styleClass="products-table shadow-2xl shadow-gray-700 rounded-lg p-5 w-11/12 m-0 p-m-5"
@@ -29,13 +29,15 @@
 				<f:facet name="header">
 					<div class="products-table-header">
 
-						<p:toolbar>
-							<p:toolbarGroup align="center">
-								<h2 class="p-mb-2">Gerência de Pessoa Jurídica</h2>
+						<h2 class="p-mb-2">Gerência de Pessoa Jurídica</h2>
 
+						<p:toolbar>
+							<p:toolbarGroup align="left">
 								<p:linkButton value="Cadastrar" icon="pi pi-plus"
 									styleClass="ui-button-success" href="pessoajuridica.xhtml" />
+							</p:toolbarGroup>
 
+							<p:toolbarGroup align="right">
 								<div class="ui-inputgroup mt-4">
 									<p:inputText id="pesquisa"
 										value="#{pessoaJuridicaController.pesquisa}"

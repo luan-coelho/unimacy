@@ -42,11 +42,11 @@
 									value="#{cadastroProdutoController.entity.fornecedor}" />
 								<p:commandButton value="Selecionar"
 									actionListener="#{cadastroProdutoController.abrirFornecedorListing}"
-									process="@this" update="@form:produto"
+									process="@this"
 									styleClass="ui-button-warning link">
 									<p:ajax event="dialogReturn"
 										listener="#{cadastroProdutoController.obterFornecedorListing}"
-										update="@form:produto" />
+										update="nome-fornecedor" />
 								</p:commandButton>
 							</div>
 
@@ -157,18 +157,18 @@
 
 			<p:dialog header="Adicionar Categoria" widgetVar="cadastro-categoria"
 				width="550" draggable="false" showEffect="fade">
+
 				<p:panel id="cadastro-categoria">
-					<div class="ui-fluid p-formgrid p-grid">
-						<div class="ui-inputgroup p-mt-4">
-							<p:inputText id="nome-categoria" type="text"
-								placeholder="Digite o nome..."
-								value="#{categoriaController.entity.nome}" />
-							<p:commandButton value="Salvar" icon="pi pi-save"
-								styleClass="ui-button-success"
-								actionListener="#{categoriaController.salvar}"
-								process="@this @this:nome-categoria"
-								update="@form:categoria @form:growl @form:cadastro-categoria" />
-						</div>
+
+					<div class="ui-inputgroup p-mt-4">
+						<p:inputText id="nome-categoria" type="text"
+							placeholder="Digite o nome..."
+							value="#{categoriaController.entity.nome}" />
+						<p:commandButton value="Salvar" icon="pi pi-save"
+							styleClass="ui-button-success"
+							actionListener="#{categoriaController.salvar}"
+							process="@this @this:nome-categoria"
+							update="@form:categoria @form:growl @form:cadastro-categoria" />
 					</div>
 
 					<p:dataTable id="categoria-table" var="categoria"
@@ -190,6 +190,7 @@
 							</p:commandButton>
 						</p:column>
 					</p:dataTable>
+
 				</p:panel>
 			</p:dialog>
 		</div>

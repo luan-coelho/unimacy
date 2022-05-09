@@ -28,13 +28,17 @@
 				<f:facet name="header">
 					<div class="products-table-header">
 
+						<h2 class="p-mb-2">Gerência de Produtos</h2>
+
 						<p:toolbar>
-							<p:toolbarGroup align="center">
-								<h2 class="p-mb-2">Gerência de Produtos</h2>
+							<p:toolbarGroup align="left">
 
 								<p:linkButton value="Cadastrar" icon="pi pi-plus"
 									styleClass="ui-button-success" href="produto.xhtml" />
 
+							</p:toolbarGroup>
+
+							<p:toolbarGroup align="right">
 								<div class="ui-inputgroup mt-4">
 									<p:inputText id="pesquisa"
 										value="#{produtoController.pesquisa}"
@@ -56,6 +60,7 @@
 									</p:commandButton>
 								</div>
 							</p:toolbarGroup>
+
 						</p:toolbar>
 					</div>
 				</f:facet>
@@ -73,7 +78,7 @@
 				</p:column>
 
 				<p:column headerText="Categoria" sortBy="#{produto.categoria.nome}">
-					<h:outputText value="#{produto.categoria.nome}" />
+					<p:tag styleClass="p-mr-2" value="#{produto.categoria.nome}"></p:tag>
 				</p:column>
 
 				<p:column headerText="Lote" sortBy="#{produto.lote}">

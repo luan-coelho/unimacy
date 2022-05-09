@@ -19,7 +19,7 @@
 		<p:growl id="growl" />
 
 		<div class="p-d-flex p-jc-center">
-			<p:dataTable id="dataTable" var="pessoa" style="width: 80%;"
+			<p:dataTable id="dataTable" var="pessoa"
 				value="#{pessoaFisicaController.listaPessoaFisica}" paginator="true"
 				rows="10"
 				styleClass="products-table p-mt-5 p-mb-5 shadow-2xl shadow-gray-700 rounded-lg p-5 w-11/12 m-0"
@@ -29,13 +29,16 @@
 				<f:facet name="header">
 					<div class="products-table-header">
 
+						<h2 class="p-mb-2">Gerência de Pessoa Física</h2>
+
 						<p:toolbar>
-							<p:toolbarGroup align="center">
-								<h2 class="p-mb-2">Gerência de Pessoa Física</h2>
+							<p:toolbarGroup align="left">
 
 								<p:linkButton value="Cadastrar" icon="pi pi-plus"
 									styleClass="ui-button-success" href="pessoafisica.xhtml" />
+							</p:toolbarGroup>
 
+							<p:toolbarGroup align="right">
 								<div class="ui-inputgroup mt-4">
 									<p:inputText id="pesquisa"
 										value="#{pessoaFisicaController.pesquisa}"
@@ -95,7 +98,7 @@
 					</p:commandButton>
 					<p:commandButton icon="pi pi-pencil"
 						styleClass="edit-button rounded-button ui-button-info p-mr-1 p-mb-1"
-						action="#{pessoaFisicaController.editarItem(pessoa)}"/>
+						action="#{pessoaFisicaController.editarItem(pessoa)}" />
 					<p:commandButton class="ui-button-danger rounded-button"
 						icon="pi pi-trash"
 						action="#{pessoaFisicaController.excluir(pessoa)}" process="@this"
