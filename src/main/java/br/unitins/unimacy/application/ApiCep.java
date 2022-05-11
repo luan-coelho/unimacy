@@ -23,8 +23,8 @@ import br.unitins.unimacy.model.cep.EstadoAux;
 import br.unitins.unimacy.model.pessoa.endereco.Cidade;
 import br.unitins.unimacy.model.pessoa.endereco.Endereco;
 import br.unitins.unimacy.model.pessoa.endereco.Estado;
-import br.unitins.unimacy.repository.CidadeRepository;
-import br.unitins.unimacy.repository.EstadoRepository;
+import br.unitins.unimacy.repository.pessoa.endereco.CidadeRepository;
+import br.unitins.unimacy.repository.pessoa.endereco.EstadoRepository;
 
 public class ApiCep {
 

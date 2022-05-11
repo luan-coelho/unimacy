@@ -12,16 +12,77 @@
 
 	<ui:define name="head">
 		<title>Venda</title>
+		<h:outputStylesheet library="css" name="venda.css" />
 	</ui:define>
 
 	<ui:define name="conteudo">
 
 		<p:growl id="growl" />
 
-		<div
-			class="p-d-flex p-flex-column p-m-5 shadow-2xl shadow-gray-700 rounded-lg w-9/12">
+		<div class="p-d-flex p-jc-center p-mt-5">
 
-			
+			<p:panel
+				styleClass="shadow-2xl shadow-gray-700 rounded-lg p-5 w-12/12 m-0">
+
+				<p:steps>
+					<p:menuitem value="Selecionar Produtos" />
+					<p:menuitem value="Pagamento" />
+				</p:steps>
+
+				<div class="ui-inputgroup mt-10">
+					<p:inputText id="pesquisa" value="#{vendaController.pesquisa}"
+						placeholder="Pesquisar por..." />
+					<p:selectOneMenu id="filtro" value="#{vendaController.filtro}">
+						<f:selectItems value="#{vendaController.filtroProduto}"
+							itemValue="#{filtro}" />
+					</p:selectOneMenu>
+					<p:commandButton icon="pi pi-search" styleClass="ui-button-warning"
+						actionListener="#{vendaController.pesquisaPorFiltro}"
+						process="pesquisa filtro @this" update="@form:picklist">
+					</p:commandButton>
+					<p:commandButton icon="pi pi-refresh"
+						styleClass="ui-button-success p-ml-1"
+						actionListener="#{vendaController.limpar}" process="@this"
+						update="@form:picklist @form:growl">
+					</p:commandButton>
+				</div>
+
+				<p:pickList id="picklist" styleClass="p1"
+					value="#{vendaController.listaProdutoPickList}" var="lista"
+					itemLabel="#{lista.produto.nome}" itemValue="#{lista.produto}"
+					showCheckbox="true" converter="produtoConverter"
+					showSourceControls="false" showTargetControls="false"
+					effect="scale" labelDisplay="inline" addLabel="Adicionar"
+					addAllLabel="Adicionar Todos" removeLabel="Remover"
+					removeAllLabel="Remover Todos" transferOnDblclick="false">
+
+					<p:ajax event="transfer"
+						listener="#{vendaController.calcularValorTotal}" process="@this"
+						update="valortotal" />
+
+					<f:facet name="sourceCaption">Produtos Disponiveis</f:facet>
+					<f:facet name="targetCaption">Selecionados</f:facet>
+					
+					<p:column>
+						<div class="p-d-flex p-jc-between">
+							<h:outputText value="#{lista.produto.nome}" />
+							<div class="p-md-4">
+								<p:spinner buttons="horizontal-after"
+									upButtonStyleClass="ui-button-success"
+									downButtonStyleClass="ui-button-danger" stepFactor="1" />
+							</div>
+						</div>
+					</p:column>
+
+				</p:pickList>
+				
+				<p:repeat value="teste"></p:repeat>
+
+				<h:panelGroup id="valortotal">
+					<h2 class="text-5xl font-boldy">Valor Total
+						R$#{vendaController.valorTotal}</h2>
+				</h:panelGroup>
+			</p:panel>
 		</div>
 	</ui:define>
 </ui:composition>

@@ -1,4 +1,4 @@
-package br.unitins.unimacy.controller;
+package br.unitins.unimacy.controller.pessoa;
 
 import java.util.List;
 
@@ -7,34 +7,35 @@ import javax.inject.Named;
 
 import br.unitins.unimacy.application.Session;
 import br.unitins.unimacy.application.Util;
+import br.unitins.unimacy.controller.Controller;
 import br.unitins.unimacy.exception.RepositoryException;
-import br.unitins.unimacy.model.filtro.FiltroPessoaJuridica;
-import br.unitins.unimacy.model.pessoa.PessoaJuridica;
+import br.unitins.unimacy.model.filtro.FiltroPessoaFisica;
+import br.unitins.unimacy.model.pessoa.PessoaFisica;
 import br.unitins.unimacy.model.pessoa.Sexo;
 import br.unitins.unimacy.model.pessoa.endereco.Cidade;
 import br.unitins.unimacy.model.pessoa.endereco.Endereco;
 import br.unitins.unimacy.model.pessoa.endereco.Estado;
-import br.unitins.unimacy.repository.PessoaJuridicaRepository;
+import br.unitins.unimacy.repository.pessoa.PessoaFisicaRepository;
 
 @Named
 @ViewScoped
-public class PessoaJuridicaController extends Controller<PessoaJuridica> {
+public class PessoaFisicaController extends Controller<PessoaFisica> {
 
-	private static final long serialVersionUID = 4178893876749538318L;
+	private static final long serialVersionUID = 962841755986708363L;
 
-	private List<PessoaJuridica> listaPessoaJuridica;
+	private List<PessoaFisica> listaPessoaFisica;
 
 	private String pesquisa;
-	private FiltroPessoaJuridica filtro = FiltroPessoaJuridica.NOME;
+	private FiltroPessoaFisica filtro = FiltroPessoaFisica.NOME;
 
-	public PessoaJuridicaController() {
-		super(new PessoaJuridicaRepository());
+	public PessoaFisicaController() {
+		super(new PessoaFisicaRepository());
 	}
 
 	@Override
-	public PessoaJuridica getEntity() {
+	public PessoaFisica getEntity() {
 		if (entity == null) {
-			entity = new PessoaJuridica();
+			entity = new PessoaFisica();
 			entity.setEndereco(new Endereco(new Cidade(new Estado())));
 		}
 
@@ -53,38 +54,38 @@ public class PessoaJuridicaController extends Controller<PessoaJuridica> {
 		this.pesquisa = pesquisa;
 	}
 
-	public FiltroPessoaJuridica getFiltro() {
+	public FiltroPessoaFisica getFiltro() {
 		return filtro;
 	}
 
-	public void setFiltro(FiltroPessoaJuridica filtro) {
+	public void setFiltro(FiltroPessoaFisica filtro) {
 		this.filtro = filtro;
 	}
-	
-	public FiltroPessoaJuridica[] getFiltroPessoaJuridica() {
-		return FiltroPessoaJuridica.values();
+
+	public FiltroPessoaFisica[] getFiltroPessoaFisica() {
+		return FiltroPessoaFisica.values();
 	}
 
-	public List<PessoaJuridica> getListaPessoaJuridica() {
-		if (listaPessoaJuridica == null) {
+	public List<PessoaFisica> getListaPessoaFisica() {
+		if (listaPessoaFisica == null) {
 			try {
-				listaPessoaJuridica = getRepository().findAll();
+				listaPessoaFisica = getRepository().findAll();
 			} catch (RepositoryException e) {
 				Util.addErrorMessage("Falha ao buscar os dados no banco");
 				e.printStackTrace();
 			}
 		}
-		return listaPessoaJuridica;
+		return listaPessoaFisica;
 	}
 
-	public void setListaPessoaJuridica(List<PessoaJuridica> listaPessoaJuridica) {
-		this.listaPessoaJuridica = listaPessoaJuridica;
+	public void setListaPessoaFisica(List<PessoaFisica> listaPessoaFisica) {
+		this.listaPessoaFisica = listaPessoaFisica;
 	}
 
 	@Override
 	public void limpar() {
 		super.limpar();
-		listaPessoaJuridica = null;
+		listaPessoaFisica = null;
 	}
 
 	public void onItemSelect() {
@@ -92,32 +93,23 @@ public class PessoaJuridicaController extends Controller<PessoaJuridica> {
 		Session.getInstance().set("nome-estado", nomeEstado);
 	}
 
-	public void pesquisarPorNome(String nome) {
-		try {
-			getRepository().findByNome(nome);
-		} catch (RepositoryException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	@Override
 	public void pesquisaPorFiltro() {
-		List<PessoaJuridica> listaPessoaAux = null;
+		List<PessoaFisica> listaPessoaAux = null;
 
-		PessoaJuridicaRepository repo = (PessoaJuridicaRepository) getRepository();
+		PessoaFisicaRepository repo = (PessoaFisicaRepository) getRepository();
 		
 		switch (filtro) {
 		case NOME: {
 			try {
-				listaPessoaAux = repo.findAllByNome(pesquisa);
+				listaPessoaAux = repo.findByNome(pesquisa);
 			} catch (RepositoryException e) {
 				Util.addErrorMessage("Falha ao realizar consulta");
 				e.printStackTrace();
 			}
 			break;
-		}case CNPJ: {
+		}case CPF: {
 			try {
-				listaPessoaAux = (List<PessoaJuridica>) repo.findAllByCnpj(pesquisa);
+				listaPessoaAux = (List<PessoaFisica>) repo.findAllByCpf(pesquisa);
 			} catch (RepositoryException e) {
 				Util.addErrorMessage("Falha ao consultar CPF");
 				e.printStackTrace();
@@ -148,19 +140,18 @@ public class PessoaJuridicaController extends Controller<PessoaJuridica> {
 			Util.addWarnMessage("Nenhum produto encontrado");
 			return;
 		}
-		listaPessoaJuridica = listaPessoaAux;
+		listaPessoaFisica = listaPessoaAux;
 	}
 	
 	@Override
-	public void editarItem(PessoaJuridica obj) {
-		Session.getInstance().set("pessoajuridica-crud", obj);
-		Util.redirect("pessoajuridica.xhtml");
+	public void editarItem(PessoaFisica obj) {
+		Session.getInstance().set("pessoafisica-crud", obj);
+		Util.redirect("pessoafisica.xhtml");
 	}
 	
 	@Override
-	public void selecionarItem(PessoaJuridica obj) {
-		Session.getInstance().set("pessoajuridica", obj);
+	public void selecionarItem(PessoaFisica obj) {
+		Session.getInstance().set("pessoafisica", obj);
 		super.selecionarItem(obj);
 	}
-
 }

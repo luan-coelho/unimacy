@@ -1,12 +1,13 @@
-package br.unitins.unimacy.controller;
+package br.unitins.unimacy.controller.pessoa;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
 import br.unitins.unimacy.application.Util;
+import br.unitins.unimacy.controller.Controller;
 import br.unitins.unimacy.model.pessoa.Fornecedor;
 import br.unitins.unimacy.model.pessoa.PessoaJuridica;
-import br.unitins.unimacy.repository.FornecedorRepository;
+import br.unitins.unimacy.repository.pessoa.FornecedorRepository;
 
 @Named
 @ViewScoped

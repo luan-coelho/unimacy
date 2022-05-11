@@ -1,13 +1,14 @@
-package br.unitins.unimacy.controller;
+package br.unitins.unimacy.controller.produto;
 
 import java.util.List;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
+import br.unitins.unimacy.controller.Controller;
 import br.unitins.unimacy.exception.RepositoryException;
 import br.unitins.unimacy.model.produto.Categoria;
-import br.unitins.unimacy.repository.CategoriaRepository;
+import br.unitins.unimacy.repository.produto.CategoriaRepository;
 
 @Named
 @ViewScoped

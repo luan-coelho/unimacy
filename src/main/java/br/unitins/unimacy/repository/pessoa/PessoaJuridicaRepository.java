@@ -1,4 +1,4 @@
-package br.unitins.unimacy.repository;
+package br.unitins.unimacy.repository.pessoa;
 
 import java.util.List;
 
@@ -7,6 +7,7 @@ import javax.persistence.Query;
 
 import br.unitins.unimacy.exception.RepositoryException;
 import br.unitins.unimacy.model.pessoa.PessoaJuridica;
+import br.unitins.unimacy.repository.Repository;
 
 public class PessoaJuridicaRepository extends Repository<PessoaJuridica> {
 

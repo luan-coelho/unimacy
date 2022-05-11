@@ -1,4 +1,4 @@
-package br.unitins.unimacy.controller;
+package br.unitins.unimacy.controller.pessoa;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -9,11 +9,12 @@ import com.gtbr.exception.ViaCepFormatException;
 import br.unitins.unimacy.application.ApiCep;
 import br.unitins.unimacy.application.Session;
 import br.unitins.unimacy.application.Util;
+import br.unitins.unimacy.controller.Controller;
 import br.unitins.unimacy.model.pessoa.PessoaJuridica;
 import br.unitins.unimacy.model.pessoa.endereco.Cidade;
 import br.unitins.unimacy.model.pessoa.endereco.Endereco;
 import br.unitins.unimacy.model.pessoa.endereco.Estado;
-import br.unitins.unimacy.repository.PessoaJuridicaRepository;
+import br.unitins.unimacy.repository.pessoa.PessoaJuridicaRepository;
 
 @Named
 @ViewScoped

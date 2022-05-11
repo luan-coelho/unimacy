@@ -1,4 +1,4 @@
-package br.unitins.unimacy.repository;
+package br.unitins.unimacy.repository.produto;
 
 import java.util.List;
 
@@ -6,6 +6,7 @@ import javax.persistence.Query;
 
 import br.unitins.unimacy.exception.RepositoryException;
 import br.unitins.unimacy.model.produto.Produto;
+import br.unitins.unimacy.repository.Repository;
 
 public class ProdutoRepository extends Repository<Produto>{
 	
@@ -98,7 +99,7 @@ public class ProdutoRepository extends Repository<Produto>{
 			jpsql.append("LIKE LOWER(:nome) ");
 			
 			Query query = getEntityManager().createQuery(jpsql.toString());
-			query.setParameter("nome", "%" + nome + "%");
+			query.setParameter("nome", nome);
 
 			produto = (Produto) query.getSingleResult();
 

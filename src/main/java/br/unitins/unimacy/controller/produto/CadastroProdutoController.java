@@ -1,4 +1,4 @@
-package br.unitins.unimacy.controller;
+package br.unitins.unimacy.controller.produto;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -7,12 +7,13 @@ import org.primefaces.event.SelectEvent;
 
 import br.unitins.unimacy.application.Session;
 import br.unitins.unimacy.application.Util;
+import br.unitins.unimacy.controller.Controller;
 import br.unitins.unimacy.controller.listing.FornecedorListing;
 import br.unitins.unimacy.model.pessoa.Fornecedor;
 import br.unitins.unimacy.model.pessoa.PessoaJuridica;
 import br.unitins.unimacy.model.produto.Produto;
 import br.unitins.unimacy.model.produto.UnidadeMedida;
-import br.unitins.unimacy.repository.ProdutoRepository;
+import br.unitins.unimacy.repository.produto.ProdutoRepository;
 
 @Named
 @ViewScoped
