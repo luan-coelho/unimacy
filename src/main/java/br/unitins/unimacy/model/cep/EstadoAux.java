@@ -1,4 +1,4 @@
-package br.unitins.unimacy.model.api;
+package br.unitins.unimacy.model.cep;
 
 import java.util.Objects;
 

@@ -6,7 +6,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
 import br.unitins.unimacy.exception.RepositoryException;
-import br.unitins.unimacy.model.Categoria;
+import br.unitins.unimacy.model.produto.Categoria;
 import br.unitins.unimacy.repository.CategoriaRepository;
 
 @Named

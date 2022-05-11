@@ -4,18 +4,23 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
 	<persistence-unit name="Unimacy">
-		<class>br.unitins.unimacy.model.Categoria</class>
-		<class>br.unitins.unimacy.model.Cidade</class>
-		<class>br.unitins.unimacy.model.Cliente</class>
+		<class>br.unitins.unimacy.model.produto.Categoria</class>
+		<class>br.unitins.unimacy.model.pessoa.endereco.Cidade</class>
+		<class>br.unitins.unimacy.model.pessoa.Cliente</class>
 		<class>br.unitins.unimacy.model.DefaultEntity</class>
-		<class>br.unitins.unimacy.model.Endereco</class>
-		<class>br.unitins.unimacy.model.Estado</class>
-		<class>br.unitins.unimacy.model.Fornecedor</class>
-		<class>br.unitins.unimacy.model.Pessoa</class>
-		<class>br.unitins.unimacy.model.PessoaFisica</class>
-		<class>br.unitins.unimacy.model.PessoaJuridica</class>
-		<class>br.unitins.unimacy.model.Produto</class>
-		<class>br.unitins.unimacy.model.Unidade</class>
+		<class>br.unitins.unimacy.model.pessoa.endereco.Endereco</class>
+		<class>br.unitins.unimacy.model.pessoa.endereco.Estado</class>
+		<class>br.unitins.unimacy.model.pessoa.Fornecedor</class>
+		<class>br.unitins.unimacy.model.pessoa.Funcionario</class>
+		<class>br.unitins.unimacy.model.pessoa.Pessoa</class>
+		<class>br.unitins.unimacy.model.pessoa.PessoaFisica</class>
+		<class>br.unitins.unimacy.model.pessoa.PessoaJuridica</class>
+		<class>br.unitins.unimacy.model.produto.Produto</class>
+		<class>br.unitins.unimacy.model.produto.Unidade</class>
+		<class>br.unitins.unimacy.model.venda.Venda</class>
+		<class>br.unitins.unimacy.model.venda.pagamento.Cartao</class>
+		<class>br.unitins.unimacy.model.venda.pagamento.Pagamento</class>
+		<class>br.unitins.unimacy.model.venda.pagamento.Pix</class>
 		
 		<properties>
 			<!-- DB Driver -->
@@ -39,7 +44,7 @@
 				value="org.hibernate.dialect.PostgreSQLDialect" />
 
 			<!-- create / create-drop / update / none-->
-			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<property name="hibernate.hbm2ddl.auto" value="create-drop" />
 
 			<!-- Show SQL in console -->
 			<property name="hibernate.show_sql" value="true" />

@@ -4,8 +4,8 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
 import br.unitins.unimacy.application.Util;
-import br.unitins.unimacy.model.Fornecedor;
-import br.unitins.unimacy.model.PessoaJuridica;
+import br.unitins.unimacy.model.pessoa.Fornecedor;
+import br.unitins.unimacy.model.pessoa.PessoaJuridica;
 import br.unitins.unimacy.repository.FornecedorRepository;
 
 @Named

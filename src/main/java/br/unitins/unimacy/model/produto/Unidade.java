@@ -1,6 +1,10 @@
-package br.unitins.unimacy.model;
+package br.unitins.unimacy.model.produto;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
+import br.unitins.unimacy.model.DefaultEntity;
 
 @Entity
 public class Unidade extends DefaultEntity {
@@ -8,6 +12,7 @@ public class Unidade extends DefaultEntity {
 	private static final long serialVersionUID = 8191059953577957199L;
 
 	private Integer qtd;
+	@Enumerated(EnumType.STRING)
 	private UnidadeMedida unidadeMedida;
 
 	public Unidade() {

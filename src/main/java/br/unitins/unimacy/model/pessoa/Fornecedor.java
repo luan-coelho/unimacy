@@ -1,8 +1,10 @@
-package br.unitins.unimacy.model;
+package br.unitins.unimacy.model.pessoa;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
+
+import br.unitins.unimacy.model.DefaultEntity;
 
 @Entity
 public class Fornecedor extends DefaultEntity {

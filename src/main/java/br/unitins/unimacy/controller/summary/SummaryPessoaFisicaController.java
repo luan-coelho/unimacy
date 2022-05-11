@@ -5,7 +5,7 @@ import javax.inject.Named;
 
 import br.unitins.unimacy.application.Session;
 import br.unitins.unimacy.controller.Controller;
-import br.unitins.unimacy.model.PessoaFisica;
+import br.unitins.unimacy.model.pessoa.PessoaFisica;
 
 @Named
 @RequestScoped

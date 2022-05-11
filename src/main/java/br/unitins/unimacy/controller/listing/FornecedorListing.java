@@ -7,7 +7,7 @@ import javax.inject.Named;
 
 import br.unitins.unimacy.application.Util;
 import br.unitins.unimacy.exception.RepositoryException;
-import br.unitins.unimacy.model.Fornecedor;
+import br.unitins.unimacy.model.pessoa.Fornecedor;
 import br.unitins.unimacy.repository.FornecedorRepository;
 
 @Named

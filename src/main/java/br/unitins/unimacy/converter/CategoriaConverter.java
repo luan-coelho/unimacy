@@ -7,7 +7,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
-import br.unitins.unimacy.model.Categoria;
+import br.unitins.unimacy.model.produto.Categoria;
 
 @FacesConverter(forClass = Categoria.class, value = "categoriaConverter")
 public class CategoriaConverter implements Converter <Object>{

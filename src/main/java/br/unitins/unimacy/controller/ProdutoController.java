@@ -8,11 +8,11 @@ import javax.inject.Named;
 import br.unitins.unimacy.application.Session;
 import br.unitins.unimacy.application.Util;
 import br.unitins.unimacy.exception.RepositoryException;
-import br.unitins.unimacy.model.Fornecedor;
-import br.unitins.unimacy.model.PessoaJuridica;
-import br.unitins.unimacy.model.Produto;
-import br.unitins.unimacy.model.UnidadeMedida;
 import br.unitins.unimacy.model.filtro.FiltroProduto;
+import br.unitins.unimacy.model.pessoa.Fornecedor;
+import br.unitins.unimacy.model.pessoa.PessoaJuridica;
+import br.unitins.unimacy.model.produto.Produto;
+import br.unitins.unimacy.model.produto.UnidadeMedida;
 import br.unitins.unimacy.repository.ProdutoRepository;
 
 @Named

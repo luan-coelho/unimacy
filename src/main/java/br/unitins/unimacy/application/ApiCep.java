@@ -17,12 +17,12 @@ import com.google.gson.Gson;
 import com.gtbr.exception.ViaCepException;
 import com.gtbr.exception.ViaCepFormatException;
 
-import br.unitins.unimacy.model.Cidade;
-import br.unitins.unimacy.model.Endereco;
-import br.unitins.unimacy.model.Estado;
-import br.unitins.unimacy.model.api.CidadeAux;
-import br.unitins.unimacy.model.api.EnderecoAux;
-import br.unitins.unimacy.model.api.EstadoAux;
+import br.unitins.unimacy.model.cep.CidadeAux;
+import br.unitins.unimacy.model.cep.EnderecoAux;
+import br.unitins.unimacy.model.cep.EstadoAux;
+import br.unitins.unimacy.model.pessoa.endereco.Cidade;
+import br.unitins.unimacy.model.pessoa.endereco.Endereco;
+import br.unitins.unimacy.model.pessoa.endereco.Estado;
 import br.unitins.unimacy.repository.CidadeRepository;
 import br.unitins.unimacy.repository.EstadoRepository;
 

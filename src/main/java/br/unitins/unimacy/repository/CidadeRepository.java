@@ -3,7 +3,7 @@ package br.unitins.unimacy.repository;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
-import br.unitins.unimacy.model.Cidade;
+import br.unitins.unimacy.model.pessoa.endereco.Cidade;
 
 public class CidadeRepository extends Repository<Cidade> {
 

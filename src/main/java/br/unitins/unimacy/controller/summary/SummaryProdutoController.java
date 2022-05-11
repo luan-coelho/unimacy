@@ -5,7 +5,7 @@ import javax.inject.Named;
 
 import br.unitins.unimacy.application.Session;
 import br.unitins.unimacy.controller.Controller;
-import br.unitins.unimacy.model.Produto;
+import br.unitins.unimacy.model.produto.Produto;
 
 @Named
 @RequestScoped

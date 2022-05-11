@@ -5,7 +5,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
-import br.unitins.unimacy.model.Estado;
+import br.unitins.unimacy.model.pessoa.endereco.Estado;
 
 @FacesConverter(forClass = Estado.class, value = "estadoConverter")
 public class EstadoConverter implements Converter<Estado>  {

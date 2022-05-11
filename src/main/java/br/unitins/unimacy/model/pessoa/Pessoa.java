@@ -1,4 +1,4 @@
-package br.unitins.unimacy.model;
+package br.unitins.unimacy.model.pessoa;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -6,6 +6,9 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.Email;
+
+import br.unitins.unimacy.model.DefaultEntity;
+import br.unitins.unimacy.model.pessoa.endereco.Endereco;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)

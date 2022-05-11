@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-import br.unitins.unimacy.model.Cidade;
+import br.unitins.unimacy.model.pessoa.endereco.Cidade;
 
 @Named
 @ViewScoped

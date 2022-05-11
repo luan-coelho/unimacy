@@ -1,4 +1,4 @@
-package br.unitins.unimacy.model;
+package br.unitins.unimacy.model.pessoa;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

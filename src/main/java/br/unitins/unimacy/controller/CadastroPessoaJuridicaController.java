@@ -9,10 +9,10 @@ import com.gtbr.exception.ViaCepFormatException;
 import br.unitins.unimacy.application.ApiCep;
 import br.unitins.unimacy.application.Session;
 import br.unitins.unimacy.application.Util;
-import br.unitins.unimacy.model.Cidade;
-import br.unitins.unimacy.model.Endereco;
-import br.unitins.unimacy.model.Estado;
-import br.unitins.unimacy.model.PessoaJuridica;
+import br.unitins.unimacy.model.pessoa.PessoaJuridica;
+import br.unitins.unimacy.model.pessoa.endereco.Cidade;
+import br.unitins.unimacy.model.pessoa.endereco.Endereco;
+import br.unitins.unimacy.model.pessoa.endereco.Estado;
 import br.unitins.unimacy.repository.PessoaJuridicaRepository;
 
 @Named

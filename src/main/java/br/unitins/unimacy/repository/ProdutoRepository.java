@@ -5,7 +5,7 @@ import java.util.List;
 import javax.persistence.Query;
 
 import br.unitins.unimacy.exception.RepositoryException;
-import br.unitins.unimacy.model.Produto;
+import br.unitins.unimacy.model.produto.Produto;
 
 public class ProdutoRepository extends Repository<Produto>{
 	

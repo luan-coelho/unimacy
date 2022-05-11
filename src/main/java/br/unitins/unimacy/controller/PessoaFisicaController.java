@@ -8,12 +8,12 @@ import javax.inject.Named;
 import br.unitins.unimacy.application.Session;
 import br.unitins.unimacy.application.Util;
 import br.unitins.unimacy.exception.RepositoryException;
-import br.unitins.unimacy.model.Cidade;
-import br.unitins.unimacy.model.Endereco;
-import br.unitins.unimacy.model.Estado;
-import br.unitins.unimacy.model.PessoaFisica;
-import br.unitins.unimacy.model.Sexo;
 import br.unitins.unimacy.model.filtro.FiltroPessoaFisica;
+import br.unitins.unimacy.model.pessoa.PessoaFisica;
+import br.unitins.unimacy.model.pessoa.Sexo;
+import br.unitins.unimacy.model.pessoa.endereco.Cidade;
+import br.unitins.unimacy.model.pessoa.endereco.Endereco;
+import br.unitins.unimacy.model.pessoa.endereco.Estado;
 import br.unitins.unimacy.repository.PessoaFisicaRepository;
 
 @Named

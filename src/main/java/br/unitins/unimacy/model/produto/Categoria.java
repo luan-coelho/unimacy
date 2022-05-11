@@ -1,6 +1,8 @@
-package br.unitins.unimacy.model;
+package br.unitins.unimacy.model.produto;
 
 import javax.persistence.Entity;
+
+import br.unitins.unimacy.model.DefaultEntity;
 
 @Entity
 public class Categoria extends DefaultEntity{

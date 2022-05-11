@@ -5,7 +5,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
-import br.unitins.unimacy.model.Cidade;
+import br.unitins.unimacy.model.pessoa.endereco.Cidade;
 
 @FacesConverter(forClass = Cidade.class, value = "cidadeConverter")
 public class CidadeConverter implements Converter<Cidade>  {

@@ -1,8 +1,10 @@
-package br.unitins.unimacy.model;
+package br.unitins.unimacy.model.pessoa.endereco;
 
 import java.util.Objects;
 
 import javax.persistence.Entity;
+
+import br.unitins.unimacy.model.DefaultEntity;
 
 @Entity
 public class Estado extends DefaultEntity {

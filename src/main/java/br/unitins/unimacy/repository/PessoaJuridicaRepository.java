@@ -6,7 +6,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import br.unitins.unimacy.exception.RepositoryException;
-import br.unitins.unimacy.model.PessoaJuridica;
+import br.unitins.unimacy.model.pessoa.PessoaJuridica;
 
 public class PessoaJuridicaRepository extends Repository<PessoaJuridica> {
 

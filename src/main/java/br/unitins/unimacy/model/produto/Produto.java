@@ -1,4 +1,4 @@
-package br.unitins.unimacy.model;
+package br.unitins.unimacy.model.produto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -9,6 +9,9 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
+
+import br.unitins.unimacy.model.DefaultEntity;
+import br.unitins.unimacy.model.pessoa.Fornecedor;
 
 @Entity
 public class Produto extends DefaultEntity {

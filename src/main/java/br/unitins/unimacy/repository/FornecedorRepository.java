@@ -5,7 +5,7 @@ import java.util.List;
 import javax.persistence.Query;
 
 import br.unitins.unimacy.exception.RepositoryException;
-import br.unitins.unimacy.model.Fornecedor;
+import br.unitins.unimacy.model.pessoa.Fornecedor;
 
 public class FornecedorRepository extends Repository<Fornecedor> {
 
