@@ -24,7 +24,7 @@
 			<p:panel
 				styleClass="shadow-2xl shadow-gray-700 rounded-lg p-5 w-12/12 m-0">
 
-				<p:steps>
+				<p:steps styleClass="p-mb-5">
 					<p:menuitem value="Selecionar Produtos" />
 					<p:menuitem value="Pagamento" />
 				</p:steps>
@@ -49,8 +49,8 @@
 
 				<p:pickList id="picklist" styleClass="p1"
 					value="#{vendaController.listaProdutoPickList}" var="lista"
-					itemLabel="#{lista.produto.nome}" itemValue="#{lista.produto}"
-					showCheckbox="true" converter="produtoConverter"
+					itemLabel="#{lista.produto.nome}" itemValue="#{lista}"
+					showCheckbox="true" converter="produtoVendaConverter"
 					showSourceControls="false" showTargetControls="false"
 					effect="scale" labelDisplay="inline" addLabel="Adicionar"
 					addAllLabel="Adicionar Todos" removeLabel="Remover"
@@ -62,21 +62,23 @@
 
 					<f:facet name="sourceCaption">Produtos Disponiveis</f:facet>
 					<f:facet name="targetCaption">Selecionados</f:facet>
-					
-					<p:column>
-						<div class="p-d-flex p-jc-between">
-							<h:outputText value="#{lista.produto.nome}" />
-							<div class="p-md-4">
-								<p:spinner buttons="horizontal-after"
-									upButtonStyleClass="ui-button-success"
-									downButtonStyleClass="ui-button-danger" stepFactor="1" />
-							</div>
-						</div>
+
+					<p:column styleClass="p-d-flex p-jc-between">
+						<h:outputText value="#{lista.quantidade}" />
+						<p:commandButton icon="pi pi-pencil" onclick="PF('qtd').show()"
+							styleClass="rounded-button ui-button-info">
+						</p:commandButton>
+
+						<p:dialog header="Quantidade" widgetVar="qtd" minHeight="40"
+							width="250" showEffect="fade">
+							<p:spinner buttons="horizontal-after" value="#{lista.quantidade}"
+								upButtonStyleClass="ui-button-success"
+								downButtonStyleClass="ui-button-danger" stepFactor="1" min="0" />
+
+						</p:dialog>
 					</p:column>
 
 				</p:pickList>
-				
-				<p:repeat value="teste"></p:repeat>
 
 				<h:panelGroup id="valortotal">
 					<h2 class="text-5xl font-boldy">Valor Total

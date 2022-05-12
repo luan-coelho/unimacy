@@ -124,10 +124,7 @@ public class VendaController extends Controller<Venda> {
 
 		List<ProdutoVenda> produtos = listaProdutoPickList.getTarget();
 		
-		for (Object obj : produtos) {
-			Produto produto = (Produto) obj;
-			valorTotal = produto.getPreco().add(valorTotal);
-		}
+		produtos.forEach(item -> valorTotal =  item.getValorUnitario().add(valorTotal));
 	}
 
 	@Override
