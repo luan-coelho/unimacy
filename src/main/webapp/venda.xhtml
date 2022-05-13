@@ -22,66 +22,50 @@
 		<div class="p-d-flex p-jc-center p-mt-5">
 
 			<p:panel
-				styleClass="shadow-2xl shadow-gray-700 rounded-lg p-5 w-12/12 m-0">
+				styleClass="shadow-2xl shadow-gray-700 rounded-lg p-5 w-11/12 m-0">
 
 				<p:steps styleClass="p-mb-5">
 					<p:menuitem value="Selecionar Produtos" />
 					<p:menuitem value="Pagamento" />
 				</p:steps>
 
-				<div class="ui-inputgroup mt-10">
-					<p:inputText id="pesquisa" value="#{vendaController.pesquisa}"
-						placeholder="Pesquisar por..." />
-					<p:selectOneMenu id="filtro" value="#{vendaController.filtro}">
-						<f:selectItems value="#{vendaController.filtroProduto}"
-							itemValue="#{filtro}" />
-					</p:selectOneMenu>
-					<p:commandButton icon="pi pi-search" styleClass="ui-button-warning"
-						actionListener="#{vendaController.pesquisaPorFiltro}"
-						process="pesquisa filtro @this" update="@form:picklist">
-					</p:commandButton>
-					<p:commandButton icon="pi pi-refresh"
-						styleClass="ui-button-success p-ml-1"
-						actionListener="#{vendaController.limpar}" process="@this"
-						update="@form:picklist @form:growl">
+				<div>
+					<p:commandButton value="Selecionar Produto" icon="pi pi-box"
+						actionListener="#{vendaController.abrirProdutoListing}"
+						process="@this" styleClass="ui-button-warning link">
+						<p:ajax event="dialogReturn"
+							listener="#{vendaController.obterProdutoListing}" update="@form" />
 					</p:commandButton>
 				</div>
 
-				<p:pickList id="picklist" styleClass="p1"
-					value="#{vendaController.listaProdutoPickList}" var="lista"
-					itemLabel="#{lista.produto.nome}" itemValue="#{lista}"
-					showCheckbox="true" converter="produtoVendaConverter"
-					showSourceControls="false" showTargetControls="false"
-					effect="scale" labelDisplay="inline" addLabel="Adicionar"
-					addAllLabel="Adicionar Todos" removeLabel="Remover"
-					removeAllLabel="Remover Todos" transferOnDblclick="false">
+				<div class="p-d-flex p-jc-center">
+					<p:dataTable id="dataTable" var="produto"
+						styleClass="w-7/12 p-mt-4"
+						value="#{vendaController.listaProdutoSelecionados}"
+						rowSelectMode="add" paginatorPosition="bottom"
+						allowUnsorting="true" sortMode="single"
+						stickyTopAt=".layout-topbar" stripedRows="true"
+						showGridlines="true"
+						emptyMessage="Selecione algum produto para continuar a venda">
 
-					<p:ajax event="transfer"
-						listener="#{vendaController.calcularValorTotal}" process="@this"
-						update="valortotal" />
+						<p:column headerText="Nome" sortBy="#{produto.nome}">
+							<h:outputText value="#{produto.nome}" />
+						</p:column>
 
-					<f:facet name="sourceCaption">Produtos Disponiveis</f:facet>
-					<f:facet name="targetCaption">Selecionados</f:facet>
-
-					<p:column styleClass="p-d-flex p-jc-between">
-						<h:outputText value="#{lista.quantidade}" />
-						<p:commandButton icon="pi pi-pencil" onclick="PF('qtd').show()"
-							styleClass="rounded-button ui-button-info">
-						</p:commandButton>
-
-						<p:dialog header="Quantidade" widgetVar="qtd" minHeight="40"
-							width="250" showEffect="fade">
-							<p:spinner buttons="horizontal-after" value="#{lista.quantidade}"
+						<p:column headerText="Quantidade" width="20%"
+							sortBy="#{produto.nome}">
+							<p:spinner id="horizontalAfter" value="#{produto.quantEstoque}"
+								buttons="horizontal-after"
 								upButtonStyleClass="ui-button-success"
-								downButtonStyleClass="ui-button-danger" stepFactor="1" min="0" />
+								downButtonStyleClass="ui-button-danger" min="0" />
+						</p:column>
+					</p:dataTable>
+				</div>
+				
+				<p:divider/>
 
-						</p:dialog>
-					</p:column>
-
-				</p:pickList>
-
-				<h:panelGroup id="valortotal">
-					<h2 class="text-5xl font-boldy">Valor Total
+				<h:panelGroup id="valortotal" styleClass="p-d-flex p-jc-center">
+					<h2 class="text-5xl font-boldy p-mt-3">Valor Total
 						R$#{vendaController.valorTotal}</h2>
 				</h:panelGroup>
 			</p:panel>

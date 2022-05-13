@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Selecione o Produto</title>
+	<h:outputStylesheet library="webjars"
+		name="primeflex/2.0.0/primeflex.min.css" />
+</h:head>
+<h:body>
+	<h:form>
+		<p:panel>
+			<div class="ui-inputgroup mt-10">
+				<p:inputText id="pesquisa" value="#{produtoListing.pesquisa}"
+					placeholder="Pesquisar por..." />
+				<p:selectOneMenu id="filtro" value="#{produtoListing.filtro}">
+					<f:selectItems value="#{produtoListing.filtroProduto}"
+						itemValue="#{filtro}" />
+				</p:selectOneMenu>
+				<p:commandButton icon="pi pi-search" styleClass="ui-button-warning"
+					actionListener="#{produtoListing.pesquisaPorFiltro}"
+					process="pesquisa filtro @this" update="dataTable-produto">
+				</p:commandButton>
+			</div>
+
+			<p:dataTable id="dataTable-produto" value="#{produtoListing.list}"
+				var="produto">
+				<p:column headerText="Nome">
+					<p:outputLabel value="#{produto.nome}" />
+				</p:column>
+				<p:column headerText="Nome" sortBy="#{produto.nome}">
+					<h:outputText value="#{produto.nome}" />
+				</p:column>
+
+				<p:column headerText="Quantidade" sortBy="#{produto.quantEstoque}">
+					<h:outputText value="#{produto.quantEstoque}" />
+				</p:column>
+
+				<p:column headerText="Preço" sortBy="#{produto.preco}">
+					<h:outputText value="R$#{produto.preco}" />
+				</p:column>
+
+				<p:column headerText="Categoria" sortBy="#{produto.categoria.nome}">
+					<p:tag styleClass="p-mr-2" value="#{produto.categoria.nome}"></p:tag>
+				</p:column>
+
+				<p:column headerText="Lote" sortBy="#{produto.lote}">
+					<h:outputText value="#{produto.lote}" />
+				</p:column>
+
+				<p:column headerText="Fornecedor">
+					<h:outputText value="#{produto.fornecedor}" />
+				</p:column>
+				
+				<p:column>
+					<p:commandButton value="Selecionar"
+						actionListener="#{produtoListing.select(produto.id)}" process="@this"
+						update="@form" />
+				</p:column>
+			</p:dataTable>
+		</p:panel>
+	</h:form>
+</h:body>
+</html>

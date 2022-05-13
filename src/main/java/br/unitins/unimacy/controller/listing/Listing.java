@@ -38,6 +38,19 @@ public abstract class Listing<T extends DefaultEntity> implements Serializable {
 		PrimeFaces.current().dialog().openDynamic(page, options, null);
 	}
 	
+	public void open(String width, String height) {
+		Map<String, Object> options = new HashMap<String, Object>();
+		options.put("modal", true);
+		options.put("draggable", false);
+		options.put("resizable", true);
+		options.put("width", width+"%");
+		options.put("height", height+"%");
+		options.put("contentWidth", "100%");
+		options.put("contentHeight", "100%");
+	
+		PrimeFaces.current().dialog().openDynamic(page, options, null);
+	}
+	
 	public void select(int id) {
 		T obj = null;
 		try {
