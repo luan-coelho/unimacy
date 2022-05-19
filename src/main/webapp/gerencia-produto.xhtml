@@ -91,6 +91,10 @@
 				</p:column>
 
 				<p:column>
+					<p:commandButton icon="pi pi-user" 
+						styleClass="edit-button rounded-button ui-button-secondary p-mr-1">
+						<p:ajax process="@this" update="@form"/>
+					</p:commandButton>
 					<p:commandButton icon="pi pi-search"
 						styleClass="edit-button rounded-button ui-button-help p-mr-1"
 						onclick="PF('resumo-produto').show()">

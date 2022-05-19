@@ -5,12 +5,15 @@
 	xmlns:p="http://primefaces.org/ui">
 <h:head>
 	<title>Selecione o Fornecedor</title>
+	<h:outputStylesheet library="webjars"
+		name="primeflex/2.0.0/primeflex.min.css" />
 </h:head>
 <h:body>
 	<h:form>
 		<p:panel>
 			<p:linkButton value="Cadastrar Fornecedor" icon="pi pi-plus"
-									styleClass="ui-button-success p-mb-3" href="fornecedor.xhtml" target="true"/>
+				styleClass="ui-button-success p-mb-3 link" href="fornecedor.xhtml"
+				target="true" />
 			<div class="p-grid ui-fluid">
 				<div class="p-col-12 p-md-4">
 					<div class="ui-inputgroup">

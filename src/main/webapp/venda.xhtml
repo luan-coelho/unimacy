@@ -32,37 +32,39 @@
 				<div>
 					<p:commandButton value="Selecionar Produto" icon="pi pi-box"
 						actionListener="#{vendaController.abrirProdutoListing}"
-						process="@this" styleClass="ui-button-warning link">
+						process="@this" styleClass="link">
 						<p:ajax event="dialogReturn"
 							listener="#{vendaController.obterProdutoListing}" update="@form" />
 					</p:commandButton>
 				</div>
 
 				<div class="p-d-flex p-jc-center">
-					<p:dataTable id="dataTable" var="produto"
-						styleClass="w-7/12 p-mt-4"
-						value="#{vendaController.listaProdutoSelecionados}"
-						rowSelectMode="add" paginatorPosition="bottom"
-						allowUnsorting="true" sortMode="single"
+					<p:dataTable id="dataTable" var="produtoVenda"
+						styleClass="w-7/12 p-mt-4 border-collapse border border-slate-500 rounded-md ..."
+						value="#{vendaController.listaProdutoVenda}" rowSelectMode="add"
+						paginatorPosition="bottom" allowUnsorting="true" sortMode="single"
 						stickyTopAt=".layout-topbar" stripedRows="true"
 						showGridlines="true"
 						emptyMessage="Selecione algum produto para continuar a venda">
 
-						<p:column headerText="Nome" sortBy="#{produto.nome}">
-							<h:outputText value="#{produto.nome}" />
+						<p:column headerText="Nome">
+							<h:outputText value="#{produtoVenda.produto.nome}" />
 						</p:column>
 
-						<p:column headerText="Quantidade" width="20%"
-							sortBy="#{produto.nome}">
-							<p:spinner id="horizontalAfter" value="#{produto.quantEstoque}"
-								buttons="horizontal-after"
+						<p:column headerText="Quantidade" width="20%">
+							<p:spinner id="horizontalAfter"
+								value="#{produtoVenda.quantidade}" buttons="horizontal-after"
 								upButtonStyleClass="ui-button-success"
-								downButtonStyleClass="ui-button-danger" min="0" />
+								downButtonStyleClass="ui-button-danger" min="0">
+								<p:ajax event="valueChange"
+									listener="#{vendaController.calcularValorTotal}"
+									process="@this" update="@form:dataTable" />
+							</p:spinner>
 						</p:column>
 					</p:dataTable>
 				</div>
-				
-				<p:divider/>
+
+				<p:divider />
 
 				<h:panelGroup id="valortotal" styleClass="p-d-flex p-jc-center">
 					<h2 class="text-5xl font-boldy p-mt-3">Valor Total

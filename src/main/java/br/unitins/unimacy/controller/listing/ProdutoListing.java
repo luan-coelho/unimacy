@@ -5,10 +5,12 @@ import java.util.List;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
+import br.unitins.unimacy.application.Session;
 import br.unitins.unimacy.application.Util;
 import br.unitins.unimacy.exception.RepositoryException;
 import br.unitins.unimacy.model.filtro.FiltroProduto;
 import br.unitins.unimacy.model.produto.Produto;
+import br.unitins.unimacy.model.venda.ProdutoVenda;
 import br.unitins.unimacy.repository.produto.ProdutoRepository;
 
 @Named
@@ -16,7 +18,7 @@ import br.unitins.unimacy.repository.produto.ProdutoRepository;
 public class ProdutoListing extends Listing<Produto> {
 
 	private static final long serialVersionUID = 6565560689435238952L;
-	
+
 	private String pesquisa;
 	private FiltroProduto filtro;
 
@@ -57,7 +59,7 @@ public class ProdutoListing extends Listing<Produto> {
 	public FiltroProduto[] getFiltroProduto() {
 		return FiltroProduto.values();
 	}
-	
+
 	public void pesquisaPorFiltro() {
 		List<Produto> listaProdutoAux = null;
 
@@ -66,7 +68,7 @@ public class ProdutoListing extends Listing<Produto> {
 		switch (this.filtro) {
 		case NOME: {
 			try {
-				listaProdutoAux = repo.findByNome(pesquisa);
+				listaProdutoAux = filtrarListaProduto(repo.findByNome(pesquisa));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -74,7 +76,7 @@ public class ProdutoListing extends Listing<Produto> {
 		}
 		case CATEGORIA: {
 			try {
-				listaProdutoAux = repo.findByCategoria(pesquisa);
+				listaProdutoAux = filtrarListaProduto(repo.findByCategoria(pesquisa));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -82,7 +84,7 @@ public class ProdutoListing extends Listing<Produto> {
 		}
 		case LOTE: {
 			try {
-				listaProdutoAux = repo.findByLote(pesquisa);
+				listaProdutoAux = filtrarListaProduto(repo.findByLote(pesquisa));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -90,7 +92,7 @@ public class ProdutoListing extends Listing<Produto> {
 		}
 		case FORNECEDOR: {
 			try {
-				listaProdutoAux = repo.findByFornecedor(pesquisa);
+				listaProdutoAux = filtrarListaProduto(repo.findByFornecedor(pesquisa));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -102,5 +104,19 @@ public class ProdutoListing extends Listing<Produto> {
 
 		setList(listaProdutoAux);
 	}
-	
+
+	@SuppressWarnings("unchecked")
+	public List<Produto> filtrarListaProduto(List<Produto> lista) {
+		List<ProdutoVenda> listaProdutoVenda = (List<ProdutoVenda>) Session.getInstance().get("listaProduto");
+		Session.getInstance().set("listaProduto", null);
+		
+		return lista.stream().filter(produto -> {
+			for (ProdutoVenda produtoVenda : listaProdutoVenda) {
+				if (produtoVenda.getProduto().equals(produto)) {
+					return false;
+				}
+			}
+			return true;
+		}).toList();
+	}
 }
