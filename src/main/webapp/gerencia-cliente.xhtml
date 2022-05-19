@@ -18,7 +18,32 @@
 
 		<p:growl id="growl" />
 
+		<div
+			class="p-d-flex p-flex-column p-m-5 shadow-2xl shadow-gray-700 rounded-lg w-9/12">
 
+			<p:panel header="Clientes">
+				<div>
+					<p:commandButton value="Adicionar novo cliente - Pessoa Física"
+						icon="pi pi-box"
+						actionListener="#{cadastroClienteController.abrirPessoaFisicaListing}">
+						<p:ajax event="dialogReturn"
+							listener="#{cadastroClienteController.obterPessoaFisicaListing}"
+							update="@form" />
+					</p:commandButton>
+				</div>
+
+				<div>
+					<p:commandButton value="Adicionar novo cliente - Pessoa Jurídica"
+						icon="pi pi-box"
+						actionListener="#{cadastroClienteController.abrirPessoaJuridicaListing}">
+						<p:ajax event="dialogReturn"
+							listener="#{cadastroClienteController.obterPessoaJuridicaListing}"
+							update="@form" />
+					</p:commandButton>
+				</div>
+			</p:panel>
+
+		</div>
 	</ui:define>
 </ui:composition>
 </html>

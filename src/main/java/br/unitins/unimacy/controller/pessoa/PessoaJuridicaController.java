@@ -120,7 +120,7 @@ public class PessoaJuridicaController extends Controller<PessoaJuridica> {
 			try {
 				listaPessoaAux = (List<PessoaJuridica>) repo.findAllByCnpj(pesquisa);
 			} catch (RepositoryException e) {
-				Util.addErrorMessage("Falha ao consultar CPF");
+				Util.addErrorMessage("Falha ao consultar CNPJ");
 				e.printStackTrace();
 			}
 			break;

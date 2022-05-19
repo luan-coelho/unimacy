@@ -17,7 +17,23 @@
 	<ui:define name="conteudo">
 
 		<p:growl id="growl" />
+		
+		<div
+			class="p-d-flex p-flex-column p-m-5 shadow-2xl shadow-gray-700 rounded-lg w-9/12">
 
+			<p:panel header="Funcionário">
+				<div>
+					<p:commandButton value="Adicionar novo cliente - Pessoa Física"
+						icon="pi pi-box"
+						actionListener="#{cadastroFuncionarioController.abrirPessoaFisicaListing}">
+						<p:ajax event="dialogReturn"
+							listener="#{cadastroFuncionarioController.obterPessoaFisicaListing}"
+							update="@form" />
+					</p:commandButton>
+				</div>
+			</p:panel>
+
+		</div>
 
 	</ui:define>
 </ui:composition>

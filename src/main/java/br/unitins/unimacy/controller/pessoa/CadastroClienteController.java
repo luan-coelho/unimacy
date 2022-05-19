@@ -3,15 +3,20 @@ package br.unitins.unimacy.controller.pessoa;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
+import org.primefaces.event.SelectEvent;
+
 import com.gtbr.exception.ViaCepException;
 import com.gtbr.exception.ViaCepFormatException;
 
 import br.unitins.unimacy.application.ApiCep;
 import br.unitins.unimacy.application.Util;
 import br.unitins.unimacy.controller.Controller;
+import br.unitins.unimacy.controller.listing.PessoaFisicaListing;
+import br.unitins.unimacy.controller.listing.PessoaJuridicaListing;
 import br.unitins.unimacy.exception.RepositoryException;
 import br.unitins.unimacy.model.pessoa.Cliente;
 import br.unitins.unimacy.model.pessoa.PessoaFisica;
+import br.unitins.unimacy.model.pessoa.PessoaJuridica;
 import br.unitins.unimacy.model.pessoa.Sexo;
 import br.unitins.unimacy.model.pessoa.endereco.Cidade;
 import br.unitins.unimacy.model.pessoa.endereco.Endereco;
@@ -73,5 +78,23 @@ public class CadastroClienteController extends Controller<Cliente> {
 		if (pessoa != null) {
 			Util.addErrorMessage("Já existe um registro cadastrado com esse CPF");
 		}
+	}
+
+	public void abrirPessoaFisicaListing() {
+		PessoaFisicaListing listing = new PessoaFisicaListing();
+		listing.open("70", "70");
+	}
+
+	public void obterPessoaFisicaListing(SelectEvent<PessoaFisica> event) {
+
+	}
+
+	public void abrirPessoaJuridicaListing() {
+		PessoaJuridicaListing listing = new PessoaJuridicaListing();
+		listing.open("70", "70");
+	}
+
+	public void obterPessoaJuridicaListing(SelectEvent<PessoaJuridica> event) {
+
 	}
 }

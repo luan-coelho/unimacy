@@ -63,7 +63,7 @@ public abstract class Listing<T extends DefaultEntity> implements Serializable {
 		PrimeFaces.current().dialog().closeDynamic(obj);
 	}
 	
-	public abstract void pesquisar();
+	public void pesquisar() {};
 	
 	public List<T> getList() {
 		return list;
@@ -72,5 +72,8 @@ public abstract class Listing<T extends DefaultEntity> implements Serializable {
 	public void setList(List<T> list) {
 		this.list = list;
 	}
-
+	
+	public Repository<T> getRepository() {
+		return repository;
+	}
 }
