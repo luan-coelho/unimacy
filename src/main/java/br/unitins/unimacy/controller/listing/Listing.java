@@ -69,6 +69,8 @@ public abstract class Listing<T extends DefaultEntity> implements Serializable {
 		return list;
 	}
 
+	public void selecionarItem(T obj) {}
+	
 	public void setList(List<T> list) {
 		this.list = list;
 	}

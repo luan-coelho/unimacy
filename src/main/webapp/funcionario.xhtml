@@ -11,7 +11,7 @@
 <ui:composition template="template.xhtml">
 
 	<ui:define name="head">
-		<title>Novo/Editar Pessoa Física</title>
+		<title>Novo/Editar Funcionário</title>
 	</ui:define>
 
 	<ui:define name="conteudo">
@@ -21,39 +21,36 @@
 		<div
 			class="p-d-flex p-flex-column p-m-5 shadow-2xl shadow-gray-700 rounded-lg w-9/12">
 
-			<p:commandButton value="Voltar para a Gerência de Funcionários"
+			<p:commandButton value="Voltar para a Gerência de Funcionário"
 				icon="pi pi-box" styleClass="ui-button-success p-mb-4"
-				actionListener="#{cadastroPessoaFisicaController.telaGerenciaPessoaFisica}"
+				actionListener="#{cadastroFuncionarioController.telaGerenciaFuncionario}"
 				process="@this" />
 
 			<p:panel id="pessoa" header="Informações Pessoais">
 
-				<p:messages/>
-
 				<p:wizard nextLabel="Prosseguir" backLabel="Voltar" widgetVar="wiz"
 					onback="buttonClickBack()" onnext="buttonClickNext();">
-
 					<p:tab id="tab0" title="Dados Pessoais">
 
 						<div class="ui-fluid p-formgrid p-grid">
 							<div class="p-field p-col-12 p-md-5">
 								<p:outputLabel for="nome" value="Nome" />
 								<p:inputText id="nome" type="text"
-									value="#{cadastroPessoaFisicaController.entity.nome}" />
+									value="#{cadastroFuncionarioController.entity.pessoaFisica.nome}" />
 							</div>
 							<div class="p-field p-col-12 p-md-7">
 								<p:outputLabel for="sobrenome" value="Sobrenome" />
 								<p:inputText id="sobrenome" type="text"
-									value="#{cadastroPessoaFisicaController.entity.sobreNome}" />
+									value="#{cadastroFuncionarioController.entity.pessoaFisica.sobreNome}" />
 							</div>
 
 							<div class="p-field p-col-12 p-md-4">
 								<p:outputLabel value="CPF" />
 								<p:inputMask mask="999.999.999-99" id="cpf" maxlength="14"
-									value="#{cadastroPessoaFisicaController.entity.cpf}"
+									value="#{cadastroFuncionarioController.entity.pessoaFisica.cpf}"
 									placeholder="xxx.xxx.xxx-xx">
 									<p:ajax event="blur"
-										listener="#{cadastroPessoaFisicaController.verificarCpf}"
+										listener="#{cadastroFuncionarioController.verificarCpf}"
 										process="@this" update="@this form:growl" />
 								</p:inputMask>
 							</div>
@@ -61,9 +58,9 @@
 							<div class="p-field p-col-12 p-md-5">
 								<p:outputLabel value="Sexo" />
 								<p:selectOneRadio
-									value="#{cadastroPessoaFisicaController.entity.sexo}">
+									value="#{cadastroFuncionarioController.entity.pessoaFisica.sexo}">
 									<f:selectItems var="obj"
-										value="#{cadastroPessoaFisicaController.listaSexo}"
+										value="#{cadastroFuncionarioController.listaSexo}"
 										itemLabel="#{obj.label}" />
 								</p:selectOneRadio>
 							</div>
@@ -71,7 +68,7 @@
 							<div class="p-field p-col-12 p-md-3">
 								<p:outputLabel for="data-nascimento" value="Data de Nascimento" />
 								<p:datePicker id="data-nascimento"
-									value="#{cadastroPessoaFisicaController.entity.dataNascimento}"
+									value="#{cadastroFuncionarioController.entity.pessoaFisica.dataNascimento}"
 									monthNavigator="true" pattern="dd/MM/yyyy" mask="99/99/9999"
 									showIcon="true" showButtonBar="true" showOnFocus="false" />
 							</div>
@@ -79,14 +76,21 @@
 							<div class="p-field p-col-12 p-md-6">
 								<p:outputLabel for="email" value="Email" />
 								<p:inputText
-									value="#{cadastroPessoaFisicaController.entity.email}"
+									value="#{cadastroFuncionarioController.entity.pessoaFisica.email}"
 									placeholder="exemplo@email.com" id="email" type="email" />
 							</div>
 
 							<div class="p-field p-col-12 p-md-3">
 								<p:outputLabel for="phone" value="Telefone" />
 								<p:inputMask mask="(99) 99999-9999" id="phone" maxlength="15"
-									value="#{cadastroPessoaFisicaController.entity.telefone}" />
+									value="#{cadastroFuncionarioController.entity.pessoaFisica.telefone}" />
+							</div>
+
+							<div class="p-field p-col-12 p-md-3">
+								<p:outputLabel for="salario" value="Salário" />
+								<p:inputNumber id="salario" placeholder="R$"
+									value="#{cadastroFuncionarioController.entity.salario}" symbol="R$"
+									symbolPosition="p" decimalSeparator="," thousandSeparator="." />
 							</div>
 						</div>
 					</p:tab>
@@ -97,8 +101,8 @@
 								<div class="p-field p-col-12 p-md-2">
 									<p:outputLabel value="CEP " />
 									<p:inputMask mask="99999-999" id="cep" maxlength="9"
-										value="#{cadastroPessoaFisicaController.entity.endereco.cep}">
-										<p:ajax listener="#{cadastroPessoaFisicaController.buscarCep}"
+										value="#{cadastroFuncionarioController.entity.pessoaFisica.endereco.cep}">
+										<p:ajax listener="#{cadastroFuncionarioController.buscarCep}"
 											event="blur" process="@this @form:cep"
 											update="@form:endereco @form:growl" />
 									</p:inputMask>
@@ -107,36 +111,36 @@
 								<div class="p-field p-col-12 p-md-6">
 									<p:outputLabel value="Rua" />
 									<p:inputText id="rua"
-										value="#{cadastroPessoaFisicaController.entity.endereco.rua}" />
+										value="#{cadastroFuncionarioController.entity.pessoaFisica.endereco.rua}" />
 								</div>
 
 								<div class="p-field p-col-12 p-md-2">
 									<p:outputLabel value="Número" />
 									<p:inputText id="numero"
-										value="#{cadastroPessoaFisicaController.entity.endereco.numero}" />
+										value="#{cadastroFuncionarioController.entity.pessoaFisica.endereco.numero}" />
 								</div>
 
 								<div class="p-field p-col-12 p-md-3">
 									<p:outputLabel value="Bairro" />
 									<p:inputText id="bairro"
-										value="#{cadastroPessoaFisicaController.entity.endereco.bairro}" />
+										value="#{cadastroFuncionarioController.entity.pessoaFisica.endereco.bairro}" />
 								</div>
 
 								<div class="p-field p-col-12 p-md-5">
 									<p:outputLabel value="Complemento" />
 									<p:inputText id="complemento"
-										value="#{cadastroPessoaFisicaController.entity.endereco.complemento}" />
+										value="#{cadastroFuncionarioController.entity.pessoaFisica.endereco.complemento}" />
 								</div>
 
 								<div class="p-field p-col-12 p-md-5">
 									<p:outputLabel value="Estado" />
 									<p:autoComplete id="estado"
-										value="#{cadastroPessoaFisicaController.entity.endereco.cidade.estado.nome}"
+										value="#{cadastroFuncionarioController.entity.pessoaFisica.endereco.cidade.estado.nome}"
 										completeMethod="#{estadoUtil.completeText}" scrollHeight="250"
 										placeholder="Digite o Estado" forceSelection="true">
 
 										<p:ajax event="itemSelect"
-											listener="#{cadastroPessoaFisicaController.onItemSelect}"
+											listener="#{cadastroFuncionarioController.onItemSelect}"
 											process="@form:endereco" update="@form:endereco" />
 									</p:autoComplete>
 								</div>
@@ -144,15 +148,15 @@
 								<div class="p-field p-col-12 p-md-4">
 									<p:outputLabel value="Cidade " />
 									<p:autoComplete id="cidade"
-										value="#{cadastroPessoaFisicaController.entity.endereco.cidade.nome}"
+										value="#{cadastroFuncionarioController.entity.pessoaFisica.endereco.cidade.nome}"
 										completeMethod="#{cidadeUtil.completeText}" scrollHeight="250"
 										placeholder="Digite a Cidade"
-										disabled="#{cadastroPessoaFisicaController.entity.endereco.cidade.estado.nome == null}" />
+										disabled="#{cadastroFuncionarioController.entity.pessoaFisica.endereco.cidade.estado.nome == null}" />
 								</div>
 							</div>
 
 							<p:commandButton id="summary"
-								actionListener="#{cadastroPessoaFisicaController.enviarObjetoParaSummary}"
+								actionListener="#{cadastroFuncionarioController.enviarObjetoParaSummary}"
 								style="display: none;" />
 						</p:panel>
 					</p:tab>
@@ -161,7 +165,7 @@
 						<div class="p-d-flex p-jc-md-end p-mt-2">
 							<p:commandButton value="Salvar" icon="pi pi-save"
 								styleClass="ui-button-success"
-								action="#{cadastroPessoaFisicaController.salvar}" update="@form"
+								action="#{cadastroFuncionarioController.salvar}" update="@form"
 								process="@this @form:pessoa"
 								oncomplete="PF('wiz').loadStep('tab0', false)" />
 						</div>

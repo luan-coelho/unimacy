@@ -2,6 +2,7 @@ package br.unitins.unimacy.model.pessoa;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
@@ -18,9 +19,10 @@ public abstract class Pessoa extends DefaultEntity {
 
 	@Email(message = "Informe um email válido")
 	private String email;
+	private String senha;
 	private String telefone;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Endereco endereco;
 
 	private boolean ativo = true;
@@ -43,6 +45,14 @@ public abstract class Pessoa extends DefaultEntity {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	public String getSenha() {
+		return senha;
+	}
+	
+	public void setSenha(String senha) {
+		this.senha = senha;
 	}
 
 	public String getTelefone() {

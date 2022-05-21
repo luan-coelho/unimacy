@@ -65,23 +65,23 @@
 					</div>
 				</f:facet>
 
-				<p:column headerText="Nome Fantasia" sortBy="#{pessoa.nomeFantasia}">
+				<p:column headerText="Nome Fantasia">
 					<h:outputText value="#{pessoa.nomeFantasia.trim()}" />
 				</p:column>
 
-				<p:column headerText="CNPJ" sortBy="#{pessoa.cnpj}">
+				<p:column headerText="CNPJ">
 					<h:outputText value="#{pessoa.cnpj}" />
 				</p:column>
 
-				<p:column headerText="Email" sortBy="#{pessoa.email}">
+				<p:column headerText="Email">
 					<h:outputText value="#{pessoa.email}" />
 				</p:column>
 
-				<p:column headerText="Telefone" sortBy="#{pessoa.telefone}">
+				<p:column headerText="Telefone">
 					<h:outputText value="#{pessoa.telefone}" />
 				</p:column>
 
-				<p:column headerText="Ativo" sortBy="#{pessoa.ativo}">
+				<p:column headerText="Ativo">
 					<p:toggleSwitch value="#{pessoa.ativo}">
 						<p:ajax listener="#{pessoaJuridicaController.alterar(pessoa)}"
 							process="@this" update="@form:dataTable" />

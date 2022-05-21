@@ -2,11 +2,13 @@
 <html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:components="http://java.sun.com/jsf/composite/components">
 <h:head>
 	<title>Selecione uma Pessoa Física</title>
 	<h:outputStylesheet library="webjars"
 		name="primeflex/2.0.0/primeflex.min.css" />
+	<h:outputStylesheet library="css" name="template.css" />
 </h:head>
 <h:body>
 	<h:form>
@@ -29,7 +31,7 @@
 				<p:column headerText="Nome Completo: ">
 					<p:outputLabel value="#{pessoa.nome} #{pessoa.sobreNome}" />
 				</p:column>
-				
+
 				<p:column headerText="CPF">
 					<h:outputText value="#{pessoa.cpf}" />
 				</p:column>
@@ -39,23 +41,39 @@
 				</p:column>
 
 				<p:column headerText="Nascimento">
-					<h:outputText value="#{pessoa.dataNascimento}" />
+					<h:outputText value="#{pessoa.dataNascimento}">
+						<f:convertDateTime type="localDate" pattern="dd/MM/yyyy" />
+					</h:outputText>
 				</p:column>
 
 				<p:column headerText="Email">
 					<p:tag styleClass="p-mr-2" value="#{pessoa.email}"></p:tag>
 				</p:column>
-				
+
 				<p:column headerText="Telefone">
 					<h:outputText value="#{pessoa.telefone}" />
 				</p:column>
 
 				<p:column>
+					<p:commandButton icon="pi pi-search"
+						styleClass="edit-button rounded-button ui-button-help p-mr-2"
+						onclick="PF('resumo-pessoa').show()">
+						<p:ajax process="@this" update="@form:confirmar"
+							listener="#{pessoaFisicaListing.selecionarItem(pessoa)}" />
+					</p:commandButton>
 					<p:commandButton value="Selecionar"
-						actionListener="#{pessoaListing.select(pessoa.id)}"
+						actionListener="#{pessoaFisicaListing.select(pessoa.id)}"
 						process="@this" update="@form" />
 				</p:column>
 			</p:dataTable>
+
+			<p:dialog id="pessoa-info-resumo" widgetVar="resumo-pessoa"
+				modal="true" draggable="false" header="Informações Pessoais"
+				showEffect="fade" minHeight="40" width="750">
+				<h:panelGroup id="confirmar">
+					<components:SummaryPessoaFisica />
+				</h:panelGroup>
+			</p:dialog>
 		</p:panel>
 	</h:form>
 </h:body>

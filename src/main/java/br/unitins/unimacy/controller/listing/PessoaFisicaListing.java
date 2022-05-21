@@ -5,6 +5,7 @@ import java.util.List;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
+import br.unitins.unimacy.application.Session;
 import br.unitins.unimacy.application.Util;
 import br.unitins.unimacy.exception.RepositoryException;
 import br.unitins.unimacy.model.filtro.FiltroPessoaFisica;
@@ -96,5 +97,9 @@ public class PessoaFisicaListing extends Listing<PessoaFisica> {
 		}
 		
 		setList(listaPessoaAux);
+	}
+	
+	public void selecionarItem(PessoaFisica obj) {
+		Session.getInstance().set("pessoafisica", obj);
 	}
 }

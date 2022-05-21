@@ -3,6 +3,8 @@ package br.unitins.unimacy.model.pessoa;
 import java.math.BigDecimal;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 import br.unitins.unimacy.model.DefaultEntity;
 
@@ -12,6 +14,9 @@ public class Funcionario extends DefaultEntity {
 	private static final long serialVersionUID = 6772757150528225911L;
 
 	private BigDecimal salario;
+	
+	@OneToOne
+	@JoinColumn(unique = true)
 	private PessoaFisica pessoaFisica;
 
 	public Funcionario() {
@@ -21,6 +26,11 @@ public class Funcionario extends DefaultEntity {
 	public Funcionario(BigDecimal salario, PessoaFisica pessoaFisica) {
 		super();
 		this.salario = salario;
+		this.pessoaFisica = pessoaFisica;
+	}
+	
+	public Funcionario(PessoaFisica pessoaFisica) {
+		super();
 		this.pessoaFisica = pessoaFisica;
 	}
 

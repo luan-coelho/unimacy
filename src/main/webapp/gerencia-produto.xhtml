@@ -66,23 +66,23 @@
 					</div>
 				</f:facet>
 
-				<p:column headerText="Nome" sortBy="#{produto.nome}">
+				<p:column headerText="Nome">
 					<h:outputText value="#{produto.nome}" />
 				</p:column>
 
-				<p:column headerText="Quantidade" sortBy="#{produto.quantEstoque}">
+				<p:column headerText="Quantidade">
 					<h:outputText value="#{produto.quantEstoque}" />
 				</p:column>
 
-				<p:column headerText="Preço" sortBy="#{produto.preco}">
+				<p:column headerText="Preço">
 					<h:outputText value="R$#{produto.preco}" />
 				</p:column>
 
-				<p:column headerText="Categoria" sortBy="#{produto.categoria.nome}">
+				<p:column headerText="Categoria">
 					<p:tag styleClass="p-mr-2" value="#{produto.categoria.nome}"></p:tag>
 				</p:column>
 
-				<p:column headerText="Lote" sortBy="#{produto.lote}">
+				<p:column headerText="Lote">
 					<h:outputText value="#{produto.lote}" />
 				</p:column>
 

@@ -11,10 +11,14 @@
 	<h:outputStylesheet library="webjars"
 		name="primeflex/2.0.0/primeflex.min.css" />
 	<h:outputStylesheet library="css" name="login.css" />
-	<link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css"/>
+	<link rel="stylesheet"
+		href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
 </h:head>
 <h:body>
 	<h:form>
+
+		<p:growl id="growl" />
+
 		<div class="container">
 			<div class="forms">
 				<div class="form login">
@@ -26,24 +30,29 @@
 
 					<div>
 						<h2 class="title">Acesso ao Sistema</h2>
-						<form action="#">
+						<div class="input-field">
 							<div class="input-field">
-								<div class="input-field">
-									<p:inputText type="text" placeholder="Login" required="true" />
-									 <i class="uil uil-envelope icon"></i>
-								</div>
+								<p:inputText type="text" placeholder="Login" required="true" requiredMessage="Informe o email"
+									value="#{loginController.funcionario.pessoaFisica.email}" />
+								<i class="uil uil-envelope icon"></i>
 							</div>
-							<div class="input-field">
-								<p:password styleClass="password" type="password"
-									placeholder="Senha" required="true" />
-								<i class="uil uil-lock icon"></i> 
-								<i class="uil uil-eye-slash showHidePw"></i>
-							</div>
+						</div>
+						<div class="input-field">
+							<p:password styleClass="password" type="password"
+								placeholder="Senha" required="true" requiredMessage="Informe a senha"
+								value="#{loginController.funcionario.pessoaFisica.senha}" />
+							<i class="uil uil-lock icon"></i> <i
+								class="uil uil-eye-slash showHidePw"></i>
+						</div>
 
-							<div class="input-field button">
-								<input type="button" value="Entrar" />
-							</div>
-						</form>
+						<div>
+							<p:link tabindex="3" style="margin-bottom:0;"
+								styleClass="wdi-red" value="Esqueceu a senha?"
+								href="forgotpassword.xhtml" />
+						</div>
+
+						<p:commandButton styleClass="input-field button" value="Entrar"
+							action="#{loginController.entrar}" process="@form" update="@form" />
 					</div>
 				</div>
 			</div>

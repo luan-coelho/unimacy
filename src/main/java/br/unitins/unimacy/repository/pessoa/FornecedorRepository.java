@@ -6,27 +6,30 @@ import javax.persistence.Query;
 
 import br.unitins.unimacy.exception.RepositoryException;
 import br.unitins.unimacy.model.pessoa.Fornecedor;
+import br.unitins.unimacy.model.pessoa.PessoaFisica;
 import br.unitins.unimacy.repository.Repository;
 
 public class FornecedorRepository extends Repository<Fornecedor> {
 
 	@SuppressWarnings("unchecked")
-	@Override
-	public List <Fornecedor> findByNome(String nome) throws RepositoryException{
-		List <Fornecedor> lista = null;
-		
+	public List<PessoaFisica> findByEmail(String email) throws RepositoryException {
 		try {
-			Query query = getEntityManager().createQuery("select f from fornecedor f, pessoajuridica p where LOWER(p.nomefantasia) LIKE LOWER(:nome)");
-			query.setParameter("nome", "%" + nome + "%");
+			StringBuffer jpsql = new StringBuffer();
+			jpsql.append("SELECT ");
+			jpsql.append("p ");
+			jpsql.append("FROM ");
+			jpsql.append("PessoaFisica p ");
+			jpsql.append("WHERE ");
+			jpsql.append("LOWER(p.email) ");
+			jpsql.append("LIKE LOWER(:email) ");
 
-			lista = query.getResultList();
+			Query query = getEntityManager().createQuery(jpsql.toString());
+			query.setParameter("email", "%" + email + "%");
+
+			return query.getResultList();
 
 		} catch (Exception e) {
-			System.out.println("Erro ao executar o método de find.");
-			e.printStackTrace();
-			return null;
+			throw new RepositoryException("Erro ao buscar email");
 		}
-
-		return lista;
 	}
 }

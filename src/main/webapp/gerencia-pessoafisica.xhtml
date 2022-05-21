@@ -66,24 +66,24 @@
 					</div>
 				</f:facet>
 
-				<p:column headerText="Nome Completo" sortBy="#{pessoa.nome}">
+				<p:column headerText="Nome Completo">
 					<h:outputText
 						value="#{pessoa.nome.trim()} #{pessoa.sobreNome.trim()}" />
 				</p:column>
 
-				<p:column headerText="CPF" sortBy="#{pessoa.cpf}">
+				<p:column headerText="CPF">
 					<h:outputText value="#{pessoa.cpf}" />
 				</p:column>
 
-				<p:column headerText="Email" sortBy="#{pessoa.email}">
+				<p:column headerText="Email">
 					<h:outputText value="#{pessoa.email}" />
 				</p:column>
 
-				<p:column headerText="Telefone" sortBy="#{pessoa.telefone}">
+				<p:column headerText="Telefone">
 					<h:outputText value="#{pessoa.telefone}" />
 				</p:column>
 
-				<p:column headerText="Ativo" sortBy="#{pessoa.ativo}">
+				<p:column headerText="Ativo">
 					<p:toggleSwitch value="#{pessoa.ativo}">
 						<p:ajax listener="#{pessoaFisicaController.alterar(pessoa)}"
 							process="@this" update="@form:dataTable" />
@@ -122,7 +122,7 @@
 			</p:confirmDialog>
 
 			<p:dialog id="pessoa-info-resumo" widgetVar="resumo-pessoa"
-				modal="true" draggable="false" header="Informações do pessoa"
+				modal="true" draggable="false" header="Informações Pessoais"
 				showEffect="fade" minHeight="40" width="750">
 				<h:panelGroup id="confirmar">
 					<components:SummaryPessoaFisica />

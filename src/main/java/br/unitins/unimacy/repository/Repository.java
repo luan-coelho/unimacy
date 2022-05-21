@@ -76,14 +76,13 @@ public class Repository<T extends DefaultEntity> {
 			getEntityManager().remove(obj);
 			getEntityManager().getTransaction().commit();
 		} catch (Exception e) {
-			System.out.println("Problema ao executar o save.");
 			e.printStackTrace();
 			try {
 				getEntityManager().getTransaction().rollback();
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
-			throw new RepositoryException("Problema ao salvar.");
+			throw new RepositoryException("Problema ao remover.");
 		}
 	}
 

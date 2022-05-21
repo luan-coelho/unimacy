@@ -86,7 +86,7 @@ public class CadastroClienteController extends Controller<Cliente> {
 	}
 
 	public void obterPessoaFisicaListing(SelectEvent<PessoaFisica> event) {
-
+		
 	}
 
 	public void abrirPessoaJuridicaListing() {
