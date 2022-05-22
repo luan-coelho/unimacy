@@ -199,4 +199,26 @@ public class FuncionarioRepository extends Repository<Funcionario> {
 			throw new RepositoryException("Erro ao buscar telefone");
 		}
 	}
+
+	@SuppressWarnings("unchecked")
+	public List<Funcionario> findBySalario(String salario) throws RepositoryException {
+		try {
+			StringBuffer jpsql = new StringBuffer();
+			jpsql.append("SELECT ");
+			jpsql.append("f ");
+			jpsql.append("FROM ");
+			jpsql.append("Funcionario f ");
+			jpsql.append("WHERE ");
+			jpsql.append("LOWER(f.salario <) ");
+			jpsql.append("LIKE LOWER(:telefone) ");
+
+			Query query = getEntityManager().createQuery(jpsql.toString());
+			query.setParameter("salario", "%" + salario + "%");
+
+			return query.getResultList();
+
+		} catch (Exception e) {
+			throw new RepositoryException("Erro ao buscar telefone");
+		}
+	}
 }

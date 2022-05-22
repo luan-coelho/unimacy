@@ -5,29 +5,28 @@ import java.util.List;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-import com.gtbr.exception.ViaCepException;
-import com.gtbr.exception.ViaCepFormatException;
+import org.primefaces.event.SelectEvent;
 
-import br.unitins.unimacy.application.ApiCep;
 import br.unitins.unimacy.application.Session;
 import br.unitins.unimacy.application.Util;
 import br.unitins.unimacy.controller.Controller;
+import br.unitins.unimacy.controller.listing.PessoaJuridicaListing;
 import br.unitins.unimacy.exception.RepositoryException;
+import br.unitins.unimacy.model.filtro.FiltroPessoaJuridica;
 import br.unitins.unimacy.model.pessoa.Fornecedor;
 import br.unitins.unimacy.model.pessoa.PessoaJuridica;
-import br.unitins.unimacy.model.pessoa.endereco.Cidade;
-import br.unitins.unimacy.model.pessoa.endereco.Endereco;
-import br.unitins.unimacy.model.pessoa.endereco.Estado;
 import br.unitins.unimacy.repository.pessoa.FornecedorRepository;
-import br.unitins.unimacy.repository.pessoa.PessoaJuridicaRepository;
 
 @Named
 @ViewScoped
 public class FornecedorController extends Controller<Fornecedor> {
 
-	private static final long serialVersionUID = -2587172429280470098L;
+	private static final long serialVersionUID = -6638031078064686562L;
 
 	private List<Fornecedor> listaFornecedor;
+
+	private String pesquisa;
+	private FiltroPessoaJuridica filtro = FiltroPessoaJuridica.NOME;
 
 	public FornecedorController() {
 		super(new FornecedorRepository());
@@ -37,10 +36,51 @@ public class FornecedorController extends Controller<Fornecedor> {
 	public Fornecedor getEntity() {
 		if (entity == null) {
 			entity = new Fornecedor(new PessoaJuridica());
-			entity.getPessoaJuridica().setEndereco(new Endereco(new Cidade(new Estado())));
 		}
 
 		return entity;
+	}
+
+	public void abrirPessoaJuridicaListing() {
+		PessoaJuridicaListing listing = new PessoaJuridicaListing();
+		listing.open("90", "90");
+	}
+
+	public void obterPessoaJuridicaListing(SelectEvent<PessoaJuridica> event) {
+		PessoaJuridica pj = event.getObject();
+		FornecedorRepository repo = new FornecedorRepository();
+		Fornecedor funcionario = null;
+		try {
+			funcionario = repo.findByIdPessoaJuridica(pj.getId());
+		} catch (RepositoryException e) {
+			e.printStackTrace();
+		}
+		if (funcionario != null)
+			setEntity(funcionario);
+		else {
+			getEntity().setPessoaJuridica(pj);
+			salvar();
+		}
+	}
+
+	public String getPesquisa() {
+		return pesquisa;
+	}
+
+	public void setPesquisa(String pesquisa) {
+		this.pesquisa = pesquisa;
+	}
+
+	public FiltroPessoaJuridica getFiltro() {
+		return filtro;
+	}
+
+	public void setFiltro(FiltroPessoaJuridica filtro) {
+		this.filtro = filtro;
+	}
+
+	public FiltroPessoaJuridica[] getFiltroPessoaJuridica() {
+		return FiltroPessoaJuridica.values();
 	}
 
 	public List<Fornecedor> getListaFornecedor() {
@@ -48,7 +88,7 @@ public class FornecedorController extends Controller<Fornecedor> {
 			try {
 				listaFornecedor = getRepository().findAll();
 			} catch (RepositoryException e) {
-				Util.addErrorMessage("Falha ao buscar dados no banco");
+				Util.addErrorMessage("Falha ao buscar os dados no banco");
 				e.printStackTrace();
 			}
 		}
@@ -61,49 +101,70 @@ public class FornecedorController extends Controller<Fornecedor> {
 
 	@Override
 	public void limpar() {
-		this.listaFornecedor = null;
 		super.limpar();
+		listaFornecedor = null;
 	}
 
-	public void buscarCep() {
-		try {
-			entity.getPessoaJuridica().setEndereco(ApiCep.findCep(entity.getPessoaJuridica().getEndereco().getCep()));
-		} catch (ViaCepException e) {
-			Util.addErrorMessage("Informe um CEP válido");
-		} catch (ViaCepFormatException e) {
-			Util.addErrorMessage("CEP com formato inválido");
-		} catch (Exception e) {
-			Util.addErrorMessage("Falha ao buscar CEP. Digite os dados");
+	public void pesquisaPorFiltro() {
+		List<Fornecedor> listaPessoaAux = null;
+
+		FornecedorRepository repo = (FornecedorRepository) getRepository();
+
+		switch (filtro) {
+		case NOME: {
+			try {
+				listaPessoaAux = repo.findByNome(pesquisa);
+			} catch (RepositoryException e) {
+				Util.addErrorMessage("Falha ao realizar consulta");
+				e.printStackTrace();
+			}
+			break;
+		}
+		case CNPJ: {
+			try {
+				listaPessoaAux = (List<Fornecedor>) repo.findAllByCnpj(pesquisa);
+			} catch (RepositoryException e) {
+				Util.addErrorMessage("Falha ao consultar CPF");
+				e.printStackTrace();
+			}
+			break;
+		}
+		case EMAIL: {
+			try {
+				listaPessoaAux = repo.findByEmail(pesquisa);
+			} catch (RepositoryException e) {
+				Util.addErrorMessage("Falha ao consultar email");
+				e.printStackTrace();
+			}
+			break;
+		}
+		case TELEFONE: {
+			try {
+				listaPessoaAux = repo.findByTelefone(pesquisa);
+			} catch (RepositoryException e) {
+				Util.addErrorMessage("Falha ao consultar telefone");
+				e.printStackTrace();
+			}
+			break;
+		}
+		default:
+			break;
 		}
 
+		if (listaPessoaAux.isEmpty()) {
+			Util.addWarnMessage("Nenhum produto encontrado");
+			return;
+		}
+		listaFornecedor = listaPessoaAux;
 	}
-	
+
 	@Override
-	public void selecionarItem(Fornecedor obj) {
-		super.selecionarItem(obj);
+	public void editarItem(Fornecedor obj) {
+		Session.getInstance().set("funcionario-crud", obj);
+		Util.redirect("funcionario.xhtml");
 	}
-	
-	public void onItemSelect() {
-		String nomeEstado = entity.getPessoaJuridica().getEndereco().getCidade().getEstado().getNome();
 
-		Session.getInstance().set("nome-estado", nomeEstado);
-	}
-	
-	public void excluir(Fornecedor fornecedor) {
-		this.entity = fornecedor;
-		super.excluir();
-	}
-	
-	public void verificarCnpj() {
-		PessoaJuridicaRepository repo = new PessoaJuridicaRepository();
-
-		String cnpj = ((PessoaJuridica) entity.getPessoaJuridica()).getCnpj().trim();
-
-		PessoaJuridica pessoa = repo.findByCpnj(cnpj);
-
-		if (pessoa != null) {
-			Util.addErrorMessage("Já existe um registro cadastrado com esse CNPJ");
-		}
-		
+	public void selecionarItem(PessoaJuridica obj) {
+		Session.getInstance().set("pessoafisica", obj);
 	}
 }

@@ -38,6 +38,31 @@
 					</p:commandButton>
 				</div>
 
+				<h:panelGroup id="listingfornecedor">
+					<div class="p-mt-2">
+						<p:commandButton rendered="#{vendaController.funcionario == null}"
+							value="Selecionar Funcionário" icon="pi pi-user"
+							actionListener="#{vendaController.abrirFuncionarioListing}"
+							process="@this" styleClass="ui-button-warning">
+							<p:ajax event="dialogReturn"
+								listener="#{vendaController.obterFuncionarioListing}"
+								update="@form" />
+						</p:commandButton>
+
+						<h:panelGroup rendered="#{vendaController.funcionario != null}">
+
+							<p:chip
+								label="#{funcionario.pessoaFisica.nome.trim()} #{funcionario.pessoaFisica.sobreNome.trim()}"
+								removable="true">
+
+								<p:ajax event="close" listener="#{vendaController.limpar}"
+									update="@form:listingfornecedor" />
+							</p:chip>
+
+						</h:panelGroup>
+					</div>
+				</h:panelGroup>
+
 				<div class="p-d-flex p-jc-center">
 					<p:dataTable id="dataTable" var="produtoVenda"
 						styleClass="w-7/12 p-mt-4 border-collapse border border-slate-500 rounded-md ..."

@@ -34,6 +34,7 @@ public abstract class Listing<T extends DefaultEntity> implements Serializable {
 		options.put("height", "60%");
 		options.put("contentWidth", "100%");
 		options.put("contentHeight", "100%");
+		options.put("closeOnEscape", true);
 	
 		PrimeFaces.current().dialog().openDynamic(page, options, null);
 	}
@@ -47,6 +48,7 @@ public abstract class Listing<T extends DefaultEntity> implements Serializable {
 		options.put("height", height+"%");
 		options.put("contentWidth", "100%");
 		options.put("contentHeight", "100%");
+		options.put("closeOnEscape", true);
 	
 		PrimeFaces.current().dialog().openDynamic(page, options, null);
 	}

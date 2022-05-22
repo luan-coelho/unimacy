@@ -11,230 +11,108 @@
 <ui:composition template="template.xhtml">
 
 	<ui:define name="head">
-		<title>Gerência de Produto</title>
+		<title>Gerência de Fornecedor</title>
 	</ui:define>
 
 	<ui:define name="conteudo">
 
 		<p:growl id="growl" />
 
-		<div class="p-d-flex p-jc-center">
+		<div class="p-d-flex p-jc-center p-m-5">
 
-			<p:dataTable id="dataTable" var="fornecedor" style="width: 80%;"
+
+			<p:dataTable id="dataTable" var="fornecedor"
 				value="#{fornecedorController.listaFornecedor}" paginator="true"
 				rows="10"
-				styleClass="products-table p-mt-5 p-mb-5 shadow-2xl shadow-gray-700 rounded-lg p-5 w-9/12 m-0"
+				styleClass="products-table p-mt-5 p-mb-5 shadow-2xl shadow-gray-700 rounded-lg p-5 w-11/12 m-0"
 				rowSelectMode="add" paginatorPosition="bottom" allowUnsorting="true"
-				sortMode="single" stickyTopAt=".layout-topbar" stripedRows="true">
+				sortMode="single" stickyTopAt=".layout-topbar" stripedRows="true"
+				showGridlines="true">
+
+				<p:ajax event="cellEdit" listener="#{dtEditView.onCellEdit}"
+					update="@form" />
 
 				<f:facet name="header">
 					<div class="products-table-header">
 
-						<p:toolbar>
-							<p:toolbarGroup align="center">
-								<h2 class="p-mb-2">Gerência de Fornecedores</h2>
+						<h2 class="p-mb-2">Gerência de Fornecedor</h2>
 
-								<p:linkButton value="Cadastrar Fornecedor" icon="pi pi-plus"
-									styleClass="ui-button-success" href="fornecedor.xhtml" />
+						<p:toolbar>
+							<p:toolbarGroup align="left">
+								<div>
+									<p:commandButton value="Adicionar"
+										icon="pi pi-plus"
+										actionListener="#{fornecedorController.abrirPessoaJuridicaListing}">
+										<p:ajax event="dialogReturn"
+											listener="#{fornecedorController.obterPessoaJuridicaListing}"
+											update="@form" />
+									</p:commandButton>
+								</div>
+							</p:toolbarGroup>
+
+							<p:toolbarGroup align="right">
+								<div class="ui-inputgroup mt-4">
+									<p:inputText id="pesquisa"
+										value="#{fornecedorController.pesquisa}"
+										placeholder="Pesquisar por..." />
+									<p:selectOneMenu id="filtro"
+										value="#{fornecedorController.filtro}">
+										<f:selectItems
+											value="#{fornecedorController.filtroPessoaJuridica}"
+											itemValue="#{filtro}" />
+									</p:selectOneMenu>
+									<p:commandButton icon="pi pi-search"
+										styleClass="ui-button-warning"
+										actionListener="#{fornecedorController.pesquisaPorFiltro}"
+										process="pesquisa filtro @this" update="@form">
+									</p:commandButton>
+									<p:commandButton icon="pi pi-refresh"
+										styleClass="ui-button-success p-ml-1"
+										actionListener="#{fornecedorController.limpar}"
+										process="@this" update="@form">
+									</p:commandButton>
+								</div>
 							</p:toolbarGroup>
 						</p:toolbar>
 					</div>
 				</f:facet>
 
-				<p:column sortBy="#{fornecedor.pessoaJuridica.nomeFantasia}"
-					headerText="Nome">
-					<h:outputText value="#{fornecedor.pessoaJuridica.nomeFantasia}" />
+				<p:column headerText="Nome Fantasia">
+					<h:outputText
+						value="#{fornecedor.pessoaJuridica.nomeFantasia.trim()}" />
 				</p:column>
 
-				<p:column sortBy="#{fornecedor.pessoaJuridica.cnpj}"
-					headerText="CNPJ">
+				<p:column headerText="CPF">
 					<h:outputText value="#{fornecedor.pessoaJuridica.cnpj}" />
 				</p:column>
 
-				<p:column sortBy="#{fornecedor.pessoaJuridica.ativo}"
-					headerText="Ativo">
-					<p:toggleSwitch value="#{fornecedor.pessoaJuridica.ativo}">
+				<p:column headerText="Email">
+					<h:outputText value="#{fornecedor.pessoaJuridica.email}" />
+				</p:column>
+
+				<p:column headerText="Telefone">
+					<h:outputText value="#{fornecedor.pessoaJuridica.telefone}" />
+				</p:column>
+
+				<p:column headerText="Ativo">
+					<p:toggleSwitch id="toggle"
+						value="#{fornecedor.pessoaJuridica.ativo}">
 						<p:ajax listener="#{fornecedorController.alterar(fornecedor)}"
 							process="@this" update="@form:dataTable" />
+						<p:tooltip for="toggle"
+							value="#{fornecedor.pessoaJuridica.ativo ? 'Desativar' : 'Ativar'}"
+							showEffect="clip" hideEffect="fold" />
 					</p:toggleSwitch>
 				</p:column>
-				<p:column exportable="false">
-					<p:commandButton icon="pi pi-search"
-						styleClass="edit-button rounded-button ui-button-help p-mr-1"
-						onclick="PF('resumo-fornecedor').show()">
-						<p:ajax process="@this" update="@form:confirmar"
-							listener="#{fornecedorController.selecionarItem(fornecedor)}" />
-					</p:commandButton>
+
+				<p:column>
 					<p:commandButton icon="pi pi-pencil"
-						onclick="PF('editar-fornecedor').show()"
-						styleClass="edit-button rounded-button ui-button-info p-mr-1">
-						<p:ajax process="@this" update="@form:fornecedor"
-							listener="#{fornecedorController.selecionarItem(fornecedor)}" />
-					</p:commandButton>
-					<p:commandButton class="ui-button-danger rounded-button"
-						icon="pi pi-trash"
-						action="#{fornecedorController.excluir(fornecedor)}"
-						process="@this" update="@form:dataTable">
-						<p:confirm header="Você tem certeza?"
-							message="O registro deste fornecedor será excluído definitivamente"
-							icon="pi pi-exclamation-triangle" />
-					</p:commandButton>
+						styleClass="edit-button rounded-button ui-button-info p-mr-1 p-mb-1"
+						action="#{fornecedorController.editarItem(fornecedor)}" />
 				</p:column>
 
 			</p:dataTable>
-
-			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade"
-				responsive="true" width="450">
-				<p:commandButton value="Cancelar" type="button"
-					styleClass="ui-confirmdialog-no" />
-				<p:commandButton value="Confirmar" type="button"
-					update="@form:dataTable"
-					styleClass="ui-confirmdialog-yes ui-button-flat" />
-			</p:confirmDialog>
-
-			<p:dialog id="fornecedor-info" widgetVar="editar-fornecedor"
-				modal="true" onHide="PF('wiz').loadStep('tab0', false)"
-				draggable="false" header="Informações do Fornecedor"
-				showEffect="fade" minHeight="40" width="750">
-
-				<p:wizard nextLabel="Prosseguir" backLabel="Voltar" widgetVar="wiz">
-					<p:tab id="tab0" title="Informações básicas">
-						<p:panel id="fornecedor">
-
-							<p:messages id="messages" closable="true" />
-
-							<h:panelGroup layout="block">
-
-								<div class="ui-fluid p-formgrid p-grid">
-									<div class="p-field p-col-12 p-md-5">
-										<p:outputLabel for="nome" value="Nome Fantasia" />
-										<p:inputText id="nome" type="text"
-											value="#{fornecedorController.entity.pessoaJuridica.nomeFantasia}" />
-									</div>
-									<div class="p-field p-col-12 p-md-7">
-										<p:outputLabel for="razao" value="Razão Social" />
-										<p:inputText id="razao" type="text"
-											value="#{fornecedorController.entity.pessoaJuridica.razaoSocial}" />
-									</div>
-
-									<div class="p-field p-col-12 p-md-6">
-										<p:outputLabel value="CNPJ" />
-										<p:inputMask
-											value="#{fornecedorController.entity.pessoaJuridica.cnpj}"
-											mask="99.999.999/9999-99" id="cnpj" maxlength="18" />
-									</div>
-
-									<div class="p-field p-col-12 p-md-5">
-										<p:outputLabel for="insc-estadual" value="Inscrição Estadual" />
-										<p:inputText id="insc-estadual" type="text"
-											value="#{fornecedorController.entity.pessoaJuridica.inscEstadual}" />
-									</div>
-								</div>
-							</h:panelGroup>
-							<div class="ui-fluid p-formgrid p-grid">
-								<div class="p-field p-col-12 p-md-6">
-									<p:outputLabel for="email" value="Email" />
-									<p:inputText placeholder="exemplo@email.com" id="email"
-										type="email"
-										value="#{fornecedorController.entity.pessoaJuridica.email}" />
-								</div>
-
-								<div class="p-field p-col-12 p-md-3">
-									<p:outputLabel for="phone" value="Telefone" />
-									<p:inputMask mask="(99) 99999-9999" id="phone" maxlength="15"
-										value="#{fornecedorController.entity.pessoaJuridica.telefone}" />
-								</div>
-							</div>
-
-						</p:panel>
-					</p:tab>
-					<p:tab title="Endereço">
-						<p:panel id="endereco" header="Informe os dados do Endereço">
-							<div class="ui-fluid p-formgrid p-grid">
-
-								<div class="p-field p-col-12 p-md-2">
-									<p:outputLabel value="CEP " />
-									<p:inputMask mask="99999-999" id="cep" maxlength="9"
-										value="#{fornecedorController.entity.pessoaJuridica.endereco.cep}">
-										<p:ajax listener="#{fornecedorController.buscarCep}"
-											event="blur" process="@this @form:cep"
-											update="@form:endereco @form:growl" />
-									</p:inputMask>
-								</div>
-
-								<div class="p-field p-col-12 p-md-6">
-									<p:outputLabel value="Rua" />
-									<p:inputText id="rua"
-										value="#{fornecedorController.entity.pessoaJuridica.endereco.rua}" />
-								</div>
-
-								<div class="p-field p-col-12 p-md-2">
-									<p:outputLabel value="Número" />
-									<p:inputText id="numero"
-										value="#{fornecedorController.entity.pessoaJuridica.endereco.numero}" />
-								</div>
-
-								<div class="p-field p-col-12 p-md-3">
-									<p:outputLabel value="Bairro" />
-									<p:inputText id="bairro"
-										value="#{fornecedorController.entity.pessoaJuridica.endereco.bairro}" />
-								</div>
-
-								<div class="p-field p-col-12 p-md-5">
-									<p:outputLabel value="Complemento" />
-									<p:inputText id="complemento"
-										value="#{fornecedorController.entity.pessoaJuridica.endereco.complemento}" />
-								</div>
-
-								<div class="p-field p-col-12 p-md-5">
-									<p:outputLabel value="Estado" />
-									<p:autoComplete id="estado"
-										value="#{fornecedorController.entity.pessoaJuridica.endereco.cidade.estado.nome}"
-										completeMethod="#{estadoUtil.completeText}" scrollHeight="250"
-										placeholder="Digite o Estado" forceSelection="true">
-
-										<p:ajax event="itemSelect"
-											listener="#{fornecedorController.onItemSelect}"
-											process="@form:endereco" update="@form:endereco" />
-									</p:autoComplete>
-								</div>
-
-								<div class="p-field p-col-12 p-md-4">
-									<p:outputLabel value="Cidade " />
-									<p:autoComplete id="cidade"
-										value="#{fornecedorController.entity.pessoaJuridica.endereco.cidade.nome}"
-										completeMethod="#{cidadeUtil.completeText}" scrollHeight="250"
-										placeholder="Digite a Cidade"
-										disabled="#{fornecedorController.entity.pessoaJuridica.endereco.cidade.estado.nome == null}" />
-								</div>
-							</div>
-						</p:panel>
-					</p:tab>
-					<p:tab title="Confirmar Dados">
-						<components:SummaryFornecedor />
-						<div class="p-d-flex p-jc-md-end p-mt-2">
-							<p:commandButton value="Salvar" icon="pi pi-save"
-								styleClass="ui-button-success"
-								action="#{fornecedorController.incluir}" process="@this"
-								update="@form:dataTable @form:growl"
-								onclick="PF('editar-produto').hide()"
-								oncomplete="PF('wiz').loadStep('tab0', false)" />
-						</div>
-					</p:tab>
-
-				</p:wizard>
-			</p:dialog>
-
-			<p:dialog id="fornecedor-info-resumo" widgetVar="resumo-fornecedor"
-				modal="true" draggable="false" header="Informações do fornecedor"
-				showEffect="fade" minHeight="40" width="750">
-				<h:panelGroup id="confirmar">
-					<components:SummaryFornecedor />
-				</h:panelGroup>
-			</p:dialog>
-
 		</div>
-
 	</ui:define>
 </ui:composition>
 </html>

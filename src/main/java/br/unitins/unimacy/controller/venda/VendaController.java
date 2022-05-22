@@ -11,8 +11,11 @@ import org.primefaces.event.SelectEvent;
 
 import br.unitins.unimacy.application.Session;
 import br.unitins.unimacy.controller.Controller;
+import br.unitins.unimacy.controller.listing.FuncionarioListing;
 import br.unitins.unimacy.controller.listing.ProdutoListing;
 import br.unitins.unimacy.exception.RepositoryException;
+import br.unitins.unimacy.model.pessoa.Cliente;
+import br.unitins.unimacy.model.pessoa.Funcionario;
 import br.unitins.unimacy.model.produto.Produto;
 import br.unitins.unimacy.model.venda.ProdutoVenda;
 import br.unitins.unimacy.model.venda.Venda;
@@ -27,6 +30,9 @@ public class VendaController extends Controller<Venda> {
 
 	private List<Produto> listaProdutoRepository;
 	private List<ProdutoVenda> listaProdutoVenda;
+
+	private Funcionario funcionario;
+	private Cliente cliente;
 
 	private BigDecimal valorTotal;
 
@@ -78,6 +84,22 @@ public class VendaController extends Controller<Venda> {
 		this.listaProdutoVenda = listaProdutoVenda;
 	}
 
+	public Funcionario getFuncionario() {
+		return funcionario;
+	}
+
+	public void setFuncionario(Funcionario funcionario) {
+		this.funcionario = funcionario;
+	}
+
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+
 	ProdutoVenda produtoVenda = null;
 
 	public void calcularValorTotal() {
@@ -104,12 +126,25 @@ public class VendaController extends Controller<Venda> {
 		Session.getInstance().set("listaProduto", this.listaProdutoVenda);
 	}
 
-
 	public void obterProdutoListing(SelectEvent<Produto> event) {
 		Produto produto = event.getObject();
-		
+
 		getListaProdutoVenda().add(new ProdutoVenda(produto.getPreco(), 1, produto));
 
 		calcularValorTotal();
+	}
+
+	public void abrirFuncionarioListing() {
+		FuncionarioListing listing = new FuncionarioListing();
+		listing.open("40", "70");
+	}
+
+	public void obterFuncionarioListing(SelectEvent<Funcionario> event) {
+		setFuncionario(event.getObject());
+	}
+	
+	
+	public void limpar() {
+		funcionario = null;
 	}
 }
