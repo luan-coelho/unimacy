@@ -27,6 +27,8 @@ public class FornecedorController extends Controller<Fornecedor> {
 
 	private String pesquisa;
 	private FiltroPessoaJuridica filtro = FiltroPessoaJuridica.NOME;
+	
+	private boolean ocultarDesativados;
 
 	public FornecedorController() {
 		super(new FornecedorRepository());
@@ -99,6 +101,14 @@ public class FornecedorController extends Controller<Fornecedor> {
 		this.listaFornecedor = listaFornecedor;
 	}
 
+	public boolean isOcultarDesativados() {
+		return ocultarDesativados;
+	}
+
+	public void setOcultarDesativados(boolean ocultarDesativados) {
+		this.ocultarDesativados = ocultarDesativados;
+	}
+	
 	@Override
 	public void limpar() {
 		super.limpar();
@@ -160,11 +170,24 @@ public class FornecedorController extends Controller<Fornecedor> {
 
 	@Override
 	public void editarItem(Fornecedor obj) {
-		Session.getInstance().set("funcionario-crud", obj);
-		Util.redirect("funcionario.xhtml");
+		Session.getInstance().set("fornecedor-crud", obj);
+		Util.redirect("fornecedor.xhtml");
 	}
 
 	public void selecionarItem(PessoaJuridica obj) {
-		Session.getInstance().set("pessoafisica", obj);
+		Session.getInstance().set("fornecedor", obj);
+	}
+	
+	public void ocultarDesativados() {
+		if (this.ocultarDesativados) {
+			try {
+				setListaFornecedor(getRepository().findAll().stream()
+						.filter(fornecedor -> fornecedor.getPessoaJuridica().isAtivo()).toList());
+			} catch (RepositoryException e) {
+				e.printStackTrace();
+			}
+		} else {
+			limpar();
+		}
 	}
 }

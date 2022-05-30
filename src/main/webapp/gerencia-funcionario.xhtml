@@ -73,6 +73,15 @@
 									</p:commandButton>
 								</div>
 							</p:toolbarGroup>
+
+							<p:toolbarGroup align="right" styleClass="p-mt-3">
+								<p:selectBooleanCheckbox
+									value="#{funcionarioController.ocultarDesativados}"
+									itemLabel="Ocultar Funcionários Desativados">
+									<p:ajax update="@form"
+										listener="#{funcionarioController.ocultarDesativados}" />
+								</p:selectBooleanCheckbox>
+							</p:toolbarGroup>
 						</p:toolbar>
 					</div>
 				</f:facet>

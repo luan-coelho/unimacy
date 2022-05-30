@@ -2,7 +2,6 @@ package br.unitins.unimacy.application;
 
 import java.io.InputStream;
 import java.util.Properties;
-
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
 import jakarta.mail.PasswordAuthentication;
@@ -10,35 +9,33 @@ import jakarta.mail.Session;
 import jakarta.mail.Transport;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class Email {
-
 	private String usuario;
 	private String senha;
 	private String assunto;
 	private String emailDestino;
-	private String mensagem;
+	private String codigo;
 
-	public static void main(String[] args) {
-		Email email = new Email("lumyth.br@gmail.com", "Testando", "Novo teste");
-		System.out.println(email.enviar());
-	}
-
-	public Email(String emailDestino, String assunto, String mensagem) {
+	public Email(String emailDestino, String assunto, String codigo) {
 		this.emailDestino = emailDestino;
 		this.assunto = assunto;
-		this.mensagem = mensagem;
+		this.codigo = codigo;
 
 		Properties prop = new Properties();
 		try (InputStream is = this.getClass().getResourceAsStream("/config/email.properties")) {
 			prop.load(is);
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("\n\n\n\n NAO FOI ENCONTRADO O ARQUIVO email.properties na pasta config. \n\n\n\n");
+			System.out.println("\n\n\n\n NÃO FOI ENCONTRADO O ARQUIVO email.properties na pasta config. \n\n\n\n");
 		}
 
-		this.usuario = prop.getProperty("usuario");
-		this.senha = prop.getProperty("senha");
+		setUsuario(prop.getProperty("usuario"));
+		setSenha(prop.getProperty("senha"));
 	}
 
 	public boolean enviar() {
@@ -57,10 +54,22 @@ public class Email {
 		try {
 
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(getUsuario() + "@gmail.com"));
+			message.setFrom(new InternetAddress(getUsuario()));
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(getEmailDestino()));
 			message.setSubject(getAssunto());
-			message.setText(getMensagem());
+
+			Path path = Paths.get(
+					"C:\\Users\\Luan Coêlho\\Development\\Workspace\\unimacy\\src\\main\\webapp\\BodyForgotPassword.html");
+
+			try {
+				String content = Files.readString(path);
+				content = content.replace("T-000000", getCodigo());
+				content = content.replace("CODIGO", getCodigo());
+				// [T]{1}+[-]{1}+[0-9]{6}
+				message.setContent(content, "text/html");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 
 			// enviando o email
 			Transport.send(message);
@@ -75,8 +84,16 @@ public class Email {
 		return usuario;
 	}
 
+	private void setUsuario(String usuario) {
+		this.usuario = usuario;
+	}
+
 	private String getSenha() {
 		return senha;
+	}
+
+	private void setSenha(String senha) {
+		this.senha = senha;
 	}
 
 	public String getAssunto() {
@@ -95,12 +112,12 @@ public class Email {
 		this.emailDestino = emailDestino;
 	}
 
-	public String getMensagem() {
-		return mensagem;
+	public String getCodigo() {
+		return codigo;
 	}
 
-	public void setMensagem(String mensagem) {
-		this.mensagem = mensagem;
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
 	}
 
 }

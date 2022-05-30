@@ -29,20 +29,36 @@ public class Util {
 		}
 	}
 
-	private static void addMessage(String msg, Severity severity) {
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severity, msg, null));
+	private static void addMessage(String title, String msg, Severity severity) {
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severity, title, msg));
+	}
+	
+	private static void addMessage(String title, Severity severity) {
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severity, title, null));
+	}
+	
+	public static void addInfoMessage(String title, String msg) {
+		addMessage(title, msg, FacesMessage.SEVERITY_INFO);
 	}
 
-	public static void addErrorMessage(String msg) {
-		addMessage(msg, FacesMessage.SEVERITY_ERROR);
+	public static void addErrorMessage(String title, String msg) {
+		addMessage(title, msg, FacesMessage.SEVERITY_ERROR);
 	}
 
-	public static void addWarnMessage(String msg) {
-		addMessage(msg, FacesMessage.SEVERITY_WARN);
+	public static void addWarnMessage(String title, String msg) {
+		addMessage(title, msg, FacesMessage.SEVERITY_WARN);
 	}
 
-	public static void addInfoMessage(String msg) {
-		addMessage(msg, FacesMessage.SEVERITY_INFO);
+	public static void addInfoMessage(String title) {
+		addMessage(title, FacesMessage.SEVERITY_INFO);
+	}
+	
+	public static void addErrorMessage(String title) {
+		addMessage(title, FacesMessage.SEVERITY_ERROR);
+	}
+
+	public static void addWarnMessage(String title) {
+		addMessage(title, FacesMessage.SEVERITY_WARN);
 	}
 
 	public static String converteJsonEmString(BufferedReader buffereReader) throws IOException {

@@ -54,4 +54,9 @@ public class ProdutoVenda extends DefaultEntity {
 		this.produto = produto;
 	}
 
+	@Override
+	public String toString() {
+		return "ProdutoVenda [valorUnitario=" + valorUnitario + ", quantidade=" + quantidade + ", produto=" + produto
+				+ "]";
+	}
 }

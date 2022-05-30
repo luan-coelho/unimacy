@@ -3,6 +3,7 @@ package br.unitins.unimacy.controller.venda;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -105,19 +106,14 @@ public class VendaController extends Controller<Venda> {
 	public void calcularValorTotal() {
 		setValorTotal(new BigDecimal(0));
 
-		listaProdutoVenda.forEach(item -> {
-			BigDecimal x = BigDecimal.valueOf(item.getQuantidade());
-			valorTotal = item.getProduto().getPreco().multiply(x).add(valorTotal);
-
-			if (item.getQuantidade() == 0) {
-				produtoVenda = item;
-			}
-		});
-
-		if (produtoVenda != null) {
-			listaProdutoVenda.remove(produtoVenda);
-			produtoVenda = null;
-		}
+		setListaProdutoVenda(getListaProdutoVenda()
+				.stream()
+				.filter(item -> item.getQuantidade() > 0)
+				.map(item -> {
+					setValorTotal(item.getProduto().getPreco().multiply(BigDecimal.valueOf(item.getQuantidade()))
+					.add(getValorTotal()));
+			return item;
+		}).collect(Collectors.toList()));
 	}
 
 	public void abrirProdutoListing() {
@@ -142,8 +138,7 @@ public class VendaController extends Controller<Venda> {
 	public void obterFuncionarioListing(SelectEvent<Funcionario> event) {
 		setFuncionario(event.getObject());
 	}
-	
-	
+
 	public void limpar() {
 		funcionario = null;
 	}

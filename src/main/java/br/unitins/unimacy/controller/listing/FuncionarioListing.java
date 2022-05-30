@@ -32,7 +32,7 @@ public class FuncionarioListing extends Listing<Funcionario> {
 	public void setPesquisa(String pesquisa) {
 		this.pesquisa = pesquisa;
 	}
-	
+
 	public FiltroFuncionario getFiltro() {
 		return filtro;
 	}
@@ -40,9 +40,9 @@ public class FuncionarioListing extends Listing<Funcionario> {
 	public void setFiltro(FiltroFuncionario filtro) {
 		this.filtro = filtro;
 	}
-	
+
 	public FiltroFuncionario[] getFiltroFuncionario() {
-		FiltroFuncionario[] filtro = {FiltroFuncionario.NOME, FiltroFuncionario.CPF};
+		FiltroFuncionario[] filtro = { FiltroFuncionario.NOME, FiltroFuncionario.CPF };
 		return filtro;
 	}
 
@@ -87,10 +87,10 @@ public class FuncionarioListing extends Listing<Funcionario> {
 			Util.addWarnMessage("Nenhum produto encontrado");
 			return;
 		}
-		
-		setList(listaPessoaAux);
+
+		setList(listaPessoaAux.stream().filter(funcionario -> funcionario.getPessoaFisica().isAtivo()).toList());
 	}
-	
+
 	public void selecionarItem(Funcionario obj) {
 		Session.getInstance().set("funcionario", obj);
 	}

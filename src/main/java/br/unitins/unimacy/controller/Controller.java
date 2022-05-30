@@ -38,6 +38,20 @@ public abstract class Controller<T extends DefaultEntity> implements Serializabl
 			Util.addErrorMessage(e.getMessage());
 		}
 	}
+	
+	public void salvar(T obj) {
+		try {
+			getRepository().save(obj);
+			Util.addInfoMessage("Salvamento realizado com sucesso.");
+			limpar();
+		} catch (RepositoryException e) {
+			e.printStackTrace();
+			Util.addErrorMessage(e.getMessage());
+		} catch (VersionException e) {
+			e.printStackTrace();
+			Util.addErrorMessage(e.getMessage());
+		}
+	}
 
 	public void alterar(T obj) {
 		this.entity = obj;

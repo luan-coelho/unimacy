@@ -95,14 +95,14 @@
 								<p:outputLabel for="preco" value="Preço" />
 								<p:inputNumber id="preco" placeholder="R$"
 									value="#{cadastroProdutoController.entity.preco}" symbol="R$"
-									symbolPosition="p" decimalSeparator="," thousandSeparator="." />
+									symbolPosition="p" decimalSeparator="," thousandSeparator="." minValue="0"/>
 							</div>
 
 							<div class="p-field p-col-12 p-md-3">
 								<p:outputLabel for="peso" value="Peso" />
 								<p:inputNumber id="peso"
 									value="#{cadastroProdutoController.entity.peso}"
-									symbolPosition="p" decimalSeparator="," thousandSeparator="." />
+									symbolPosition="p" decimalSeparator="," thousandSeparator="." minValue="0"/>
 							</div>
 
 							<div class="p-field p-col-12 p-md-3">

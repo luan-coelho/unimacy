@@ -54,6 +54,30 @@ public class FornecedorRepository extends Repository<Fornecedor> {
 			throw new RepositoryException("Erro ao buscar CPF");
 		}
 	}
+	
+	public Fornecedor findByCpnj(String cnpj) {
+		try {
+			StringBuffer jpsql = new StringBuffer();
+			jpsql.append("SELECT ");
+			jpsql.append("f ");
+			jpsql.append("FROM ");
+			jpsql.append("Fornecedor f ");
+			jpsql.append("WHERE ");
+			jpsql.append("f.pessoaJuridica.cnpj LIKE :cnpj ");
+
+			Query query = getEntityManager().createQuery(jpsql.toString());
+			query.setParameter("cnpj", cnpj);
+
+			return (Fornecedor) query.getSingleResult();
+
+		} catch (NoResultException e) {
+			return null;
+		} catch (Exception e) {
+			System.out.println("Erro ao executar o método de find.");
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	@SuppressWarnings("unchecked")
 	public List<Fornecedor> findByTelefone(String telefone) throws RepositoryException {

@@ -40,8 +40,7 @@
 						<p:toolbar>
 							<p:toolbarGroup align="left">
 								<div>
-									<p:commandButton value="Adicionar"
-										icon="pi pi-plus"
+									<p:commandButton value="Adicionar" icon="pi pi-plus"
 										actionListener="#{fornecedorController.abrirPessoaJuridicaListing}">
 										<p:ajax event="dialogReturn"
 											listener="#{fornecedorController.obterPessoaJuridicaListing}"
@@ -72,6 +71,15 @@
 										process="@this" update="@form">
 									</p:commandButton>
 								</div>
+							</p:toolbarGroup>
+
+							<p:toolbarGroup align="right" styleClass="p-mt-3">
+								<p:selectBooleanCheckbox
+									value="#{fornecedorController.ocultarDesativados}"
+									itemLabel="Ocultar Fornecedores Desativados">
+									<p:ajax update="@form"
+										listener="#{fornecedorController.ocultarDesativados}" />
+								</p:selectBooleanCheckbox>
 							</p:toolbarGroup>
 						</p:toolbar>
 					</div>

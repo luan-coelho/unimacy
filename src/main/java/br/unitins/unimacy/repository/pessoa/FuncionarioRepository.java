@@ -154,7 +154,7 @@ public class FuncionarioRepository extends Repository<Funcionario> {
 		}
 	}
 
-	public Funcionario findOneByEmail(String email) throws RepositoryException {
+	public Funcionario findOneByEmailAndCpf(String email, String cpf) throws RepositoryException {
 		try {
 			StringBuffer jpql = new StringBuffer();
 			jpql.append("SELECT ");
@@ -163,9 +163,12 @@ public class FuncionarioRepository extends Repository<Funcionario> {
 			jpql.append("Funcionario f ");
 			jpql.append("WHERE ");
 			jpql.append("f.pessoaFisica.email LIKE :email ");
+			jpql.append("AND ");
+			jpql.append("f.pessoaFisica.cpf LIKE :cpf ");
 
 			Query query = getEntityManager().createQuery(jpql.toString());
 			query.setParameter("email", email);
+			query.setParameter("cpf", cpf);
 
 			return (Funcionario) query.getSingleResult();
 		} catch (NoResultException e) {

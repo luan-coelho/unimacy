@@ -29,6 +29,8 @@ public class FuncionarioController extends Controller<Funcionario> {
 	private String pesquisa;
 	private FiltroPessoaFisica filtro = FiltroPessoaFisica.NOME;
 
+	private boolean ocultarDesativados;
+
 	public FuncionarioController() {
 		super(new FuncionarioRepository());
 	}
@@ -104,6 +106,14 @@ public class FuncionarioController extends Controller<Funcionario> {
 		this.listaFuncionario = listaFuncionario;
 	}
 
+	public boolean isOcultarDesativados() {
+		return ocultarDesativados;
+	}
+
+	public void setOcultarDesativados(boolean ocultarDesativados) {
+		this.ocultarDesativados = ocultarDesativados;
+	}
+
 	@Override
 	public void limpar() {
 		super.limpar();
@@ -171,5 +181,18 @@ public class FuncionarioController extends Controller<Funcionario> {
 
 	public void selecionarItem(PessoaFisica obj) {
 		Session.getInstance().set("pessoafisica", obj);
+	}
+
+	public void ocultarDesativados() {
+		if (this.ocultarDesativados) {
+			try {
+				setListaFuncionario(getRepository().findAll().stream()
+						.filter(funcionario -> funcionario.getPessoaFisica().isAtivo()).toList());
+			} catch (RepositoryException e) {
+				e.printStackTrace();
+			}
+		} else {
+			limpar();
+		}
 	}
 }

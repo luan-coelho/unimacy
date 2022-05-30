@@ -13,21 +13,32 @@
 <h:body>
 	<h:form>
 		<p:panel>
-			<div class="ui-inputgroup mt-10">
-				<p:inputText id="pesquisa" value="#{pessoaFisicaListing.pesquisa}"
-					placeholder="Pesquisar por..." />
-				<p:selectOneMenu id="filtro" value="#{pessoaFisicaListing.filtro}">
-					<f:selectItems value="#{pessoaFisicaListing.filtroPessoaFisica}"
-						itemValue="#{filtro}" />
-				</p:selectOneMenu>
-				<p:commandButton icon="pi pi-search" styleClass="ui-button-warning"
-					actionListener="#{pessoaFisicaListing.pesquisaPorFiltro}"
-					process="pesquisa filtro @this" update="dataTable-pessoa">
-				</p:commandButton>
-			</div>
+			<p:toolbar>
+				<p:toolbarGroup align="left">
+					<p:linkButton value="Cadastrar Pessoa Física" icon="pi pi-plus"
+						styleClass="ui-button-success p-mb-3 link"
+						href="pessoafisica.xhtml" target="true" />
+				</p:toolbarGroup>
+
+				<p:toolbarGroup align="right">
+					<div class="ui-inputgroup mt-10">
+						<p:inputText id="pesquisa" value="#{pessoaFisicaListing.pesquisa}"
+							placeholder="Pesquisar por..." />
+						<p:selectOneMenu id="filtro" value="#{pessoaFisicaListing.filtro}">
+							<f:selectItems value="#{pessoaFisicaListing.filtroPessoaFisica}"
+								itemValue="#{filtro}" />
+						</p:selectOneMenu>
+						<p:commandButton icon="pi pi-search"
+							styleClass="ui-button-warning p-mt-2"
+							actionListener="#{pessoaFisicaListing.pesquisaPorFiltro}"
+							process="pesquisa filtro @this" update="dataTable-pessoa">
+						</p:commandButton>
+					</div>
+				</p:toolbarGroup>
+			</p:toolbar>
 
 			<p:dataTable id="dataTable-pessoa"
-				value="#{pessoaFisicaListing.list}" var="pessoa">
+				value="#{pessoaFisicaListing.list}" var="pessoa" scrollable="true" scrollHeight="250">
 				<p:column headerText="Nome Completo: ">
 					<p:outputLabel value="#{pessoa.nome} #{pessoa.sobreNome}" />
 				</p:column>
