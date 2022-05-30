@@ -19,7 +19,6 @@ public abstract class Pessoa extends DefaultEntity {
 
 	@Email(message = "Informe um email válido")
 	private String email;
-	private String senha;
 	private String telefone;
 
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -47,14 +46,6 @@ public abstract class Pessoa extends DefaultEntity {
 		this.email = email;
 	}
 	
-	public String getSenha() {
-		return senha;
-	}
-	
-	public void setSenha(String senha) {
-		this.senha = senha;
-	}
-
 	public String getTelefone() {
 		return telefone;
 	}

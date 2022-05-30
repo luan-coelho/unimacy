@@ -42,9 +42,10 @@ public class RedefinePasswordController extends Controller<Funcionario> implemen
 		}
 
 		if (validarCodigo()) {
-			getForgotPassword().getFuncionario().getPessoaFisica().setSenha(novaSenha);
+			getForgotPassword().getFuncionario()
+					.setSenha(Util.hash(getForgotPassword().getFuncionario().getPessoaFisica().getEmail(), novaSenha));
 			getForgotPassword().setUtilizado(true);
-			
+
 			try {
 				getForgotPasswordRepository().save(forgotPassword);
 			} catch (RepositoryException e) {
@@ -64,7 +65,7 @@ public class RedefinePasswordController extends Controller<Funcionario> implemen
 					Util.addWarnMessage("Código expirado", "Realize uma nova solicitação");
 					forgotPassword.setUtilizado(true);
 					return false;
-				}else if(forgotPassword.getUtilizado()) {
+				} else if (forgotPassword.getUtilizado()) {
 					Util.addWarnMessage("Código já utilizado", "Realize uma nova solicitação");
 					return false;
 				}

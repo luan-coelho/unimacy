@@ -19,7 +19,8 @@ public class LoginController {
 		FuncionarioRepository repo = new FuncionarioRepository();
 		Funcionario funcionarioLogado = null;
 		try {
-			funcionarioLogado = repo.validarLogin(getFuncionario());
+			funcionarioLogado = repo.validarLogin(getFuncionario().getPessoaFisica().getEmail().trim(),
+					Util.hash(funcionario));
 		} catch (RepositoryException e) {
 			e.printStackTrace();
 		}
@@ -32,7 +33,6 @@ public class LoginController {
 			return;
 		}
 		Util.addErrorMessage("Login ou senha inválido.");
-
 	}
 
 	public void limpar() {

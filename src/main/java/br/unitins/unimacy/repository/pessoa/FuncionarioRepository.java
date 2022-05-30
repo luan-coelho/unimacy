@@ -11,7 +11,7 @@ import br.unitins.unimacy.repository.Repository;
 
 public class FuncionarioRepository extends Repository<Funcionario> {
 
-	public Funcionario validarLogin(Funcionario funcionario) throws RepositoryException {
+	public Funcionario validarLogin(String email, String senha) throws RepositoryException {
 		try {
 			StringBuffer jpsql = new StringBuffer();
 			jpsql.append("SELECT ");
@@ -21,12 +21,12 @@ public class FuncionarioRepository extends Repository<Funcionario> {
 			jpsql.append("WHERE ");
 			jpsql.append(" f.pessoaFisica.email = :email ");
 			jpsql.append("AND ");
-			jpsql.append(" f.pessoaFisica.senha = :senha ");
+			jpsql.append(" f.senha = :senha ");
 
 			Query query = getEntityManager().createQuery(jpsql.toString());
 
-			query.setParameter("email", funcionario.getPessoaFisica().getEmail());
-			query.setParameter("senha", funcionario.getPessoaFisica().getSenha());
+			query.setParameter("email", email);
+			query.setParameter("senha", senha);
 
 			return (Funcionario) query.getSingleResult();
 		} catch (NoResultException e) {

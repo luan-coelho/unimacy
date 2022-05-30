@@ -13,8 +13,10 @@ public class Funcionario extends DefaultEntity {
 
 	private static final long serialVersionUID = 6772757150528225911L;
 
+	private String senha;
+
 	private BigDecimal salario;
-	
+
 	@OneToOne
 	@JoinColumn(unique = true)
 	private PessoaFisica pessoaFisica;
@@ -28,7 +30,7 @@ public class Funcionario extends DefaultEntity {
 		this.salario = salario;
 		this.pessoaFisica = pessoaFisica;
 	}
-	
+
 	public Funcionario(PessoaFisica pessoaFisica) {
 		super();
 		this.pessoaFisica = pessoaFisica;
@@ -48,6 +50,14 @@ public class Funcionario extends DefaultEntity {
 
 	public void setPessoaFisica(PessoaFisica pessoaFisica) {
 		this.pessoaFisica = pessoaFisica;
+	}
+
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
 	}
 
 }

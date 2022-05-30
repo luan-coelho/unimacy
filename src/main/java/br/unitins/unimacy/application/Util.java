@@ -8,6 +8,10 @@ import javax.faces.application.FacesMessage.Severity;
 import javax.faces.context.FacesContext;
 import javax.faces.context.Flash;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
+import br.unitins.unimacy.model.pessoa.Funcionario;
+
 public class Util {
 
 	private static Flash flash;
@@ -18,6 +22,18 @@ public class Util {
 		}
 
 		return flash;
+	}
+
+	public static String hash(Funcionario funcionario) {
+		return hash(funcionario.getPessoaFisica().getEmail() + funcionario.getSenha());
+	}
+	
+	public static String hash(String email, String senha) {
+		return hash(email+senha);
+	}
+	
+	public static String hash(String valor) {
+		return DigestUtils.sha256Hex(valor);
 	}
 
 	public static void redirect(String page) {
@@ -32,11 +48,11 @@ public class Util {
 	private static void addMessage(String title, String msg, Severity severity) {
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severity, title, msg));
 	}
-	
+
 	private static void addMessage(String title, Severity severity) {
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severity, title, null));
 	}
-	
+
 	public static void addInfoMessage(String title, String msg) {
 		addMessage(title, msg, FacesMessage.SEVERITY_INFO);
 	}
@@ -52,7 +68,7 @@ public class Util {
 	public static void addInfoMessage(String title) {
 		addMessage(title, FacesMessage.SEVERITY_INFO);
 	}
-	
+
 	public static void addErrorMessage(String title) {
 		addMessage(title, FacesMessage.SEVERITY_ERROR);
 	}
