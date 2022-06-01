@@ -207,7 +207,7 @@
 						<p:commandButton value="Alterar" icon="pi pi-pencil"
 							styleClass="ui-button-success"
 							action="#{perfilController.alterarSenha}" update="@form:growl novasenha"
-							process="novasenha" />
+							process="novasenha" oncomplete="PF('senha').hide()"/>
 					</div>
 
 				</h:panelGroup>

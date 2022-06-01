@@ -14,7 +14,7 @@
 				<span class="image"> <img src="resources/images/logo.png"
 					alt="Logo Unimacy" /></span>
 
-				<div class="text logo-text">
+				<div class="text logo-text p-mt-2">
 					<span class="name">Unimacy</span> <span class="profession">Gestão</span>
 				</div>
 			</div>
@@ -52,12 +52,11 @@
 
 			<div class="bottom-content">
 				<div class="avatar" align="left">
-					<a href="perfil.xhtml"><p:avatar label="Luan Coêlho" icon="pi pi-user" styleClass="p-mr-2" shape="circle"
-						size="large" /></a>
+					<a href="perfil.xhtml"><p:avatar label="Luan Coêlho"
+							icon="pi pi-user" styleClass="p-mr-2" shape="circle" size="large" /></a>
 				</div>
-				<li><a href="login.xhtml"> <i class='bx bx-log-out icon'></i>
-						<span class="text nav-text">Sair</span>
-				</a></li>
+				<li><p:commandButton icon="pi pi-sign-out" styleClass="ui-button-danger p-mb-5" value="Sair"
+						actionListener="#{templateController.encerrarSessao}" process="@this" /></li>
 			</div>
 		</div>
 	</nav>

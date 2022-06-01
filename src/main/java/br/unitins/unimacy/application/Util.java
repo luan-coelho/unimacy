@@ -6,7 +6,6 @@ import java.io.IOException;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
 import javax.faces.context.FacesContext;
-import javax.faces.context.Flash;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -14,24 +13,16 @@ import br.unitins.unimacy.model.pessoa.Funcionario;
 
 public class Util {
 
-	private static Flash flash;
-
-	public static Flash getFlashScope() {
-		if (flash == null) {
-			flash = FacesContext.getCurrentInstance().getExternalContext().getFlash();
-		}
-
-		return flash;
-	}
-
+	// Método que define como será a composição da senha
 	public static String hash(Funcionario funcionario) {
 		return hash(funcionario.getPessoaFisica().getCpf() + funcionario.getSenha());
 	}
-	
+
 	public static String hash(String cpf, String senha) {
-		return hash(cpf+senha);
+		return hash(cpf + senha);
 	}
-	
+
+	// Criptografa a senha
 	public static String hash(String valor) {
 		return DigestUtils.sha256Hex(valor);
 	}

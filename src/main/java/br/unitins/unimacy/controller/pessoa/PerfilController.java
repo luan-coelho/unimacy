@@ -1,6 +1,6 @@
 package br.unitins.unimacy.controller.pessoa;
 
-import javax.faces.view.ViewScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import javax.validation.constraints.NotBlank;
 
@@ -18,7 +18,7 @@ import br.unitins.unimacy.repository.pessoa.FuncionarioRepository;
 import br.unitins.unimacy.repository.pessoa.PessoaFisicaRepository;
 
 @Named
-@ViewScoped
+@SessionScoped
 public class PerfilController extends Controller<Funcionario> {
 
 	private static final long serialVersionUID = -8919718922968640074L;
@@ -60,6 +60,10 @@ public class PerfilController extends Controller<Funcionario> {
 		try {
 			PessoaFisicaRepository repo = new PessoaFisicaRepository();
 			repo.save(getEntity().getPessoaFisica());
+			
+			setEntity(getRepository().findById(getEntity().getId()));
+			Session.getInstance().set("funcionarioLogado", getEntity());
+			
 			Util.addInfoMessage("Alterações realizadas com sucesso.");
 			this.isEditable = false;
 		} catch (RepositoryException e) {
@@ -70,20 +74,38 @@ public class PerfilController extends Controller<Funcionario> {
 			Util.addErrorMessage(e.getMessage());
 		}
 	}
+	
+	@Override
+	public void salvar(Funcionario obj) {
+		try {
+			getRepository().save(obj);
+			
+			setEntity(getRepository().findById(getEntity().getId()));
+			Session.getInstance().set("funcionarioLogado", getEntity());
+			
+			Util.addInfoMessage("Senha alterada com sucesso.");
+		} catch (RepositoryException e) {
+			e.printStackTrace();
+			Util.addErrorMessage(e.getMessage());
+		} catch (VersionException e) {
+			e.printStackTrace();
+			Util.addErrorMessage(e.getMessage());
+		}
+	}
 
 	public void alterarSenha() {
-		if (senhaAtual.equals(getEntity().getSenha())) {
-			if (!senha.equals(novaSenha)) {
-				Util.addErrorMessage("As senhas não coincidem");
-				return;
-			}
-		}else {
-			Util.addErrorMessage("Senha atual incorreta");
+		if (!senha.equals(novaSenha)) {
+			Util.addErrorMessage("As senhas não coincidem");
 			return;
 		}
 
-		getEntity().setSenha(Util.hash(getEntity().getPessoaFisica().getCpf(), novaSenha));
-		salvar();
+		if (Util.hash(getEntity().getPessoaFisica().getCpf()+senhaAtual).equals(getEntity().getSenha())) {
+			getEntity().setSenha(Util.hash(getEntity().getPessoaFisica().getCpf()+novaSenha));
+			salvar(getEntity());
+		} else {
+			Util.addErrorMessage("Senha atual incorreta");
+			return;
+		}
 	}
 
 	@Override
