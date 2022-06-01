@@ -43,7 +43,7 @@ public class RedefinePasswordController extends Controller<Funcionario> implemen
 
 		if (validarCodigo()) {
 			getForgotPassword().getFuncionario()
-					.setSenha(Util.hash(getForgotPassword().getFuncionario().getPessoaFisica().getEmail(), novaSenha));
+					.setSenha(Util.hash(getForgotPassword().getFuncionario().getPessoaFisica().getCpf(), novaSenha));
 			getForgotPassword().setUtilizado(true);
 
 			try {
@@ -53,7 +53,7 @@ public class RedefinePasswordController extends Controller<Funcionario> implemen
 			} catch (VersionException e) {
 				e.printStackTrace();
 			}
-			Util.addInfoMessage("Sucesso!", "Senha alterada com sucesso");
+			Util.redirect("login.xhtml");
 		}
 	}
 

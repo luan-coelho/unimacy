@@ -224,4 +224,27 @@ public class FuncionarioRepository extends Repository<Funcionario> {
 			throw new RepositoryException("Erro ao buscar telefone");
 		}
 	}
+
+	public Funcionario findOneByEmail(String email) throws RepositoryException {
+		try {
+			StringBuffer jpsql = new StringBuffer();
+			jpsql.append("SELECT ");
+			jpsql.append("f ");
+			jpsql.append("FROM ");
+			jpsql.append("Funcionario f ");
+			jpsql.append("WHERE ");
+			jpsql.append("f.pessoaFisica.email ");
+			jpsql.append("LIKE :email ");
+
+			Query query = getEntityManager().createQuery(jpsql.toString());
+			query.setParameter("email", email);
+
+			return (Funcionario) query.getSingleResult();
+		} catch (NoResultException e) {
+			System.out.println(e.getMessage());
+			return null;
+		} catch (Exception e) {
+			throw new RepositoryException("Erro ao buscar email");
+		}
+	}
 }

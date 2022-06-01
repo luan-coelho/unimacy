@@ -25,11 +25,11 @@ public class Util {
 	}
 
 	public static String hash(Funcionario funcionario) {
-		return hash(funcionario.getPessoaFisica().getEmail() + funcionario.getSenha());
+		return hash(funcionario.getPessoaFisica().getCpf() + funcionario.getSenha());
 	}
 	
-	public static String hash(String email, String senha) {
-		return hash(email+senha);
+	public static String hash(String cpf, String senha) {
+		return hash(cpf+senha);
 	}
 	
 	public static String hash(String valor) {

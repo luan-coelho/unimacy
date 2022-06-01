@@ -62,7 +62,7 @@ public class FuncionarioController extends Controller<Funcionario> {
 			setEntity(funcionario);
 		else {
 			getEntity().setPessoaFisica(pf);
-			getEntity().setSenha(getEntity().getPessoaFisica().getEmail());
+			getEntity().setSenha(getEntity().getPessoaFisica().getCpf());
 			getEntity().setSenha(
 					Util.hash(getEntity()));
 			salvar();
