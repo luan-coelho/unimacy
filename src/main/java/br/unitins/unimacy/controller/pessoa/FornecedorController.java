@@ -123,7 +123,7 @@ public class FornecedorController extends Controller<Fornecedor> {
 		switch (filtro) {
 		case NOME: {
 			try {
-				listaPessoaAux = repo.findByNome(pesquisa);
+				listaPessoaAux = repo.findAllByNome(pesquisa);
 			} catch (RepositoryException e) {
 				Util.addErrorMessage("Falha ao realizar consulta");
 				e.printStackTrace();

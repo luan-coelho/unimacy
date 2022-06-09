@@ -24,7 +24,10 @@ public class CategoriaListing extends ListingSql<Categoria> {
 	public void pesquisar() {
 		CategoriaRepository repo = new CategoriaRepository();
 		try {
-			setList(repo.findByNomeNativeSql(pesquisa));
+			setList(repo.findByNomeNativeSql(pesquisa)
+					.stream()
+					.filter(categoria -> (boolean) categoria[2] == true)
+					.toList());
 		} catch (RepositoryException e) {
 			e.printStackTrace();
 			Util.addErrorMessage("Problema ao realizar a consulta.");

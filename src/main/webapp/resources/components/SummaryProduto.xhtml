@@ -16,13 +16,24 @@
 					styleClass="outputLabel" />
 			</div>
 
-			<div class="p-field p-col-12 p-md-4">
-			</div>
+			<div class="p-field p-col-12 p-md-4"></div>
 
 			<div class="p-field p-col-12 p-md-4">
 				<p:outputLabel value="Fornecedor: " />
 				<h:outputText value="#{summaryProdutoController.entity.fornecedor}"
 					styleClass="outputLabel" />
+			</div>
+
+			<div class="p-field p-col-12 p-md-3">
+				<p:outputLabel value="Categoria: " />
+				<p:repeat var="categoria"
+					value="#{summaryProdutoController.entity.categoria}">
+					<p:chip label="#{categoria.nome}" styleClass="p-mr-2 p-mt-1 p-mb-1">
+						<p:ajax event="close"
+							listener="#{cadastroProdutoController.removerCategoria(categoria)}"
+							update="@form" />
+					</p:chip>
+				</p:repeat>
 			</div>
 
 			<div class="p-field p-col-12 p-md-4">

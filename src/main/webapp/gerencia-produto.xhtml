@@ -84,8 +84,15 @@
 					</p:repeat>
 				</p:column>
 
-				<p:column headerText="Lote">
-					<h:outputText value="#{produto.lote}" />
+				<p:column headerText="Ativo">
+					<p:toggleSwitch id="toggle"
+						value="#{produto.ativo}">
+						<p:ajax listener="#{produtoController.alterar(produto)}"
+							process="@this" update="@form:dataTable" />
+						<p:tooltip for="toggle"
+							value="#{produto.ativo ? 'Desativar' : 'Ativar'}"
+							showEffect="clip" hideEffect="fold" />
+					</p:toggleSwitch>
 				</p:column>
 
 				<p:column headerText="Fornecedor">

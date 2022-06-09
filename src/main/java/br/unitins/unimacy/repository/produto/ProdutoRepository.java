@@ -121,7 +121,8 @@ public class ProdutoRepository extends Repository<Produto> {
 			sql.append("  p.nome, ");
 			sql.append("  p.quantestoque, ");
 			sql.append("  p.preco, ");
-			sql.append("  c.nome AS nome_categoria ");
+			sql.append("  c.nome AS nome_categoria, ");
+			sql.append("  c.ativo ");
 			sql.append("FROM ");
 			sql.append("  Produto p, ");
 			sql.append("  Categoria c ");

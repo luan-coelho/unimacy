@@ -20,7 +20,6 @@
 
 		<div class="p-d-flex p-jc-center p-m-5">
 
-
 			<p:dataTable id="dataTable" var="fornecedor"
 				value="#{fornecedorController.listaFornecedor}" paginator="true"
 				rows="10"
@@ -90,7 +89,7 @@
 						value="#{fornecedor.pessoaJuridica.nomeFantasia.trim()}" />
 				</p:column>
 
-				<p:column headerText="CPF">
+				<p:column headerText="CNPJ">
 					<h:outputText value="#{fornecedor.pessoaJuridica.cnpj}" />
 				</p:column>
 

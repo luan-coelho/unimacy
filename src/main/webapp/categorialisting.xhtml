@@ -38,8 +38,9 @@
 			</p:dataTable>
 		</p:panel>
 
-		<p:dialog id="dialog" header="Adicionar Categoria" widgetVar="cadastro-categoria"
-			width="550" draggable="false" showEffect="fade">
+		<p:dialog id="dialog" header="Adicionar Categoria"
+			widgetVar="cadastro-categoria" width="550" draggable="false"
+			showEffect="fade">
 
 
 			<div class="ui-inputgroup p-mt-4">
@@ -49,21 +50,31 @@
 				<p:commandButton value="Salvar" icon="pi pi-save"
 					styleClass="ui-button-success"
 					actionListener="#{categoriaController.salvar}"
-					process="@this @this:nome-categoria"
-					update="@form:categoria-table"/>
+					process="@this @this:nome-categoria" update="@form:categoria-table" />
 			</div>
 
 			<p:dataTable id="categoria-table" var="categoria"
-				value="#{categoriaController.listaCategoria}" scrollable="true" scrollHeight="250">
-				<p:column headerText="Nome">
+				value="#{categoriaController.listaCategoria}" paginator="true"
+				rows="3" rowSelectMode="add" paginatorPosition="bottom" stripedRows="true">
+				<p:column>
 					<h:outputText value="#{categoria.nome}" />
 				</p:column>
 				<p:column>
-					<p:commandButton icon="pi pi-pencil"
-						styleClass="edit-button rounded-button ui-button-info p-mr-1"
-						actionListener="#{categoriaController.selecionarItem(categoria)}"
-						process="@this" update="form:nome-categoria">
-					</p:commandButton>
+					<div class="p-d-flex p-jc-center p-ai-center">
+						<p:commandButton icon="pi pi-pencil"
+							styleClass="edit-button rounded-button ui-button-info p-mr-1"
+							actionListener="#{categoriaController.selecionarItem(categoria)}"
+							process="@this" update="form:nome-categoria">
+						</p:commandButton>
+
+						<p:toggleSwitch id="toggle" value="#{categoria.ativo}">
+							<p:ajax listener="#{categoriaController.alterar(categoria)}"
+								process="@this" update="@form:categoria-table" />
+							<p:tooltip for="toggle"
+								value="#{categoria.ativo ? 'Desativar' : 'Ativar'}"
+								showEffect="clip" hideEffect="fold" />
+						</p:toggleSwitch>
+					</div>
 				</p:column>
 			</p:dataTable>
 

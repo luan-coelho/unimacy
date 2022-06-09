@@ -10,15 +10,38 @@ import br.unitins.unimacy.model.pessoa.Fornecedor;
 import br.unitins.unimacy.repository.Repository;
 
 public class FornecedorRepository extends Repository<Fornecedor> {
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<Fornecedor> findAllByNome(String nome) throws RepositoryException {
+		try {
+			StringBuffer jpsql = new StringBuffer();
+			jpsql.append("SELECT ");
+			jpsql.append("  f ");
+			jpsql.append("FROM ");
+			jpsql.append("  Fornecedor f ");
+			jpsql.append("WHERE ");
+			jpsql.append("LOWER(f.pessoaJuridica.nomeFantasia) ");
+			jpsql.append("LIKE LOWER(:nome) ");
+
+			Query query = getEntityManager().createQuery(jpsql.toString());
+			query.setParameter("nome", "%" + nome + "%");
+
+			return query.getResultList();
+
+		} catch (Exception e) {
+			throw new RepositoryException("Erro ao buscar email");
+		}
+	}
 
 	@SuppressWarnings("unchecked")
 	public List<Fornecedor> findByEmail(String email) throws RepositoryException {
 		try {
 			StringBuffer jpsql = new StringBuffer();
 			jpsql.append("SELECT ");
-			jpsql.append("f ");
+			jpsql.append("  f ");
 			jpsql.append("FROM ");
-			jpsql.append("Fornecedor f ");
+			jpsql.append("  Fornecedor f ");
 			jpsql.append("WHERE ");
 			jpsql.append("LOWER(f.pessoaJuridica.email) ");
 			jpsql.append("LIKE LOWER(:email) ");
@@ -38,9 +61,9 @@ public class FornecedorRepository extends Repository<Fornecedor> {
 		try {
 			StringBuffer jpsql = new StringBuffer();
 			jpsql.append("SELECT ");
-			jpsql.append("f ");
+			jpsql.append("  f ");
 			jpsql.append("FROM ");
-			jpsql.append("Fornecedor f ");
+			jpsql.append("  Fornecedor f ");
 			jpsql.append("WHERE ");
 			jpsql.append("f.pessoaJuridica.cnpj LIKE :cnpj ");
 
@@ -59,9 +82,9 @@ public class FornecedorRepository extends Repository<Fornecedor> {
 		try {
 			StringBuffer jpsql = new StringBuffer();
 			jpsql.append("SELECT ");
-			jpsql.append("f ");
+			jpsql.append("  f ");
 			jpsql.append("FROM ");
-			jpsql.append("Fornecedor f ");
+			jpsql.append("  Fornecedor f ");
 			jpsql.append("WHERE ");
 			jpsql.append("f.pessoaJuridica.cnpj LIKE :cnpj ");
 
@@ -84,9 +107,9 @@ public class FornecedorRepository extends Repository<Fornecedor> {
 		try {
 			StringBuffer jpsql = new StringBuffer();
 			jpsql.append("SELECT ");
-			jpsql.append("f ");
+			jpsql.append("  f ");
 			jpsql.append("FROM ");
-			jpsql.append("Fornecedor f ");
+			jpsql.append("  Fornecedor f ");
 			jpsql.append("WHERE ");
 			jpsql.append("LOWER(f.pessoaJuridica.telefone) ");
 			jpsql.append("LIKE LOWER(:telefone) ");
@@ -105,11 +128,11 @@ public class FornecedorRepository extends Repository<Fornecedor> {
 		try {
 			StringBuffer jpql = new StringBuffer();
 			jpql.append("SELECT ");
-			jpql.append("f ");
+			jpql.append("  f ");
 			jpql.append("FROM ");
-			jpql.append("Fornecedor f ");
+			jpql.append("  Fornecedor f ");
 			jpql.append("WHERE ");
-			jpql.append("f.pessoaJuridica.id = :id ");
+			jpql.append("  f.pessoaJuridica.id = :id ");
 
 			Query query = getEntityManager().createQuery(jpql.toString());
 			query.setParameter("id", id);

@@ -16,7 +16,8 @@ public class CategoriaRepository extends Repository<Categoria> {
 			StringBuffer sql = new StringBuffer();
 			sql.append("SELECT ");
 			sql.append("  c.id, ");
-			sql.append("  c.nome ");
+			sql.append("  c.nome, ");
+			sql.append("  c.ativo ");
 			sql.append("FROM ");
 			sql.append("  Categoria c ");
 			sql.append("WHERE ");

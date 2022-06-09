@@ -1,9 +1,6 @@
 package br.unitins.unimacy.model.produto;
 
-import java.util.List;
-
 import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
 
 import br.unitins.unimacy.model.DefaultEntity;
 
@@ -13,9 +10,6 @@ public class Categoria extends DefaultEntity{
 	private static final long serialVersionUID = -3189112079821397727L;
 	
 	private String nome;
-	
-	@ManyToMany
-	private List<Produto> produtos;
 	
 	public Categoria() {
 		// TODO Auto-generated constructor stub

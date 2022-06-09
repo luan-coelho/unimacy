@@ -28,7 +28,10 @@ public class ProdutoListingSql extends ListingSql<Produto> {
 	public void pesquisar() {
 		ProdutoRepository repo = new ProdutoRepository();
 		try {
-			setList(repo.findByNomeNativeSql(pesquisa));
+			setList(repo.findByNomeNativeSql(pesquisa)
+					.stream()
+					.filter(categoria -> (boolean) categoria[5] == true)
+					.toList());
 		} catch (RepositoryException e) {
 			e.printStackTrace();
 			Util.addErrorMessage("Problema ao realizar a consulta.");
