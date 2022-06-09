@@ -13,7 +13,7 @@ import org.primefaces.event.SelectEvent;
 import br.unitins.unimacy.application.Session;
 import br.unitins.unimacy.controller.Controller;
 import br.unitins.unimacy.controller.listing.FuncionarioListing;
-import br.unitins.unimacy.controller.listing.ProdutoListing;
+import br.unitins.unimacy.controller.listing.ProdutoListingSql;
 import br.unitins.unimacy.exception.RepositoryException;
 import br.unitins.unimacy.model.pessoa.Cliente;
 import br.unitins.unimacy.model.pessoa.Funcionario;
@@ -37,18 +37,59 @@ public class VendaController extends Controller<Venda> {
 
 	private BigDecimal valorTotal;
 
-	public BigDecimal getValorTotal() {
-		if (valorTotal == null)
-			valorTotal = new BigDecimal(0);
-		return valorTotal;
-	}
-
-	public void setValorTotal(BigDecimal valorTotal) {
-		this.valorTotal = valorTotal;
-	}
+	private Integer etapaVenda = 0;
 
 	public VendaController() {
 		super(new VendaRepository());
+	}
+
+	public void pagamento() {
+		this.etapaVenda = 1;
+	}
+
+	public void calcularValorTotal() {
+		setValorTotal(new BigDecimal(0));
+
+		setListaProdutoVenda(getListaProdutoVenda().stream().filter(item -> item.getQuantidade() > 0).map(item -> {
+			setValorTotal(item.getProduto().getPreco().multiply(BigDecimal.valueOf(item.getQuantidade()))
+					.add(getValorTotal()));
+			return item;
+		}).collect(Collectors.toList()));
+	}
+
+	public void abrirProdutoListing() {
+		ProdutoListingSql listing = new ProdutoListingSql();
+		listing.open(70, 70);
+		Session.getInstance().set("listaProduto", this.listaProdutoVenda);
+	}
+
+	public void obterProdutoListing(SelectEvent<Produto> event) {
+		Produto produto = event.getObject();
+
+		getListaProdutoVenda().add(new ProdutoVenda(produto.getPreco(), 1, produto));
+
+		calcularValorTotal();
+	}
+
+	public void abrirFuncionarioListing() {
+		FuncionarioListing listing = new FuncionarioListing();
+		listing.open(40, 70);
+	}
+
+	public void obterFuncionarioListing(SelectEvent<Funcionario> event) {
+		setFuncionario(event.getObject());
+	}
+
+	public void limpar() {
+		funcionario = null;
+	}
+
+	public Integer getEtapaVenda() {
+		return etapaVenda;
+	}
+
+	public void setEtapaVenda(Integer etapaVenda) {
+		this.etapaVenda = etapaVenda;
 	}
 
 	@Override
@@ -101,45 +142,13 @@ public class VendaController extends Controller<Venda> {
 		this.cliente = cliente;
 	}
 
-	ProdutoVenda produtoVenda = null;
-
-	public void calcularValorTotal() {
-		setValorTotal(new BigDecimal(0));
-
-		setListaProdutoVenda(getListaProdutoVenda()
-				.stream()
-				.filter(item -> item.getQuantidade() > 0)
-				.map(item -> {
-					setValorTotal(item.getProduto().getPreco().multiply(BigDecimal.valueOf(item.getQuantidade()))
-					.add(getValorTotal()));
-			return item;
-		}).collect(Collectors.toList()));
+	public BigDecimal getValorTotal() {
+		if (valorTotal == null)
+			valorTotal = new BigDecimal(0);
+		return valorTotal;
 	}
 
-	public void abrirProdutoListing() {
-		ProdutoListing listing = new ProdutoListing();
-		listing.open("70", "70");
-		Session.getInstance().set("listaProduto", this.listaProdutoVenda);
-	}
-
-	public void obterProdutoListing(SelectEvent<Produto> event) {
-		Produto produto = event.getObject();
-
-		getListaProdutoVenda().add(new ProdutoVenda(produto.getPreco(), 1, produto));
-
-		calcularValorTotal();
-	}
-
-	public void abrirFuncionarioListing() {
-		FuncionarioListing listing = new FuncionarioListing();
-		listing.open("40", "70");
-	}
-
-	public void obterFuncionarioListing(SelectEvent<Funcionario> event) {
-		setFuncionario(event.getObject());
-	}
-
-	public void limpar() {
-		funcionario = null;
+	public void setValorTotal(BigDecimal valorTotal) {
+		this.valorTotal = valorTotal;
 	}
 }

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+	<meta charset="UTF-8" />
+	<title>Pagamento</title>
+
+	<h:outputStylesheet library="webjars"
+		name="primeflex/2.0.0/primeflex.min.css" />
+	<h:outputStylesheet library="css" name="pagamento.css" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</h:head>
+<h:body>
+	<h:form id="form">
+
+		<p:growl id="growl" />
+
+		<div class="container">
+			<h1>Confirmar meio de pagamento</h1>
+			<div class="first-row">
+				<div class="owner">
+					<h3>Titular</h3>
+					<div class="input-field">
+						<input type="text" />
+					</div>
+				</div>
+				<div class="cvv">
+					<h3>CVV</h3>
+					<div class="input-field">
+						<input type="password" />
+					</div>
+				</div>
+			</div>
+			<div class="second-row">
+				<div class="card-number">
+					<h3>Número do Cartão</h3>
+					<div class="input-field">
+						<input type="text" />
+					</div>
+				</div>
+			</div>
+			<div class="third-row">
+				<h3>Número do Cartão</h3>
+				<div class="selection">
+					<div class="date">
+						<select name="months" id="months">
+							<option value="Jan">Jan</option>
+							<option value="Feb">Feb</option>
+							<option value="Mar">Mar</option>
+							<option value="Apr">Apr</option>
+							<option value="May">May</option>
+							<option value="Jun">Jun</option>
+							<option value="Jul">Jul</option>
+							<option value="Aug">Aug</option>
+							<option value="Sep">Sep</option>
+							<option value="Oct">Oct</option>
+							<option value="Nov">Nov</option>
+							<option value="Dec">Dec</option>
+						</select> <select name="years" id="years">
+							<option value="2020">2020</option>
+							<option value="2019">2019</option>
+							<option value="2018">2018</option>
+							<option value="2017">2017</option>
+							<option value="2016">2016</option>
+							<option value="2015">2015</option>
+						</select>
+					</div>
+					<div class="cards">
+						<img src="resources/images/mc.png" alt="" /> <img src="resources/images/vi.png" alt="" /> <img
+							src="resources/images/pp.png" alt="" />
+					</div>
+				</div>
+			</div>
+			
+			<p:commandButton value="Confirmar" />
+		</div>
+
+	</h:form>
+
+	<h:outputScript library="js" name="login.js" />
+</h:body>
+
+</html>

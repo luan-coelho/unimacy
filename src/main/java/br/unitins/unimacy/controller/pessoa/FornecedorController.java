@@ -45,7 +45,7 @@ public class FornecedorController extends Controller<Fornecedor> {
 
 	public void abrirPessoaJuridicaListing() {
 		PessoaJuridicaListing listing = new PessoaJuridicaListing();
-		listing.open("90", "90");
+		listing.open(90, 90);
 	}
 
 	public void obterPessoaJuridicaListing(SelectEvent<PessoaJuridica> event) {

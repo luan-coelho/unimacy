@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.OptimisticLockException;
 import javax.persistence.Query;
+import javax.transaction.Transactional;
 
 import br.unitins.unimacy.application.JPAUtil;
 import br.unitins.unimacy.exception.RepositoryException;
@@ -21,6 +22,7 @@ public class Repository<T extends DefaultEntity> {
 		setEntityManager(JPAUtil.getEntityManager());
 	}
 
+	@Transactional
 	public void save(T entity) throws RepositoryException, VersionException {
 		try {
 			getEntityManager().getTransaction().begin();
@@ -50,6 +52,7 @@ public class Repository<T extends DefaultEntity> {
 
 	}
 
+	@Transactional
 	public void save(@SuppressWarnings("unchecked") T... entitys) throws RepositoryException {
 		try {
 			getEntityManager().getTransaction().begin();

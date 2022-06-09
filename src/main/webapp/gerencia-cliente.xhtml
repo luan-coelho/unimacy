@@ -19,30 +19,182 @@
 		<p:growl id="growl" />
 
 		<div
-			class="p-d-flex p-flex-column p-m-5 shadow-2xl shadow-gray-700 rounded-lg w-9/12">
+			class="p-d-flex p-flex-column p-m-5 shadow-2xl shadow-gray-700 rounded-lg w-11/12">
 
 			<p:panel header="Clientes">
-				<div>
-					<p:commandButton value="Adicionar novo cliente - Pessoa Física"
-						icon="pi pi-box"
-						actionListener="#{cadastroClienteController.abrirPessoaFisicaListing}">
-						<p:ajax event="dialogReturn"
-							listener="#{cadastroClienteController.obterPessoaFisicaListing}"
-							update="@form" />
-					</p:commandButton>
-				</div>
 
-				<div>
-					<p:commandButton value="Adicionar novo cliente - Pessoa Jurídica"
-						icon="pi pi-box"
-						actionListener="#{cadastroClienteController.abrirPessoaJuridicaListing}">
-						<p:ajax event="dialogReturn"
-							listener="#{cadastroClienteController.obterPessoaJuridicaListing}"
-							update="@form" />
-					</p:commandButton>
-				</div>
+				<p:tabView id="tabview">
+					<p:tab title="Pessoa Física">
+						<div>
+							<p:commandButton value="Adicionar novo cliente" icon="pi pi-box"
+								actionListener="#{cadastroClienteController.abrirPessoaFisicaListing}"
+								styleClass="p-mb-3">
+								<p:ajax event="dialogReturn"
+									listener="#{cadastroClienteController.obterPessoaFisicaListing}"
+									update="@form" />
+							</p:commandButton>
+						</div>
+
+						<div class="p-d-flex p-jc-center">
+							<p:dataTable var="clientepf"
+								value="#{cadastroClienteController.listaClientePf}"
+								paginator="true" rows="10" rowSelectMode="add"
+								paginatorPosition="bottom" allowUnsorting="true"
+								sortMode="single" stickyTopAt=".layout-topbar"
+								stripedRows="true" showGridlines="true">
+
+								<f:facet name="header">
+									<div class="ui-inputgroup mt-4">
+										<p:inputText id="pesquisapf"
+											value="#{cadastroClienteController.pesquisaPf}"
+											placeholder="Pesquisar por..." />
+										<p:selectOneMenu id="filtropf"
+											value="#{cadastroClienteController.filtroPf}">
+											<f:selectItems
+												value="#{cadastroClienteController.filtroPessoaFisica}"
+												itemValue="#{filtro}" />
+										</p:selectOneMenu>
+										<p:commandButton icon="pi pi-search"
+											styleClass="ui-button-warning"
+											actionListener="#{cadastroClienteController.pesquisaPfPorFiltro}"
+											process="pesquisapf filtropf @this" update="@form">
+										</p:commandButton>
+										<p:commandButton icon="pi pi-refresh"
+											styleClass="ui-button-success p-ml-1"
+											actionListener="#{cadastroClienteController.limpar}"
+											process="@this" update="@form">
+										</p:commandButton>
+									</div>
+								</f:facet>
+
+								<p:column headerText="Nome Completo">
+									<h:outputText
+										value="#{clientepf.pessoaFisica.nome.trim()} #{pessoa.sobreNome.trim()}" />
+								</p:column>
+
+								<p:column headerText="CPF">
+									<h:outputText value="#{clientepf.pessoaFisica.cpf}" />
+								</p:column>
+
+								<p:column headerText="Ativo">
+									<p:toggleSwitch value="#{clientepf.pessoaFisica.ativo}">
+										<p:ajax
+											listener="#{cadastroClienteController.alterar(clientepf)}"
+											process="@this" update="@form" />
+									</p:toggleSwitch>
+								</p:column>
+
+								<p:column>
+									<p:commandButton icon="pi pi-search"
+										styleClass="edit-button rounded-button ui-button-help p-mr-1"
+										onclick="PF('resumo-pessoa').show()">
+										<p:ajax process="@this" update="form:tabview:confirmar"
+											listener="#{cadastroClienteController.selecionarItem(clientepf)}" />
+									</p:commandButton>
+									<p:commandButton icon="pi pi-pencil"
+										styleClass="edit-button rounded-button ui-button-info p-mr-1 p-mb-1"
+										action="#{cadastroClienteController.editarItem(pessoa)}" />
+								</p:column>
+
+							</p:dataTable>
+
+							<p:dialog widgetVar="resumo-pessoa" modal="true"
+								draggable="false" header="Informações Pessoais"
+								showEffect="fade" minHeight="40" width="750">
+								<h:panelGroup id="confirmar">
+									<components:SummaryPessoaFisica />
+								</h:panelGroup>
+							</p:dialog>
+
+						</div>
+					</p:tab>
+					<p:tab title="Pessoa Jurídica">
+						<div>
+							<p:commandButton value="Adicionar novo cliente" icon="pi pi-box"
+								actionListener="#{cadastroClienteController.abrirPessoaJuridicaListing}"
+								styleClass="p-mb-3">
+								<p:ajax event="dialogReturn"
+									listener="#{cadastroClienteController.obterPessoaJuridicaListing}"
+									update="@form" />
+							</p:commandButton>
+						</div>
+
+						<p:dataTable var="clientepj"
+							value="#{cadastroClienteController.listaClientePj}"
+							paginator="true" rows="10" rowSelectMode="add"
+							paginatorPosition="bottom" allowUnsorting="true"
+							sortMode="single" stickyTopAt=".layout-topbar" stripedRows="true"
+							showGridlines="true">
+
+							<f:facet name="header">
+								<div class="products-table-header">
+
+									<div class="ui-inputgroup mt-4">
+										<p:inputText id="pesquisapj"
+											value="#{cadastroClienteController.pesquisaPj}"
+											placeholder="Pesquisar por..." />
+										<p:selectOneMenu id="filtropj"
+											value="#{cadastroClienteController.filtroPj}">
+											<f:selectItems
+												value="#{cadastroClienteController.filtroPessoaJuridica}"
+												itemValue="#{filtro}" />
+										</p:selectOneMenu>
+										<p:commandButton icon="pi pi-search"
+											styleClass="ui-button-warning"
+											actionListener="#{cadastroClienteController.pesquisaPJPorFiltro}"
+											process="pesquisapj filtropj @this" update="@form">
+										</p:commandButton>
+										<p:commandButton icon="pi pi-refresh"
+											styleClass="ui-button-success p-ml-1"
+											actionListener="#{cadastroClienteController.limpar}"
+											process="@this" update="@form">
+										</p:commandButton>
+									</div>
+								</div>
+							</f:facet>
+
+							<p:column headerText="Nome Fantasia">
+								<h:outputText
+									value="#{clientepj.pessoaJuridica.nomeFantasia.trim()}" />
+							</p:column>
+
+							<p:column headerText="CNPJ">
+								<h:outputText value="#{clientepj.pessoaJuridica.cnpj}" />
+							</p:column>
+
+							<p:column headerText="Ativo">
+								<p:toggleSwitch value="#{clientepj.pessoaJuridica.ativo}">
+									<p:ajax
+										listener="#{cadastroClienteController.alterar(clientepj)}"
+										process="@this" update="@form" />
+								</p:toggleSwitch>
+							</p:column>
+
+							<p:column>
+								<p:commandButton icon="pi pi-search"
+									styleClass="edit-button rounded-button ui-button-help p-mr-1"
+									onclick="PF('resumo-pj').show()">
+									<p:ajax process="@this" update="form:tabview:confirmar-pj"
+										listener="#{cadastroClienteController.selecionarItem(clientepj)}" />
+								</p:commandButton>
+								<p:commandButton icon="pi pi-pencil"
+									action="#{cadastroClienteController.editarItem(pessoa)}"
+									styleClass="edit-button rounded-button ui-button-info p-mr-1 p-mb-1">
+								</p:commandButton>
+							</p:column>
+
+						</p:dataTable>
+
+						<p:dialog widgetVar="resumo-pj" modal="true" draggable="false"
+							header="Informações básicas" showEffect="fade" minHeight="40"
+							width="750">
+							<h:panelGroup id="confirmar-pj">
+								<components:SummaryPessoaJuridica />
+							</h:panelGroup>
+						</p:dialog>
+					</p:tab>
+				</p:tabView>
 			</p:panel>
-
 		</div>
 	</ui:define>
 </ui:composition>

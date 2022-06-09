@@ -4,32 +4,45 @@
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
 <h:head>
-	<title>Selecione uma Pessoa Física</title>
+	<title>Selecione uma Pessoa Jurídica</title>
 	<h:outputStylesheet library="webjars"
 		name="primeflex/2.0.0/primeflex.min.css" />
 </h:head>
 <h:body>
 	<h:form>
 		<p:panel>
-			<div class="ui-inputgroup mt-10">
-				<p:inputText id="pesquisa" value="#{pessoaJuridicaListing.pesquisa}"
-					placeholder="Pesquisar por..." />
-				<p:selectOneMenu id="filtro" value="#{pessoaJuridicaListing.filtro}">
-					<f:selectItems value="#{pessoaJuridicaListing.filtroPessoaJuridica}"
-						itemValue="#{filtro}" />
-				</p:selectOneMenu>
-				<p:commandButton icon="pi pi-search" styleClass="ui-button-warning"
-					actionListener="#{pessoaJuridicaListing.pesquisaPorFiltro}"
-					process="pesquisa filtro @this" update="dataTable-pessoa">
-				</p:commandButton>
-			</div>
+			<p:toolbar>
+				<p:toolbarGroup align="left">
+					<p:linkButton value="Cadastrar Pessoa Jurídica" icon="pi pi-plus"
+						styleClass="ui-button-success p-mb-3 link"
+						href="pessoajuridica.xhtml" target="true" />
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<div class="ui-inputgroup mt-10">
+						<p:inputText id="pesquisa"
+							value="#{pessoaJuridicaListing.pesquisa}"
+							placeholder="Pesquisar por..." />
+						<p:selectOneMenu id="filtro"
+							value="#{pessoaJuridicaListing.filtro}">
+							<f:selectItems
+								value="#{pessoaJuridicaListing.filtroPessoaJuridica}"
+								itemValue="#{filtro}" />
+						</p:selectOneMenu>
+						<p:commandButton icon="pi pi-search"
+							styleClass="ui-button-warning"
+							actionListener="#{pessoaJuridicaListing.pesquisaPorFiltro}"
+							process="pesquisa filtro @this" update="dataTable-pessoa">
+						</p:commandButton>
+					</div>
+				</p:toolbarGroup>
+			</p:toolbar>
 
 			<p:dataTable id="dataTable-pessoa"
 				value="#{pessoaJuridicaListing.list}" var="pessoa">
 				<p:column headerText="Nome Fantasia: ">
 					<p:outputLabel value="#{pessoa.nomeFantasia}" />
 				</p:column>
-				
+
 				<p:column headerText="CNPJ">
 					<h:outputText value="#{pessoa.cnpj}" />
 				</p:column>
@@ -37,15 +50,15 @@
 				<p:column headerText="Inscrição Estadual">
 					<h:outputText value="#{pessoa.inscEstadual}" />
 				</p:column>
-				
+
 				<p:column headerText="Razão Social">
-					
+
 				</p:column>
 
 				<p:column headerText="Email">
 					<p:tag styleClass="p-mr-2" value="#{pessoa.email}"></p:tag>
 				</p:column>
-				
+
 				<p:column headerText="Telefone">
 					<h:outputText value="#{pessoa.telefone}" />
 				</p:column>

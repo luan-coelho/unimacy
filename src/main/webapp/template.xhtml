@@ -18,7 +18,7 @@
 		name="primeflex/2.0.0/primeflex.min.css" />
 	<link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css'
 		rel='stylesheet' />
-		
+
 	<ui:insert name="head">
 
 	</ui:insert>
@@ -37,6 +37,17 @@
 				</ui:insert>
 			</div>
 		</div>
+
+		<p:ajaxStatus onstart="PF('statusDialog').show()"
+			onsuccess="PF('statusDialog').hide()" />
+
+		<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+			closable="false" resizable="false" showHeader="false">
+			<div class="p-text-center">
+				<p:graphicImage height="150px" width="200px"
+					value="./resources/images/loading.gif" />
+			</div>
+		</p:dialog>
 
 	</h:form>
 

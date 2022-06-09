@@ -28,6 +28,8 @@ public class DefaultEntity implements Serializable {
 
 	private LocalDateTime dataAlteracao;
 
+	private boolean ativo = true;
+
 	@PrePersist
 	private void gerarDataCadastro() {
 		dataCadastro = LocalDateTime.now();
@@ -60,6 +62,14 @@ public class DefaultEntity implements Serializable {
 
 	public void setDataAlteracao(LocalDateTime dataAlteracao) {
 		this.dataAlteracao = dataAlteracao;
+	}
+
+	public boolean isAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
 	}
 
 	@Override

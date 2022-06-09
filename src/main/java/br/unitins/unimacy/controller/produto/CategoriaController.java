@@ -16,21 +16,32 @@ public class CategoriaController extends Controller<Categoria> {
 
 	private static final long serialVersionUID = -2587172429280470098L;
 
+	private List<Categoria> listaCategoria;
+
 	public CategoriaController() {
 		super(new CategoriaRepository());
 	}
 
+	@Override
+	public void salvar() {
+		super.salvar();
+		setListaCategoria(null);
+	}
+	
 	public List<Categoria> getListaCategoria() {
-		List<Categoria> listaCategoria = null;
-
-		try {
-			listaCategoria = getRepository().findAll();
-		} catch (RepositoryException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (listaCategoria == null) {
+			try {
+				listaCategoria = getRepository().findAll();
+			} catch (RepositoryException e) {
+				e.printStackTrace();
+			}
 		}
 
 		return listaCategoria;
+	}
+
+	public void setListaCategoria(List<Categoria> listaCategoria) {
+		this.listaCategoria = listaCategoria;
 	}
 
 	@Override
@@ -42,13 +53,7 @@ public class CategoriaController extends Controller<Categoria> {
 		return entity;
 	}
 
-	public void excluir(Categoria categoria) {
-		entity = categoria;
-		super.excluir();
-	}
-
 	public void selecionarItem(Categoria categoria) {
 		this.entity = categoria;
 	}
-
 }

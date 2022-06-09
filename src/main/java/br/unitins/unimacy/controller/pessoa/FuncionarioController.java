@@ -46,7 +46,7 @@ public class FuncionarioController extends Controller<Funcionario> {
 
 	public void abrirPessoaFisicaListing() {
 		PessoaFisicaListing listing = new PessoaFisicaListing();
-		listing.open("90", "90");
+		listing.open(90, 90);
 	}
 
 	public void obterPessoaFisicaListing(SelectEvent<PessoaFisica> event) {

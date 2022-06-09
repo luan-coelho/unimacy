@@ -24,7 +24,6 @@ public abstract class Controller<T extends DefaultEntity> implements Serializabl
 		this.repository = repository;
 	}
 
-	// Incluir e Alterar
 	public void salvar() {
 		try {
 			getRepository().save(getEntity());

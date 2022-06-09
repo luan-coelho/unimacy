@@ -24,76 +24,88 @@
 			<p:panel
 				styleClass="shadow-2xl shadow-gray-700 rounded-lg p-5 w-11/12 m-0">
 
-				<p:steps styleClass="p-mb-5">
+				<p:steps styleClass="p-mb-5"
+					activeIndex="#{vendaController.etapaVenda}">
 					<p:menuitem value="Selecionar Produtos" />
 					<p:menuitem value="Pagamento" />
 				</p:steps>
 
-				<div>
-					<p:commandButton value="Selecionar Produto" icon="pi pi-box"
-						actionListener="#{vendaController.abrirProdutoListing}"
-						process="@this" styleClass="link">
-						<p:ajax event="dialogReturn"
-							listener="#{vendaController.obterProdutoListing}" update="@form" />
-					</p:commandButton>
-				</div>
-
-				<h:panelGroup id="listingfornecedor">
-					<div class="p-mt-2">
-						<p:commandButton rendered="#{vendaController.funcionario == null}"
-							value="Selecionar Funcionário" icon="pi pi-user"
-							actionListener="#{vendaController.abrirFuncionarioListing}"
-							process="@this" styleClass="ui-button-warning">
-							<p:ajax event="dialogReturn"
-								listener="#{vendaController.obterFuncionarioListing}"
-								update="@form" />
+				<h:panelGroup rendered="#{vendaController.etapaVenda == 0}">
+					<div class="ui-inputgroup mt-10">
+						<p:inputText id="pesquisa" value="#{produtoListing.pesquisa}"
+							placeholder="Pesquisar produto" />
+						<p:commandButton icon="pi pi-search"
+							styleClass="ui-button-warning"
+							actionListener="#{produtoListing.pesquisaPorFiltro}"
+							process="pesquisa @this" update="@form">
 						</p:commandButton>
-
-						<h:panelGroup rendered="#{vendaController.funcionario != null}">
-
-							<p:chip
-								label="#{funcionario.pessoaFisica.nome.trim()} #{funcionario.pessoaFisica.sobreNome.trim()}"
-								removable="true">
-
-								<p:ajax event="close" listener="#{vendaController.limpar}"
-									update="@form:listingfornecedor" />
-							</p:chip>
-
-						</h:panelGroup>
 					</div>
-				</h:panelGroup>
 
-				<div class="p-d-flex p-jc-center">
-					<p:dataTable id="dataTable" var="produtoVenda"
-						styleClass="w-7/12 p-mt-4 border-collapse border border-slate-500 rounded-md ..."
-						value="#{vendaController.listaProdutoVenda}" rowSelectMode="add"
-						paginatorPosition="bottom" allowUnsorting="true" sortMode="single"
-						stickyTopAt=".layout-topbar" stripedRows="true"
-						showGridlines="true"
-						emptyMessage="Selecione algum produto para continuar a venda">
+					<h:panelGroup id="listingfornecedor">
+						<div class="p-mt-2">
+							<p:commandButton
+								rendered="#{vendaController.funcionario == null}"
+								value="Selecionar Funcionário" icon="pi pi-user"
+								actionListener="#{vendaController.abrirFuncionarioListing}"
+								process="@this" styleClass="ui-button-warning">
+								<p:ajax event="dialogReturn"
+									listener="#{vendaController.obterFuncionarioListing}"
+									update="@form" />
+							</p:commandButton>
 
-						<p:column headerText="Nome">
-							<h:outputText value="#{produtoVenda.produto.nome}" />
-						</p:column>
+							<h:panelGroup rendered="#{vendaController.funcionario != null}">
 
-						<p:column headerText="Quantidade" width="20%">
-							<p:spinner id="horizontalAfter"
-								value="#{produtoVenda.quantidade}" buttons="horizontal-after"
-								upButtonStyleClass="ui-button-success"
-								downButtonStyleClass="ui-button-danger" min="0">
-								<p:ajax event="valueChange"
-									listener="#{vendaController.calcularValorTotal}"
-									process="@this" update="@form" />
-							</p:spinner>
-						</p:column>
-					</p:dataTable>
-				</div>
+								<p:chip
+									label="#{funcionario.pessoaFisica.nome.trim()} #{funcionario.pessoaFisica.sobreNome.trim()}"
+									removable="true">
 
-				<p:divider />
+									<p:ajax event="close" listener="#{vendaController.limpar}"
+										update="@form:listingfornecedor" />
+								</p:chip>
 
-				<h:panelGroup id="valortotal" styleClass="p-d-flex p-jc-center">
-					<h2 class="text-5xl font-boldy p-mt-3">Valor Total
-						R$#{vendaController.valorTotal}</h2>
+							</h:panelGroup>
+						</div>
+					</h:panelGroup>
+
+					<div class="p-d-flex p-jc-center">
+						<p:dataTable id="dataTable" var="produtoVenda"
+							styleClass="w-7/12 p-mt-4 border-collapse border border-slate-500 rounded-md ..."
+							value="#{vendaController.listaProdutoVenda}" rowSelectMode="add"
+							paginatorPosition="bottom" allowUnsorting="true"
+							sortMode="single" stickyTopAt=".layout-topbar" stripedRows="true"
+							showGridlines="true"
+							emptyMessage="Selecione algum produto para continuar a venda">
+
+							<p:column headerText="Nome"
+								rendered="#{!empty vendaController.listaProdutoVenda}">
+								<h:outputText value="#{produtoVenda.produto.nome}" />
+							</p:column>
+
+							<p:column headerText="Quantidade"
+								rendered="#{!empty vendaController.listaProdutoVenda}"
+								width="20%">
+								<p:spinner id="horizontalAfter"
+									value="#{produtoVenda.quantidade}" buttons="horizontal-after"
+									upButtonStyleClass="ui-button-success"
+									downButtonStyleClass="ui-button-danger" min="0">
+									<p:ajax event="valueChange"
+										listener="#{vendaController.calcularValorTotal}"
+										process="@this" update="@form" />
+								</p:spinner>
+							</p:column>
+						</p:dataTable>
+					</div>
+
+					<p:divider />
+
+					<h:panelGroup id="valortotal" styleClass="p-d-flex p-jc-center">
+						<h2 class="text-5xl font-boldy p-mt-3 p-mr-5">Valor Total
+							R$#{vendaController.valorTotal}</h2>
+
+						<p:commandButton value="Pagamento" icon="pi pi-paypal"
+							actionListener="#{vendaController.pagamento}" process="@this"
+							update="@form" styleClass="p-ml-5 ui-button-success" />
+					</h:panelGroup>
 				</h:panelGroup>
 			</p:panel>
 		</div>

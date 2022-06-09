@@ -8,10 +8,10 @@ import br.unitins.unimacy.exception.RepositoryException;
 import br.unitins.unimacy.model.produto.Produto;
 import br.unitins.unimacy.repository.Repository;
 
-public class ProdutoRepository extends Repository<Produto>{
-	
+public class ProdutoRepository extends Repository<Produto> {
+
 	@SuppressWarnings("unchecked")
-	public List <Produto> findByCategoria(String nome) throws RepositoryException{
+	public List<Produto> findByCategoria(String nome) throws RepositoryException {
 		try {
 			StringBuffer jpsql = new StringBuffer();
 			jpsql.append("SELECT ");
@@ -21,7 +21,7 @@ public class ProdutoRepository extends Repository<Produto>{
 			jpsql.append("WHERE ");
 			jpsql.append("LOWER(p.categoria.nome) ");
 			jpsql.append("LIKE LOWER(:nome) ");
-			
+
 			Query query = getEntityManager().createQuery(jpsql.toString());
 			query.setParameter("nome", "%" + nome + "%");
 
@@ -35,7 +35,7 @@ public class ProdutoRepository extends Repository<Produto>{
 	}
 
 	@SuppressWarnings("unchecked")
-	public List <Produto> findByLote(String lote) throws RepositoryException{
+	public List<Produto> findByLote(String lote) throws RepositoryException {
 		try {
 			StringBuffer jpsql = new StringBuffer();
 			jpsql.append("SELECT ");
@@ -46,7 +46,7 @@ public class ProdutoRepository extends Repository<Produto>{
 			jpsql.append("LOWER(p.lote) ");
 			jpsql.append("LIKE ");
 			jpsql.append("LOWER(:lote) ");
-			
+
 			Query query = getEntityManager().createQuery(jpsql.toString());
 			query.setParameter("lote", "%" + lote + "%");
 
@@ -58,9 +58,9 @@ public class ProdutoRepository extends Repository<Produto>{
 	}
 
 	@SuppressWarnings("unchecked")
-	public List <Produto> findByFornecedor(String nome) throws RepositoryException{
-		List <Produto> lista = null;
-		
+	public List<Produto> findByFornecedor(String nome) throws RepositoryException {
+		List<Produto> lista = null;
+
 		try {
 			StringBuffer jpsql = new StringBuffer();
 			jpsql.append("SELECT ");
@@ -70,7 +70,7 @@ public class ProdutoRepository extends Repository<Produto>{
 			jpsql.append("WHERE ");
 			jpsql.append("LOWER(p.fornecedor.pessoaJuridica.nomeFantasia) ");
 			jpsql.append("LIKE LOWER(:nome) ");
-			
+
 			Query query = getEntityManager().createQuery(jpsql.toString());
 			query.setParameter("nome", "%" + nome + "%");
 
@@ -84,10 +84,10 @@ public class ProdutoRepository extends Repository<Produto>{
 
 		return lista;
 	}
-	
-	public Produto findOneByNome(String nome) throws RepositoryException{
+
+	public Produto findOneByNome(String nome) throws RepositoryException {
 		Produto produto = null;
-		
+
 		try {
 			StringBuffer jpsql = new StringBuffer();
 			jpsql.append("SELECT ");
@@ -97,7 +97,7 @@ public class ProdutoRepository extends Repository<Produto>{
 			jpsql.append("WHERE ");
 			jpsql.append("LOWER(p.lote) ");
 			jpsql.append("LIKE LOWER(:nome) ");
-			
+
 			Query query = getEntityManager().createQuery(jpsql.toString());
 			query.setParameter("nome", nome);
 
@@ -110,6 +110,58 @@ public class ProdutoRepository extends Repository<Produto>{
 		}
 
 		return produto;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Object[]> findByNomeNativeSql(String nome) throws RepositoryException {
+		try {
+			StringBuffer sql = new StringBuffer();
+			sql.append("SELECT ");
+			sql.append("  p.id, ");
+			sql.append("  p.nome, ");
+			sql.append("  p.quantestoque, ");
+			sql.append("  p.preco, ");
+			sql.append("  c.nome AS nome_categoria ");
+			sql.append("FROM ");
+			sql.append("  Produto p, ");
+			sql.append("  Categoria c ");
+			sql.append("WHERE ");
+			sql.append("  p.nome LIKE :nome");
+
+			Query query = getEntityManager().createNativeQuery(sql.toString());
+			query.setParameter("nome", "%" + nome + "%");
+
+			return query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RepositoryException("Erro ao executar o findByNomeSQL.");
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Object[]> findByIdNativeSql(Integer id) throws RepositoryException {
+		try {
+			StringBuffer sql = new StringBuffer();
+			sql.append("SELECT ");
+			sql.append("  p.id, ");
+			sql.append("  p.nome, ");
+			sql.append("  p.quantestoque, ");
+			sql.append("  p.preco, ");
+			sql.append("  c.nome AS nome_categoria ");
+			sql.append("FROM ");
+			sql.append("  Produto p, ");
+			sql.append("  Categoria c ");
+			sql.append("WHERE ");
+			sql.append("  p.id = :id");
+
+			Query query = getEntityManager().createNativeQuery(sql.toString());
+			query.setParameter("id", id);
+
+			return query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RepositoryException("Erro ao executar o findByNomeSQL.");
+		}
 	}
 
 }

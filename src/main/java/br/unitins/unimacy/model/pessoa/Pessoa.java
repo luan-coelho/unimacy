@@ -24,18 +24,12 @@ public abstract class Pessoa extends DefaultEntity {
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Endereco endereco;
 
-	private boolean ativo = true;
-
 	public Pessoa() {
 		// TODO Auto-generated constructor stub
 	}
 
 	public Pessoa(Endereco endereco) {
 		this.endereco = endereco;
-	}
-
-	public Pessoa(boolean ativo) {
-		this.ativo = ativo;
 	}
 
 	public String getEmail() {
@@ -45,7 +39,7 @@ public abstract class Pessoa extends DefaultEntity {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
 	public String getTelefone() {
 		return telefone;
 	}
@@ -62,17 +56,8 @@ public abstract class Pessoa extends DefaultEntity {
 		this.endereco = endereco;
 	}
 
-	public boolean isAtivo() {
-		return ativo;
-	}
-
-	public void setAtivo(boolean ativo) {
-		this.ativo = ativo;
-	}
-
 	@Override
 	public String toString() {
-		return "Pessoa [email=" + email + ", telefone=" + telefone + ", endereco=" + endereco + ", ativo=" + ativo
-				+ "]";
+		return "Pessoa [email=" + email + ", telefone=" + telefone + ", endereco=" + endereco + "]";
 	}
 }

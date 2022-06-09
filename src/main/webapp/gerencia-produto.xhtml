@@ -79,7 +79,9 @@
 				</p:column>
 
 				<p:column headerText="Categoria">
-					<p:tag styleClass="p-mr-2" value="#{produto.categoria.nome}"></p:tag>
+					<p:repeat value="#{produto.categoria}" var="categoria">
+						<p:tag styleClass="p-mr-2 p-mb-1" value="#{categoria}"></p:tag>
+					</p:repeat>
 				</p:column>
 
 				<p:column headerText="Lote">

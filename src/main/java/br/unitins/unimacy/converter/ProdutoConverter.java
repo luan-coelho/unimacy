@@ -16,7 +16,7 @@ public class ProdutoConverter implements Converter <Produto>{
 	public Produto getAsObject(FacesContext context, UIComponent component, String value) {
 		ProdutoRepository repo = new ProdutoRepository();
 		try {
-			return repo.findById(Integer.parseInt(value));
+			return (Produto) repo.findByIdNativeSql(Integer.parseInt(value));
 		} catch (RepositoryException e) {
 			e.printStackTrace();
 		}

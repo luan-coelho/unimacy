@@ -36,15 +36,6 @@ public class PessoaFisica extends Pessoa {
 		this.dataNascimento = dataNascimento;
 	}
 
-	public PessoaFisica(String nome, String sobreNome, Sexo sexo, String cpf, LocalDate dataNascimento, boolean ativo) {
-		super(ativo);
-		this.nome = nome;
-		this.sobreNome = sobreNome;
-		this.sexo = sexo;
-		this.cpf = cpf;
-		this.dataNascimento = dataNascimento;
-	}
-
 	public String getNome() {
 		return nome;
 	}

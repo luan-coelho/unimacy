@@ -11,15 +11,14 @@ import br.unitins.unimacy.exception.RepositoryException;
 import br.unitins.unimacy.model.DefaultEntity;
 import br.unitins.unimacy.repository.Repository;
 
-public abstract class Listing<T extends DefaultEntity> implements Serializable {
+public abstract class ListingSql<T extends DefaultEntity> implements Serializable {
 
-	private static final long serialVersionUID = -2912482417877518288L;
-	
+	private static final long serialVersionUID = 7641180780489288293L;
 	private String page;
 	private Repository<T> repository;
-	private List<T> list;
+	private List<Object[]> list;
 
-	public Listing(String page, Repository<T> repository) {
+	public ListingSql(String page, Repository<T> repository) {
 		super();
 		this.page = page;
 		this.repository = repository;
@@ -35,24 +34,24 @@ public abstract class Listing<T extends DefaultEntity> implements Serializable {
 		options.put("contentWidth", "100%");
 		options.put("contentHeight", "100%");
 		options.put("closeOnEscape", true);
-	
+
 		PrimeFaces.current().dialog().openDynamic(page, options, null);
 	}
-	
+
 	public void open(int width, int height) {
 		Map<String, Object> options = new HashMap<String, Object>();
 		options.put("modal", true);
 		options.put("draggable", false);
 		options.put("resizable", true);
-		options.put("width", width+"%");
-		options.put("height", height+"%");
+		options.put("width", width + "%");
+		options.put("height", height + "%");
 		options.put("contentWidth", "100%");
 		options.put("contentHeight", "100%");
 		options.put("closeOnEscape", true);
-	
+
 		PrimeFaces.current().dialog().openDynamic(page, options, null);
 	}
-	
+
 	public void select(int id) {
 		T obj = null;
 		try {
@@ -60,24 +59,21 @@ public abstract class Listing<T extends DefaultEntity> implements Serializable {
 		} catch (RepositoryException e) {
 			e.printStackTrace();
 		}
-		
-		
 		PrimeFaces.current().dialog().closeDynamic(obj);
 	}
-	
-	public void pesquisar() {};
-	
-	public List<T> getList() {
+
+	public abstract void pesquisar();
+
+	public List<Object[]> getList() {
 		return list;
 	}
 
-	public void selecionarItem(T obj) {}
-	
-	public void setList(List<T> list) {
+	public void setList(List<Object[]> list) {
 		this.list = list;
 	}
-	
+
 	public Repository<T> getRepository() {
 		return repository;
 	}
+
 }

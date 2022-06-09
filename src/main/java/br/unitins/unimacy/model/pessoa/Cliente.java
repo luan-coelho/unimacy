@@ -1,7 +1,7 @@
 package br.unitins.unimacy.model.pessoa;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 import br.unitins.unimacy.model.DefaultEntity;
@@ -11,7 +11,8 @@ public class Cliente extends DefaultEntity{
 
 	private static final long serialVersionUID = -7687261267452454591L;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne
+	@JoinColumn(name="pessoa_id")
 	private Pessoa pessoa;
 
 	public Cliente() {

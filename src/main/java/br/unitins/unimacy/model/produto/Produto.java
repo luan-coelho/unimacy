@@ -2,9 +2,12 @@ package br.unitins.unimacy.model.produto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -16,41 +19,40 @@ import br.unitins.unimacy.model.pessoa.Fornecedor;
 @Entity
 public class Produto extends DefaultEntity {
 
-	private static final long serialVersionUID = 8466588015114273678L;
+	private static final long serialVersionUID = 1L;
 
 	@NotBlank(message = "Informe o nome")
 	private String nome;
 	private String descricao;
-	
+
 	@NotNull(message = "Informe a quantidade em estoque")
 	private Integer quantEstoque;
-	
+
 	@NotNull(message = "Informe o preço unitário")
 	private BigDecimal preco;
-	
+
 	@NotNull(message = "Informe o peso")
 	private Double peso;
-	
+
 	@NotNull(message = "Informe a data de validade")
 	private LocalDate validade;
-	
+
 	@NotNull(message = "Informe a data de fabricação")
 	@Past(message = "Informe uma data de fabricação anterior ao dia de hoje")
 	private LocalDate fabricacao;
-	
+
 	@NotBlank(message = "Informe o lote")
 	private String lote;
 
-	@NotNull(message = "Informe a categoria")
-	@ManyToOne
-	private Categoria categoria;
+	@ManyToMany
+	private List<Categoria> categoria;
 
 	@NotNull(message = "Informe a unidade")
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Unidade unidade;
 
 	@NotNull(message = "Selecione o fornecedor")
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Fornecedor fornecedor;
 
 	public Produto() {
@@ -58,9 +60,8 @@ public class Produto extends DefaultEntity {
 	}
 
 	public Produto(String nome, String descricao, Integer quantEstoque, BigDecimal preco, Double peso,
-			LocalDate validade, LocalDate fabricacao, String lote, Categoria categoria, Unidade unidade,
+			LocalDate validade, LocalDate fabricacao, String lote, List<Categoria> categoria, Unidade unidade,
 			Fornecedor fornecedor) {
-		super();
 		this.nome = nome;
 		this.descricao = descricao;
 		this.quantEstoque = quantEstoque;
@@ -74,8 +75,7 @@ public class Produto extends DefaultEntity {
 		this.fornecedor = fornecedor;
 	}
 
-	public Produto(Categoria categoria) {
-		super();
+	public Produto(List <Categoria> categoria) {
 		this.categoria = categoria;
 	}
 
@@ -143,19 +143,19 @@ public class Produto extends DefaultEntity {
 		this.lote = lote;
 	}
 
-	public Categoria getCategoria() {
-		return categoria;
-	}
-
-	public void setCategoria(Categoria categoria) {
-		this.categoria = categoria;
-	}
-
 	public Unidade getUnidade() {
 		if (unidade == null) {
 			unidade = new Unidade();
 		}
 		return unidade;
+	}
+
+	public List<Categoria> getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(List<Categoria> categoria) {
+		this.categoria = categoria;
 	}
 
 	public void setUnidade(Unidade unidade) {
