@@ -109,14 +109,18 @@ public class ProdutoListing extends Listing<Produto> {
 	public List<Produto> filtrarListaProduto(List<Produto> lista) {
 		List<ProdutoVenda> listaProdutoVenda = (List<ProdutoVenda>) Session.getInstance().get("listaProduto");
 		Session.getInstance().set("listaProduto", null);
-		
-		return lista.stream().filter(produto -> {
-			for (ProdutoVenda produtoVenda : listaProdutoVenda) {
-				if (produtoVenda.getProduto().equals(produto)) {
-					return false;
+
+		if (listaProdutoVenda != null) {
+			return lista.stream().filter(produto -> {
+				for (ProdutoVenda produtoVenda : listaProdutoVenda) {
+					if (produtoVenda.getProduto().equals(produto)) {
+						return false;
+					}
 				}
-			}
-			return true;
-		}).toList();
+				return true;
+			}).toList();
+		}
+
+		return lista;
 	}
 }

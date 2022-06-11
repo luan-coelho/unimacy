@@ -24,17 +24,16 @@ public class LoginController extends Controller<Funcionario> {
 		Funcionario funcionarioLogado = null;
 
 		try {
-			String cpf = repo.findOneByEmail(getFuncionario().getPessoaFisica().getEmail().trim()).getPessoaFisica()
-					.getCpf();
-			funcionarioLogado = repo.validarLogin(getFuncionario().getPessoaFisica().getEmail().trim(),
-					Util.hash(cpf, getFuncionario().getSenha()));
+			funcionarioLogado = repo.validarLogin(getFuncionario().getPessoaFisica().getCpf().trim(),
+					Util.hash(getFuncionario().getPessoaFisica().getCpf().trim(), getFuncionario().getSenha()));
 		} catch (RepositoryException e) {
 			e.printStackTrace();
 		}
 		if (funcionarioLogado != null) {
 			if (funcionarioLogado.getPessoaFisica().isAtivo()) {
 				Session.getInstance().set("funcionarioLogado", funcionarioLogado);
-				Util.redirect("venda.xhtml");
+				Session.getInstance().set("cargoFuncionario", funcionarioLogado.getCargo());
+				Util.redirect("gestao/venda.xhtml");
 				return;
 			}
 			Util.addWarnMessage("Seu acesso está desativado.");

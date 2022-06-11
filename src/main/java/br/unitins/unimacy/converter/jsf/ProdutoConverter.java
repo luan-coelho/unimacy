@@ -1,4 +1,4 @@
-package br.unitins.unimacy.converter;
+package br.unitins.unimacy.converter.jsf;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

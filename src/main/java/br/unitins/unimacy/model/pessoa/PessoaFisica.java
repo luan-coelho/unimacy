@@ -4,8 +4,6 @@ import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 
 @Entity
 public class PessoaFisica extends Pessoa {
@@ -15,7 +13,6 @@ public class PessoaFisica extends Pessoa {
 	private String nome;
 	private String sobreNome;
 	
-	@Enumerated(EnumType.STRING)
 	private Sexo sexo;
 
 	// @CPF(message = "Informe um CPF válido")

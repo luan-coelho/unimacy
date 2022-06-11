@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<h:outputStylesheet library="css" name="sem-acesso.css" />
+	<h:outputStylesheet library="webjars" name="primeflex/2.0.0/primeflex.min.css" />
+</h:head>
+<h:body>
+	<h:form>
+
+		<div align="center">
+			<h1>403 - ACESSO NEGADO!</h1>
+			<img src="https://media1.giphy.com/media/zOvBKUUEERdNm/200.gif"
+				class="image p-mt-4" alt="sad boy" />
+
+			<h2 class="p-mt-4">Permissões insuficientes para acessar está página</h2>
+
+			<div class="backbutton p-mt-4">
+				<p:commandButton value="Voltar"
+					onclick="history.go(-1); return false;" />
+			</div>
+		</div>
+
+	</h:form>
+</h:body>
+</html>

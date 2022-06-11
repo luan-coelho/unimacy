@@ -13,6 +13,7 @@ import br.unitins.unimacy.controller.Controller;
 import br.unitins.unimacy.controller.listing.PessoaFisicaListing;
 import br.unitins.unimacy.exception.RepositoryException;
 import br.unitins.unimacy.model.filtro.FiltroPessoaFisica;
+import br.unitins.unimacy.model.pessoa.Cargo;
 import br.unitins.unimacy.model.pessoa.Funcionario;
 import br.unitins.unimacy.model.pessoa.PessoaFisica;
 import br.unitins.unimacy.model.pessoa.Sexo;
@@ -65,6 +66,7 @@ public class FuncionarioController extends Controller<Funcionario> {
 			getEntity().setSenha(getEntity().getPessoaFisica().getCpf());
 			getEntity().setSenha(
 					Util.hash(getEntity()));
+			getEntity().setCargo(Cargo.FUNCIONARIO);
 			salvar();
 		}
 	}

@@ -12,6 +12,7 @@ import br.unitins.unimacy.application.Util;
 import br.unitins.unimacy.controller.Controller;
 import br.unitins.unimacy.exception.RepositoryException;
 import br.unitins.unimacy.exception.VersionException;
+import br.unitins.unimacy.model.pessoa.Cargo;
 import br.unitins.unimacy.model.pessoa.Funcionario;
 import br.unitins.unimacy.model.pessoa.PessoaFisica;
 import br.unitins.unimacy.model.pessoa.Sexo;
@@ -45,6 +46,10 @@ public class CadastroFuncionarioController extends Controller<Funcionario> {
 
 	public Sexo[] getListaSexo() {
 		return Sexo.values();
+	}
+	
+	public Cargo[] getListaCargo() {
+		return Cargo.values();
 	}
 
 	public void excluir(Funcionario Funcionario) {

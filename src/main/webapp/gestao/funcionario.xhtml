@@ -38,6 +38,17 @@
 								<p:inputText id="nome" type="text"
 									value="#{cadastroFuncionarioController.entity.pessoaFisica.nome}" />
 							</div>
+							
+							<div class="p-field p-col-12 p-md-5">
+								<p:outputLabel value="Cargo" />
+								<p:selectOneRadio
+									value="#{cadastroFuncionarioController.entity.cargo}">
+									<f:selectItems var="obj"
+										value="#{cadastroFuncionarioController.listaCargo}"
+										itemLabel="#{obj.label}" />
+								</p:selectOneRadio>
+							</div>
+							
 							<div class="p-field p-col-12 p-md-7">
 								<p:outputLabel for="sobrenome" value="Sobrenome" />
 								<p:inputText id="sobrenome" type="text"

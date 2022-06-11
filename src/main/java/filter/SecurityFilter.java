@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 
 import br.unitins.unimacy.model.pessoa.Funcionario;
 
-@WebFilter(filterName = "SecurityFilter", urlPatterns = { "/pages/*" })
+@WebFilter(filterName = "SecurityFilter", urlPatterns = {"/gestao/*"})
 public class SecurityFilter implements Filter {
 
 	@Override
@@ -23,6 +23,12 @@ public class SecurityFilter implements Filter {
 			throws IOException, ServletException {
 
 		HttpServletRequest servletRequest = (HttpServletRequest) request;
+		String endereco = servletRequest.getRequestURI();
+		System.out.println(servletRequest.getServerName());
+		System.out.println(servletRequest.getServletPath());
+		System.out.println(servletRequest.getServletContext());
+
+		System.out.println(endereco);
 
 		HttpSession session = servletRequest.getSession(false);
 
@@ -31,13 +37,19 @@ public class SecurityFilter implements Filter {
 			funcionarioLogado = (Funcionario) session.getAttribute("funcionarioLogado");
 
 		if (funcionarioLogado == null) {
-			((HttpServletResponse) response).sendRedirect("/Unimacy/faces/login.xhtml");
+			((HttpServletResponse) response).sendRedirect("/Unimacy/login.xhtml");
+		} else {
+			Permissoes permissoes = new Permissoes();
+			if (permissoes.permitirAcesso(funcionarioLogado, endereco)) {
+				chain.doFilter(request, response);
+			} else {
+				((HttpServletResponse) response).sendRedirect("/Unimacy/gestao/sem-acesso.xhtml");
+			}
 		}
 	}
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-
 		Filter.super.init(filterConfig);
 		System.out.println("Filtro SecurityFilter inicializado.");
 	}

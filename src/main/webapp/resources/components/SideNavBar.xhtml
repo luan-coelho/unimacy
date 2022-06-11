@@ -11,7 +11,7 @@
 	<nav>
 		<header>
 			<div class="image-text">
-				<span class="image"> <img src="resources/images/logo.png"
+				<span class="image"> <img src="../resources/images/logo.png"
 					alt="Logo Unimacy" /></span>
 
 				<div class="text logo-text p-mt-2">
@@ -43,18 +43,26 @@
 							class='bx bxs-group bx-md icon'></i> <span class="text nav-text">Clientes</span>
 					</a></li>
 
-					<li class="nav-link"><a href="gerencia-funcionario.xhtml">
-							<i class='bx bxs-user-account bx-md icon'></i> <span
-							class="text nav-text">Funcionários</span>
-					</a></li>
+					<h:panelGroup rendered="#{templateController.admin}">
+						<li class="nav-link"><a href="gerencia-funcionario.xhtml">
+								<i class='bx bxs-user-account bx-md icon'></i> <span
+								class="text nav-text">Funcionários</span>
+						</a></li>
+					</h:panelGroup>
 				</ul>
 			</div>
 
-			<div class="bottom-content p-mb-5 p-ml-2">
+			<div class="bottom-content">
 				<div class="avatar" align="left">
 					<a href="perfil.xhtml"><p:avatar label="Luan Coêlho"
-							icon="pi pi-user" shape="circle" size="large" /></a>
+							icon="pi pi-user" shape="circle" size="large" />Perfil</a>
 				</div>
+			</div>
+			<div class="bottom-content p-mb-2">
+				<li class=""><a href="#"> <i class='bx bx-log-out icon'></i>
+						<p:commandButton value="Sair"
+							actionListener="#{templateController.encerrarSessao}" />
+				</a></li>
 			</div>
 		</div>
 	</nav>

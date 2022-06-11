@@ -11,30 +11,28 @@ import br.unitins.unimacy.repository.Repository;
 
 public class FuncionarioRepository extends Repository<Funcionario> {
 
-	public Funcionario validarLogin(String email, String senha) throws RepositoryException {
+	public Funcionario validarLogin(String cpf, String senha) throws RepositoryException {
 		try {
 			StringBuffer jpsql = new StringBuffer();
 			jpsql.append("SELECT ");
-			jpsql.append(" f ");
+			jpsql.append("  f ");
 			jpsql.append("FROM ");
-			jpsql.append(" Funcionario f ");
+			jpsql.append("  Funcionario f ");
 			jpsql.append("WHERE ");
-			jpsql.append(" f.pessoaFisica.email = :email ");
+			jpsql.append("  f.pessoaFisica.cpf = :cpf ");
 			jpsql.append("AND ");
-			jpsql.append(" f.senha = :senha ");
+			jpsql.append("  f.senha = :senha ");
 
 			Query query = getEntityManager().createQuery(jpsql.toString());
 
-			query.setParameter("email", email);
+			query.setParameter("cpf", cpf);
 			query.setParameter("senha", senha);
 
 			return (Funcionario) query.getSingleResult();
 		} catch (NoResultException e) {
 			return null;
 		} catch (Exception e) {
-			// mandando pro console o exception gerado
 			e.printStackTrace();
-			// repassando a excecao para quem vai executar o metodo
 			throw new RepositoryException("Problema ao pesquisar funcionario");
 		}
 
@@ -69,13 +67,13 @@ public class FuncionarioRepository extends Repository<Funcionario> {
 		try {
 			StringBuffer jpsql = new StringBuffer();
 			jpsql.append("SELECT ");
-			jpsql.append("f ");
+			jpsql.append("  f ");
 			jpsql.append("FROM ");
-			jpsql.append("Funcionario f ");
+			jpsql.append("  Funcionario f ");
 			jpsql.append("WHERE ");
-			jpsql.append("LOWER(f.pessoaFisica.nome) ");
+			jpsql.append("  LOWER(f.pessoaFisica.nome) ");
 			jpsql.append("LIKE ");
-			jpsql.append("LOWER(:nome) ");
+			jpsql.append("  LOWER(:nome) ");
 
 			Query query = getEntityManager().createQuery(jpsql.toString());
 			query.setParameter("nome", "%" + nome + "%");
@@ -94,11 +92,11 @@ public class FuncionarioRepository extends Repository<Funcionario> {
 		try {
 			StringBuffer jpsql = new StringBuffer();
 			jpsql.append("SELECT ");
-			jpsql.append("f ");
+			jpsql.append("  f ");
 			jpsql.append("FROM ");
-			jpsql.append("Funcionario f ");
+			jpsql.append("  Funcionario f ");
 			jpsql.append("WHERE ");
-			jpsql.append("f.pessoaFisica.cpf LIKE :cpf ");
+			jpsql.append("  f.pessoaFisica.cpf LIKE :cpf ");
 
 			Query query = getEntityManager().createQuery(jpsql.toString());
 			query.setParameter("cpf", "%" + cpf + "%");
@@ -115,11 +113,11 @@ public class FuncionarioRepository extends Repository<Funcionario> {
 		try {
 			StringBuffer jpsql = new StringBuffer();
 			jpsql.append("SELECT ");
-			jpsql.append("f ");
+			jpsql.append("  f ");
 			jpsql.append("FROM ");
-			jpsql.append("Funcionario f ");
+			jpsql.append("  Funcionario f ");
 			jpsql.append("WHERE ");
-			jpsql.append("f.pessoaFisica.cpf LIKE :cpf ");
+			jpsql.append("  f.pessoaFisica.cpf LIKE :cpf ");
 
 			Query query = getEntityManager().createQuery(jpsql.toString());
 			query.setParameter("cpf", cpf);
@@ -137,11 +135,11 @@ public class FuncionarioRepository extends Repository<Funcionario> {
 		try {
 			StringBuffer jpsql = new StringBuffer();
 			jpsql.append("SELECT ");
-			jpsql.append("f ");
+			jpsql.append("  f ");
 			jpsql.append("FROM ");
-			jpsql.append("Funcionario f ");
+			jpsql.append("  Funcionario f ");
 			jpsql.append("WHERE ");
-			jpsql.append("LOWER(f.pessoaFisica.email) ");
+			jpsql.append("  LOWER(f.pessoaFisica.email) ");
 			jpsql.append("LIKE LOWER(:email) ");
 
 			Query query = getEntityManager().createQuery(jpsql.toString());
@@ -158,13 +156,13 @@ public class FuncionarioRepository extends Repository<Funcionario> {
 		try {
 			StringBuffer jpql = new StringBuffer();
 			jpql.append("SELECT ");
-			jpql.append("f ");
+			jpql.append("  f ");
 			jpql.append("FROM ");
-			jpql.append("Funcionario f ");
+			jpql.append("  Funcionario f ");
 			jpql.append("WHERE ");
-			jpql.append("f.pessoaFisica.email LIKE :email ");
+			jpql.append("  f.pessoaFisica.email LIKE :email ");
 			jpql.append("AND ");
-			jpql.append("f.pessoaFisica.cpf LIKE :cpf ");
+			jpql.append("  f.pessoaFisica.cpf LIKE :cpf ");
 
 			Query query = getEntityManager().createQuery(jpql.toString());
 			query.setParameter("email", email);
@@ -186,11 +184,11 @@ public class FuncionarioRepository extends Repository<Funcionario> {
 		try {
 			StringBuffer jpsql = new StringBuffer();
 			jpsql.append("SELECT ");
-			jpsql.append("f ");
+			jpsql.append("  f ");
 			jpsql.append("FROM ");
-			jpsql.append("Funcionario f ");
+			jpsql.append("  Funcionario f ");
 			jpsql.append("WHERE ");
-			jpsql.append("LOWER(f.pessoaFisica.telefone) ");
+			jpsql.append("  LOWER(f.pessoaFisica.telefone) ");
 			jpsql.append("LIKE LOWER(:telefone) ");
 
 			Query query = getEntityManager().createQuery(jpsql.toString());
@@ -208,11 +206,11 @@ public class FuncionarioRepository extends Repository<Funcionario> {
 		try {
 			StringBuffer jpsql = new StringBuffer();
 			jpsql.append("SELECT ");
-			jpsql.append("f ");
+			jpsql.append("  f ");
 			jpsql.append("FROM ");
-			jpsql.append("Funcionario f ");
+			jpsql.append("  Funcionario f ");
 			jpsql.append("WHERE ");
-			jpsql.append("LOWER(f.salario <) ");
+			jpsql.append("  LOWER(f.salario <) ");
 			jpsql.append("LIKE LOWER(:telefone) ");
 
 			Query query = getEntityManager().createQuery(jpsql.toString());
@@ -225,21 +223,21 @@ public class FuncionarioRepository extends Repository<Funcionario> {
 		}
 	}
 
-	public Funcionario findOneByEmail(String email) throws RepositoryException {
+	public String findOneByEmail(String email) throws RepositoryException {
 		try {
 			StringBuffer jpsql = new StringBuffer();
 			jpsql.append("SELECT ");
-			jpsql.append("f ");
+			jpsql.append("  f.pessoaFisica.email ");
 			jpsql.append("FROM ");
-			jpsql.append("Funcionario f ");
+			jpsql.append("  Funcionario f ");
 			jpsql.append("WHERE ");
-			jpsql.append("f.pessoaFisica.email ");
+			jpsql.append("  f.pessoaFisica.email ");
 			jpsql.append("LIKE :email ");
 
 			Query query = getEntityManager().createQuery(jpsql.toString());
 			query.setParameter("email", email);
 
-			return (Funcionario) query.getSingleResult();
+			return (String) query.getSingleResult();
 		} catch (NoResultException e) {
 			System.out.println(e.getMessage());
 			return null;

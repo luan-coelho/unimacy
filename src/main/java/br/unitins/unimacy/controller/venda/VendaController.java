@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.faces.context.FacesContext;
+import javax.faces.context.Flash;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
@@ -37,14 +39,10 @@ public class VendaController extends Controller<Venda> {
 
 	private BigDecimal valorTotal;
 
-	private Integer etapaVenda = 0;
-
+	private String pesquisa;
+	
 	public VendaController() {
 		super(new VendaRepository());
-	}
-
-	public void pagamento() {
-		this.etapaVenda = 1;
 	}
 
 	public void calcularValorTotal() {
@@ -61,6 +59,7 @@ public class VendaController extends Controller<Venda> {
 		ProdutoListingSql listing = new ProdutoListingSql();
 		listing.open(70, 70);
 		Session.getInstance().set("listaProduto", this.listaProdutoVenda);
+		getListaProdutoRepository();
 	}
 
 	public void obterProdutoListing(SelectEvent<Produto> event) {
@@ -79,17 +78,20 @@ public class VendaController extends Controller<Venda> {
 	public void obterFuncionarioListing(SelectEvent<Funcionario> event) {
 		setFuncionario(event.getObject());
 	}
+	
+	public void pesquisar() {
+		Flash flash = FacesContext.getCurrentInstance().getExternalContext().getFlash();
+		if(this.pesquisa != null) {
+			flash.put("pesquisaProduto", this.pesquisa);
+			flash.keep("pesquisaProduto");
+			
+		}
+		
+		abrirProdutoListing();
+	}
 
 	public void limpar() {
 		funcionario = null;
-	}
-
-	public Integer getEtapaVenda() {
-		return etapaVenda;
-	}
-
-	public void setEtapaVenda(Integer etapaVenda) {
-		this.etapaVenda = etapaVenda;
 	}
 
 	@Override
@@ -150,5 +152,13 @@ public class VendaController extends Controller<Venda> {
 
 	public void setValorTotal(BigDecimal valorTotal) {
 		this.valorTotal = valorTotal;
+	}
+	
+	public String getPesquisa() {
+		return pesquisa;
+	}
+
+	public void setPesquisa(String pesquisa) {
+		this.pesquisa = pesquisa;
 	}
 }

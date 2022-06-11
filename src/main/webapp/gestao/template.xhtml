@@ -41,11 +41,11 @@
 		<p:ajaxStatus onstart="PF('statusDialog').show()"
 			onsuccess="PF('statusDialog').hide()" />
 
-		<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+		<p:dialog widgetVar="statusDialog" modal="true" draggable="false" width="180"
 			closable="false" resizable="false" showHeader="false">
-			<div class="p-text-center">
-				<p:graphicImage height="150px" width="200px"
-					value="./resources/images/loading.gif" />
+			<div class="p-d-flex p-jc-center p-ai-center">
+				<p:graphicImage height="100%" width="100%"
+					value="../resources/images/loading.gif" />
 			</div>
 		</p:dialog>
 

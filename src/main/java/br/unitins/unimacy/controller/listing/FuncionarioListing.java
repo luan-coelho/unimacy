@@ -22,7 +22,7 @@ public class FuncionarioListing extends Listing<Funcionario> {
 	private FiltroFuncionario filtro;
 
 	public FuncionarioListing() {
-		super("funcionariolisting", new FuncionarioRepository());
+		super("/funcionariolisting", new FuncionarioRepository());
 	}
 
 	public String getPesquisa() {

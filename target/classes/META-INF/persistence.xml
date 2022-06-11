@@ -3,7 +3,10 @@
 	xmlns="http://xmlns.jcp.org/xml/ns/persistence"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+	
 	<persistence-unit name="Unimacy">
+		<class>br.unitins.unimacy.converter.jpa.CargoConverter</class>
+		<class>br.unitins.unimacy.converter.jpa.SexoConverter</class>
 		<class>br.unitins.unimacy.model.DefaultEntity</class>
 		<class>br.unitins.unimacy.model.email.ForgotPassword</class>
 		<class>br.unitins.unimacy.model.pessoa.Cliente</class>
@@ -23,7 +26,7 @@
 		<class>br.unitins.unimacy.model.venda.pagamento.Cartao</class>
 		<class>br.unitins.unimacy.model.venda.pagamento.Pagamento</class>
 		<class>br.unitins.unimacy.model.venda.pagamento.Pix</class>
-		
+
 		<properties>
 			<!-- DB Driver -->
 			<property name="javax.persistence.jdbc.driver"

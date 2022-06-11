@@ -24,19 +24,18 @@
 			<p:panel
 				styleClass="shadow-2xl shadow-gray-700 rounded-lg p-5 w-11/12 m-0">
 
-				<p:steps styleClass="p-mb-5"
-					activeIndex="#{vendaController.etapaVenda}">
+				<p:steps styleClass="p-mb-5">
 					<p:menuitem value="Selecionar Produtos" />
 					<p:menuitem value="Pagamento" />
 				</p:steps>
 
-				<h:panelGroup rendered="#{vendaController.etapaVenda == 0}">
+				<h:panelGroup>
 					<div class="ui-inputgroup mt-10">
-						<p:inputText id="pesquisa" value="#{produtoListing.pesquisa}"
+						<p:inputText id="pesquisa" value="#{vendaController.pesquisa}"
 							placeholder="Pesquisar produto" />
 						<p:commandButton icon="pi pi-search"
 							styleClass="ui-button-warning"
-							actionListener="#{produtoListing.pesquisaPorFiltro}"
+							actionListener="#{vendaController.pesquisar}"
 							process="pesquisa @this" update="@form">
 						</p:commandButton>
 					</div>

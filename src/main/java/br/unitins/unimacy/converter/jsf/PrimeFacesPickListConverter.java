@@ -1,4 +1,4 @@
-package br.unitins.unimacy.converter;
+package br.unitins.unimacy.converter.jsf;
 
 import java.util.Iterator;
 

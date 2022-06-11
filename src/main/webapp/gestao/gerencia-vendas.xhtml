@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:components="http://java.sun.com/jsf/composite/components">
+
+<ui:composition template="template.xhtml">
+
+	<ui:define name="head">
+		<title>Gerência de Vendas</title>
+		<h:outputStylesheet library="css" name="venda.css" />
+	</ui:define>
+
+	<ui:define name="conteudo">
+
+		<p:growl id="growl" />
+
+		<div class="p-d-flex p-jc-center p-mt-5">
+
+			<h:body>
+				<h:form>
+					<p:growl id="growl" globalOnly="false" />
+					<p:panel id="panel">
+						<f:facet name="header">
+							<div align="center">
+								<h1>Histórico de Vendas</h1>
+							</div>
+
+						</f:facet>
+
+						<p:toolbar>
+							<f:facet name="left">
+								<div class="pacientes-table-header">
+
+									<div>
+										<div class="ui-inputgroup">
+											<p:inputText id="itNomePesquisa"
+												value="#{relatorioAtendimentoController.filtro}"
+												placeholder="Informe um dentista" />
+											<p:commandButton icon="pi pi-search"
+												styleClass="ui-button-raised ui-button-warning"
+												actionListener="#{relatorioAtendimentoController.pesquisar}"
+												process="@this itNomePesquisa" update="@form" />
+
+											<p:commandButton value="Limpar" process="@this"
+												update="@form" icon="pi pi-times"
+												styleClass="rounded-button ui-button-raised ui-button-danger"
+												actionListener="#{relatorioAtendimentoController.limpar()}">
+												<p:ajax update="@form" resetValues="true" />
+											</p:commandButton>
+										</div>
+									</div>
+
+								</div>
+
+							</f:facet>
+							<f:facet name="right">
+								<p:commandButton value="Gerar Relatório" ajax="false"
+									icon="pi pi-file-pdf"
+									styleClass="ui-button-raised ui-button-success"
+									disabled="#{relatorioAtendimentoController.listaAtendimento.isEmpty()}"
+									actionListener="#{relatorioAtendimentoController.gerarRelatorio}"
+									onclick="this.form.target='_blank'">
+								</p:commandButton>
+
+							</f:facet>
+						</p:toolbar>
+					</p:panel>
+
+					<p:dataTable id="dtListagem" var="entity" paginator="true" rows="5"
+						reflow="true" rowSelectMode="add" paginatorPosition="bottom"
+						value="#{relatorioAtendimentoController.listaAtendimento}">
+						<p:column headerText="Data" sortBy="#{entity.dataRegistro}">
+							<p:outputLabel value="#{entity.dataRegistro}">
+								<f:convertDateTime type="localDate" pattern="dd/MM/yyyy" />
+
+							</p:outputLabel>
+
+						</p:column>
+
+						<p:column headerText="Descrição">
+							<p:outputLabel value="#{entity.descricao}" />
+						</p:column>
+
+						<p:column headerText="Dentista">
+							<p:outputLabel value="#{entity.consulta.dentista.nome}" />
+						</p:column>
+
+					</p:dataTable>
+
+				</h:form>
+
+				<p:confirmDialog global="true" showEffect="fade" hideEffect="fade"
+					responsive="true" width="350">
+					<p:commandButton value="Não" type="button"
+						styleClass="ui-confirmdialog-no ui-button-flat" />
+					<p:commandButton value="Sim" type="button"
+						styleClass="ui-confirmdialog-yes" />
+				</p:confirmDialog>
+			</h:body>
+
+		</div>
+	</ui:define>
+</ui:composition>
+</html>

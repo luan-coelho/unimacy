@@ -13,8 +13,8 @@ public class Funcionario extends DefaultEntity {
 
 	private static final long serialVersionUID = 6772757150528225911L;
 
+	private Cargo cargo;
 	private String senha;
-
 	private BigDecimal salario;
 
 	@OneToOne
@@ -29,6 +29,14 @@ public class Funcionario extends DefaultEntity {
 		super();
 		this.salario = salario;
 		this.pessoaFisica = pessoaFisica;
+	}
+
+	public Cargo getCargo() {
+		return cargo;
+	}
+
+	public void setCargo(Cargo cargo) {
+		this.cargo = cargo;
 	}
 
 	public Funcionario(PessoaFisica pessoaFisica) {

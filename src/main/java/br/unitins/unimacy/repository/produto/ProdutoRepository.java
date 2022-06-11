@@ -15,11 +15,11 @@ public class ProdutoRepository extends Repository<Produto> {
 		try {
 			StringBuffer jpsql = new StringBuffer();
 			jpsql.append("SELECT ");
-			jpsql.append("p ");
+			jpsql.append("  p ");
 			jpsql.append("FROM ");
-			jpsql.append("Produto p ");
+			jpsql.append("  Produto p ");
 			jpsql.append("WHERE ");
-			jpsql.append("LOWER(p.categoria.nome) ");
+			jpsql.append("  LOWER(p.categoria.nome) ");
 			jpsql.append("LIKE LOWER(:nome) ");
 
 			Query query = getEntityManager().createQuery(jpsql.toString());
@@ -39,13 +39,13 @@ public class ProdutoRepository extends Repository<Produto> {
 		try {
 			StringBuffer jpsql = new StringBuffer();
 			jpsql.append("SELECT ");
-			jpsql.append("p ");
+			jpsql.append("  p ");
 			jpsql.append("FROM ");
-			jpsql.append("Produto p ");
+			jpsql.append("  Produto p ");
 			jpsql.append("WHERE ");
-			jpsql.append("LOWER(p.lote) ");
+			jpsql.append("  LOWER(p.lote) ");
 			jpsql.append("LIKE ");
-			jpsql.append("LOWER(:lote) ");
+			jpsql.append("  LOWER(:lote) ");
 
 			Query query = getEntityManager().createQuery(jpsql.toString());
 			query.setParameter("lote", "%" + lote + "%");
@@ -64,11 +64,11 @@ public class ProdutoRepository extends Repository<Produto> {
 		try {
 			StringBuffer jpsql = new StringBuffer();
 			jpsql.append("SELECT ");
-			jpsql.append("p ");
+			jpsql.append("  p ");
 			jpsql.append("FROM ");
-			jpsql.append("Produto p ");
+			jpsql.append("  Produto p ");
 			jpsql.append("WHERE ");
-			jpsql.append("LOWER(p.fornecedor.pessoaJuridica.nomeFantasia) ");
+			jpsql.append("  LOWER(p.fornecedor.pessoaJuridica.nomeFantasia) ");
 			jpsql.append("LIKE LOWER(:nome) ");
 
 			Query query = getEntityManager().createQuery(jpsql.toString());
@@ -91,11 +91,11 @@ public class ProdutoRepository extends Repository<Produto> {
 		try {
 			StringBuffer jpsql = new StringBuffer();
 			jpsql.append("SELECT ");
-			jpsql.append("p ");
+			jpsql.append("  p ");
 			jpsql.append("FROM ");
-			jpsql.append("Produto p ");
+			jpsql.append("  Produto p ");
 			jpsql.append("WHERE ");
-			jpsql.append("LOWER(p.lote) ");
+			jpsql.append("  LOWER(p.lote) ");
 			jpsql.append("LIKE LOWER(:nome) ");
 
 			Query query = getEntityManager().createQuery(jpsql.toString());
@@ -132,6 +132,88 @@ public class ProdutoRepository extends Repository<Produto> {
 			Query query = getEntityManager().createNativeQuery(sql.toString());
 			query.setParameter("nome", "%" + nome + "%");
 
+			return query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RepositoryException("Erro ao executar o findByNomeSQL.");
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> findByCategoriaNativeSql(String nome) throws RepositoryException {
+		try {
+			StringBuffer sql = new StringBuffer();
+			sql.append("SELECT ");
+			sql.append("  p.id, ");
+			sql.append("  p.nome, ");
+			sql.append("  p.quantestoque, ");
+			sql.append("  p.preco, ");
+			sql.append("  c.nome AS nome_categoria, ");
+			sql.append("  c.ativo ");
+			sql.append("FROM ");
+			sql.append("  Produto p, ");
+			sql.append("  Categoria c ");
+			sql.append("WHERE ");
+			sql.append("  c.nome LIKE :nome");
+
+			Query query = getEntityManager().createNativeQuery(sql.toString());
+			query.setParameter("nome", "%" + nome + "%");
+
+			return query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RepositoryException("Erro ao executar o findByNomeSQL.");
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> findByLoteNativeSql(String lote) throws RepositoryException {
+		try {
+			StringBuffer sql = new StringBuffer();
+			sql.append("SELECT ");
+			sql.append("  p.id, ");
+			sql.append("  p.nome, ");
+			sql.append("  p.quantestoque, ");
+			sql.append("  p.preco, ");
+			sql.append("  c.nome AS nome_categoria, ");
+			sql.append("  c.ativo ");
+			sql.append("FROM ");
+			sql.append("  Produto p, ");
+			sql.append("  Categoria c ");
+			sql.append("WHERE ");
+			sql.append("  p.lote LIKE :lote");
+			
+			Query query = getEntityManager().createNativeQuery(sql.toString());
+			query.setParameter("lote", "%" + lote + "%");
+			
+			return query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RepositoryException("Erro ao executar o findByNomeSQL.");
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> findByFornecedorNativeSql(String nome) throws RepositoryException {
+		try {
+			StringBuffer sql = new StringBuffer();
+			sql.append("SELECT ");
+			sql.append("  p.id, ");
+			sql.append("  p.nome, ");
+			sql.append("  p.quantestoque, ");
+			sql.append("  p.preco, ");
+			sql.append("  c.nome AS nome_categoria, ");
+			sql.append("  c.ativo ");
+			sql.append("FROM ");
+			sql.append("  Produto p, ");
+			sql.append("  Categoria c, ");
+			sql.append("  Fornecedor f, ");
+			sql.append("WHERE ");
+			sql.append("  f.pessoaJuridica.nome LIKE :nome");
+			
+			Query query = getEntityManager().createNativeQuery(sql.toString());
+			query.setParameter("nome", "%" + nome + "%");
+			
 			return query.getResultList();
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -2,13 +2,16 @@ package br.unitins.unimacy.controller.listing;
 
 import java.util.List;
 
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
+import br.unitins.unimacy.application.Session;
 import br.unitins.unimacy.application.Util;
 import br.unitins.unimacy.exception.RepositoryException;
 import br.unitins.unimacy.model.filtro.FiltroProduto;
 import br.unitins.unimacy.model.produto.Produto;
+import br.unitins.unimacy.model.venda.ProdutoVenda;
 import br.unitins.unimacy.repository.produto.ProdutoRepository;
 
 @Named
@@ -22,15 +25,29 @@ public class ProdutoListingSql extends ListingSql<Produto> {
 
 	public ProdutoListingSql() {
 		super("produtolistingsql", new ProdutoRepository());
+		this.pesquisa = (String) FacesContext.getCurrentInstance().getExternalContext().getFlash()
+				.get("pesquisaProduto");
+
+		if (this.pesquisa != null)
+			pesquisar();
+
+		if (getList() == null) {
+			ProdutoRepository repo = new ProdutoRepository();
+			try {
+				setList(repo.findByNomeNativeSql("").stream().filter(categoria -> (boolean) categoria[5] == true)
+						.toList());
+			} catch (RepositoryException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@Override
 	public void pesquisar() {
 		ProdutoRepository repo = new ProdutoRepository();
 		try {
-			setList(repo.findByNomeNativeSql(pesquisa)
-					.stream()
-					.filter(categoria -> (boolean) categoria[5] == true)
+			setList(repo.findByNomeNativeSql(pesquisa).stream().filter(categoria -> (boolean) categoria[5] == true)
 					.toList());
 		} catch (RepositoryException e) {
 			e.printStackTrace();
@@ -66,62 +83,65 @@ public class ProdutoListingSql extends ListingSql<Produto> {
 
 		ProdutoRepository repo = new ProdutoRepository();
 
-//		switch (this.filtro) {
-//		case NOME: {
-//			try {
-//				listaProdutoAux = filtrarListaProduto(repo.findByNomeSQL(pesquisa));
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//			break;
-//		}
-//		case CATEGORIA: {
-//			try {
-//				listaProdutoAux = filtrarListaProduto(repo.findByCategoria(pesquisa));
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//			break;
-//		}
-//		case LOTE: {
-//			try {
-//				listaProdutoAux = filtrarListaProduto(repo.findByLote(pesquisa));
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//			break;
-//		}
-//		case FORNECEDOR: {
-//			try {
-//				listaProdutoAux = filtrarListaProduto(repo.findByFornecedor(pesquisa));
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//			break;
-//		}
-//		default:
-//			break;
-//		}
+		if (this.pesquisa == null)
+			this.pesquisa = "";
 
-		try {
-			setList(repo.findByNomeNativeSql(pesquisa));
-		} catch (RepositoryException e) {
-			e.printStackTrace();
+		switch (this.filtro) {
+		case NOME: {
+			try {
+				listaProdutoAux = filtrarListaProduto(repo.findByNomeNativeSql(pesquisa));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			break;
 		}
+		case CATEGORIA: {
+			try {
+				listaProdutoAux = filtrarListaProduto(repo.findByCategoriaNativeSql(pesquisa));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			break;
+		}
+		case LOTE: {
+			try {
+				listaProdutoAux = filtrarListaProduto(repo.findByLoteNativeSql(pesquisa));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			break;
+		}
+		case FORNECEDOR: {
+			try {
+				listaProdutoAux = filtrarListaProduto(repo.findByFornecedorNativeSql(pesquisa));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			break;
+		}
+		default:
+			break;
+		}
+
+		setList(listaProdutoAux);
 	}
 
-//	@SuppressWarnings("unchecked")
-//	public List<Produto> filtrarListaProduto(List<Object[]> list) {
-//		List<ProdutoVenda> listaProdutoVenda = (List<ProdutoVenda>) Session.getInstance().get("listaProduto");
-//		Session.getInstance().set("listaProduto", null);
-//		
-//		return list.stream().filter(produto -> {
-//			for (ProdutoVenda produtoVenda : listaProdutoVenda) {
-//				if (produtoVenda.getProduto().equals(produto)) {
-//					return false;
-//				}
-//			}
-//			return true;
-//		}).toList();
-//	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> filtrarListaProduto(List<Object[]> list) {
+		List<ProdutoVenda> listaProdutoVenda = (List<ProdutoVenda>) Session.getInstance().get("listaProduto");
+		Session.getInstance().set("listaProduto", null);
+
+		if (listaProdutoVenda != null) {
+			return list.stream().filter(produto -> {
+				for (ProdutoVenda produtoVenda : listaProdutoVenda) {
+					if (produtoVenda.getProduto().getId() == produto[0]) {
+						return false;
+					}
+				}
+				return true;
+			}).toList();
+		}
+
+		return list;
+	}
 }
