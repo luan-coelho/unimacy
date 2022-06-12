@@ -27,6 +27,13 @@
 				<p:tabView>
 					<p:tab title="Pessoal">
 						<div class="ui-fluid p-formgrid p-grid">
+
+							<div align="right" style="float: right; position: relative;">
+								<img class="img-responsive"
+									style="max-width: 200px !important; max-height: 200px !important;"
+									src="img-usuario?nome=#{perfilController.entity.id}.png" />
+							</div>
+
 							<div class="p-field p-col-12 p-md-5">
 								<p:outputLabel for="nome" value="Nome" />
 								<p:inputText id="nome" type="text"
@@ -167,9 +174,9 @@
 				</div>
 			</p:panel>
 
-			<p:dialog header="Alterar senha de acesso"
-				widgetVar="senha" minHeight="50" width="550" draggable="false"
-				showEffect="fade" modal="true">
+			<p:dialog header="Alterar senha de acesso" widgetVar="senha"
+				minHeight="50" width="550" draggable="false" showEffect="fade"
+				modal="true">
 				<h:panelGroup id="novasenha">
 					<div class="ui-fluid p-formgrid p-grid">
 						<div class="input-field p-field p-col-6 p-md-6">
@@ -206,8 +213,9 @@
 
 						<p:commandButton value="Alterar" icon="pi pi-pencil"
 							styleClass="ui-button-success"
-							action="#{perfilController.alterarSenha}" update="@form:growl novasenha"
-							process="novasenha" oncomplete="PF('senha').hide()"/>
+							action="#{perfilController.alterarSenha}"
+							update="@form:growl novasenha" process="novasenha"
+							oncomplete="PF('senha').hide()" />
 					</div>
 
 				</h:panelGroup>

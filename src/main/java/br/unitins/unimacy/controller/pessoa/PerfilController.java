@@ -1,8 +1,14 @@
 package br.unitins.unimacy.controller.pessoa;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import javax.validation.constraints.NotBlank;
+
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.file.UploadedFile;
 
 import com.gtbr.exception.ViaCepException;
 import com.gtbr.exception.ViaCepFormatException;
@@ -15,7 +21,6 @@ import br.unitins.unimacy.exception.RepositoryException;
 import br.unitins.unimacy.exception.VersionException;
 import br.unitins.unimacy.model.pessoa.Funcionario;
 import br.unitins.unimacy.repository.pessoa.FuncionarioRepository;
-import br.unitins.unimacy.repository.pessoa.PessoaFisicaRepository;
 
 @Named
 @SessionScoped
@@ -24,6 +29,8 @@ public class PerfilController extends Controller<Funcionario> {
 	private static final long serialVersionUID = -8919718922968640074L;
 
 	private boolean isEditable;
+	
+	private InputStream fotoInputStream = null;
 
 	@NotBlank(message = "Informe a senha atual")
 	private String senhaAtual;
@@ -38,6 +45,27 @@ public class PerfilController extends Controller<Funcionario> {
 		setEntity((Funcionario) Session.getInstance().get("funcionarioLogado"));
 	}
 
+	public void upload(FileUploadEvent event) {
+		UploadedFile uploadFile = event.getFile();
+		System.out.println("nome arquivo: " + uploadFile.getFileName());
+		System.out.println("tipo: " + uploadFile.getContentType());
+		System.out.println("tamanho: " + uploadFile.getSize());
+
+		if (uploadFile.getContentType().equals("image/png")) {
+			try {
+				fotoInputStream = uploadFile.getInputStream();
+				System.out.println("inputStream: " + uploadFile.getInputStream().toString());
+			} catch (IOException e) {
+
+				e.printStackTrace();
+			}
+			Util.addInfoMessage("Upload realizado com sucesso.");
+		} else {
+			Util.addErrorMessage("O tipo da image deve ser png.");
+		}
+
+	}
+	
 	public void buscarCep() {
 		try {
 			entity.getPessoaFisica().setEndereco(ApiCep.findCep(entity.getPessoaFisica().getEndereco().getCep()));
@@ -54,26 +82,57 @@ public class PerfilController extends Controller<Funcionario> {
 	public void editar() {
 		this.isEditable = !this.isEditable;
 	}
-
-	@Override
-	public void salvar() {
-		try {
-			PessoaFisicaRepository repo = new PessoaFisicaRepository();
-			repo.save(getEntity().getPessoaFisica());
-			
-			setEntity(getRepository().findById(getEntity().getId()));
-			Session.getInstance().set("funcionarioLogado", getEntity());
-			
-			Util.addInfoMessage("Alterações realizadas com sucesso.");
-			this.isEditable = false;
-		} catch (RepositoryException e) {
-			e.printStackTrace();
-			Util.addErrorMessage(e.getMessage());
-		} catch (VersionException e) {
-			e.printStackTrace();
-			Util.addErrorMessage(e.getMessage());
-		}
-	}
+	
+//	@Override
+//	public void salvar() {
+//		try {
+//			PessoaFisicaRepository repo = new PessoaFisicaRepository();
+//			salvarSemLimpar(getEntity().getPessoaFisica());
+//			
+//			setEntity(getRepository().findById(getEntity().getId()));
+//			Session.getInstance().set("funcionarioLogado", getEntity());
+//			
+//			Util.addInfoMessage("Alterações realizadas com sucesso.");
+//			this.isEditable = false;
+//		} catch (RepositoryException e) {
+//			e.printStackTrace();
+//			Util.addErrorMessage(e.getMessage());
+//		} catch (VersionException e) {
+//			e.printStackTrace();
+//			Util.addErrorMessage(e.getMessage());
+//		}
+//
+//		
+//		// caso exista uma imagem
+//		if (getFotoInputStream() != null) {
+//			// salvando a imagem
+//			if (!Util.saveImageFuncionario(getFotoInputStream(), "png", getEntity().getId())) {
+//				Util.addErrorMessage("Erro ao salvar. Não foi possível salvar a imagem do funcionário.");
+//				return;
+//			}
+//		}
+//		limpar();
+//	}
+//
+//	@Override
+//	public void salvar() {
+//		try {
+//			PessoaFisicaRepository repo = new PessoaFisicaRepository();
+//			repo.save(getEntity().getPessoaFisica());
+//			
+//			setEntity(getRepository().findById(getEntity().getId()));
+//			Session.getInstance().set("funcionarioLogado", getEntity());
+//			
+//			Util.addInfoMessage("Alterações realizadas com sucesso.");
+//			this.isEditable = false;
+//		} catch (RepositoryException e) {
+//			e.printStackTrace();
+//			Util.addErrorMessage(e.getMessage());
+//		} catch (VersionException e) {
+//			e.printStackTrace();
+//			Util.addErrorMessage(e.getMessage());
+//		}
+//	}
 	
 	@Override
 	public void salvar(Funcionario obj) {
@@ -146,5 +205,13 @@ public class PerfilController extends Controller<Funcionario> {
 
 	public void setSenhaAtual(String senhaAtual) {
 		this.senhaAtual = senhaAtual;
+	}
+	
+	public InputStream getFotoInputStream() {
+		return fotoInputStream;
+	}
+
+	public void setFotoInputStream(InputStream fotoInputStream) {
+		this.fotoInputStream = fotoInputStream;
 	}
 }

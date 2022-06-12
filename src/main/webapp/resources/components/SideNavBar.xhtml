@@ -52,18 +52,18 @@
 				</ul>
 			</div>
 
-			<div class="bottom-content">
+			<div>
 				<div class="avatar" align="left">
 					<a href="perfil.xhtml"><p:avatar label="Luan Coêlho"
 							icon="pi pi-user" shape="circle" size="large" />Perfil</a>
 				</div>
 			</div>
-			<div class="bottom-content p-mb-2">
-				<li class=""><a href="#"> <i class='bx bx-log-out icon'></i>
-						<p:commandButton value="Sair"
-							actionListener="#{templateController.encerrarSessao}" />
-				</a></li>
+			
+			<div class="p-mb-5">
+				<p:commandButton value="Sair" styleClass="ui-button-danger" icon="pi pi-sign-out"
+					actionListener="#{templateController.encerrarSessao}" />
 			</div>
+			
 		</div>
 	</nav>
 

@@ -24,12 +24,13 @@
 			<p:panel
 				styleClass="shadow-2xl shadow-gray-700 rounded-lg p-5 w-11/12 m-0">
 
-				<p:steps styleClass="p-mb-5">
+				<p:steps styleClass="p-mb-5"
+					activeIndex="#{vendaController.etapaVenda}">
 					<p:menuitem value="Selecionar Produtos" />
 					<p:menuitem value="Pagamento" />
 				</p:steps>
 
-				<h:panelGroup>
+				<h:panelGroup rendered="#{vendaController.etapaVenda == 0}">
 					<div class="ui-inputgroup mt-10">
 						<p:inputText id="pesquisa" value="#{vendaController.pesquisa}"
 							placeholder="Pesquisar produto" />
@@ -37,6 +38,8 @@
 							styleClass="ui-button-warning"
 							actionListener="#{vendaController.pesquisar}"
 							process="pesquisa @this" update="@form">
+							<p:ajax event="dialogReturn"
+								listener="#{vendaController.obterProdutoListing}" update="@form" />
 						</p:commandButton>
 					</div>
 
@@ -102,9 +105,92 @@
 							R$#{vendaController.valorTotal}</h2>
 
 						<p:commandButton value="Pagamento" icon="pi pi-paypal"
-							actionListener="#{vendaController.pagamento}" process="@this"
-							update="@form" styleClass="p-ml-5 ui-button-success" />
+							actionListener="#{vendaController.proximaEtapa}" process="@this"
+							update="@form" styleClass="p-ml-5 ui-button-success"
+							disabled="#{empty vendaController.listaProdutoVenda}" />
 					</h:panelGroup>
+				</h:panelGroup>
+
+				<h:panelGroup rendered="#{vendaController.etapaVenda == 1}">
+					<div class="p-grid p-ai-center vertical-container">
+						<div class="p-col-6">
+							<p:dataTable id="dataTableVenda" var="produtoVenda"
+								styleClass="w-12/12 p-mt-4 border-collapse border border-slate-500 rounded-md ..."
+								value="#{vendaController.listaProdutoVenda}" rowSelectMode="add"
+								paginatorPosition="bottom" allowUnsorting="true"
+								sortMode="single" stickyTopAt=".layout-topbar"
+								stripedRows="true" showGridlines="true"
+								emptyMessage="Selecione algum produto para continuar a venda">
+
+								<p:column headerText="Nome"
+									rendered="#{!empty vendaController.listaProdutoVenda}">
+									<h:outputText value="#{produtoVenda.produto.nome}" />
+								</p:column>
+
+								<p:column headerText="Quantidade"
+									rendered="#{!empty vendaController.listaProdutoVenda}"
+									width="20%">
+									<p:spinner id="horizontalAfter"
+										value="#{produtoVenda.quantidade}" buttons="horizontal-after"
+										upButtonStyleClass="ui-button-success"
+										downButtonStyleClass="ui-button-danger" min="0">
+										<p:ajax event="valueChange"
+											listener="#{vendaController.calcularValorTotal}"
+											process="@this" update="@form" />
+									</p:spinner>
+								</p:column>
+
+							</p:dataTable>
+						</div>
+
+						<div class="p-col-6">
+							<p:panel id="pagamento" header="Escolha um meio de pagamento">
+								<p:tabView id="tabview">
+									<p:tab title="Dinheiro">
+										<h3 class="text-3xl font-boldy p-mr-5 p-mb-2">Valor Total
+											R$#{vendaController.valorTotal}</h3>
+										<p:inputNumber id="valorPago" placeholder="R$"
+											value="#{vendaController.valorPago}" symbol="R$"
+											symbolPosition="p" decimalSeparator="," thousandSeparator="."
+											minValue="0">
+											<p:ajax event="blur"
+												listener="#{vendaController.calcularValorTroco}"
+												process="@this" update="@form" />
+										</p:inputNumber>
+										<h3 id="valorTroco" class="text-5xl font-boldy p-mt-2">Troco
+											R$#{vendaController.valorTroco}</h3>
+									</p:tab>
+									<p:tab title="Cartão de Crédito">
+										<p:graphicImage library="images" name="digitando.gif" width="300" />
+										<p:commandButton styleClass="p-mt-2" value="Cliente digite os dados..." type="button"
+											icon="pi pi-external-link" onclick="PF('simulacao').show()" />
+									</p:tab>
+									<p:tab title="Pix">
+										<h3 class="text-3xl font-boldy">Chave Pix: 63992651081</h3>
+										<h3 class="text-1xl font-boldy p-mb-2">Luan Coêlho de
+											Souza</h3>
+										<p:commandButton value="Gerar QR Code" type="button"
+											icon="pi pi-external-link" onclick="PF('qrcode').show()" />
+									</p:tab>
+								</p:tabView>
+							</p:panel>
+						</div>
+
+						<p:dialog widgetVar="qrcode" minHeight="40" closeOnEscape="true"
+							width="350" showEffect="fade" modal="true">
+							<p:graphicImage library="images" name="pix.png" width="300" />
+						</p:dialog>
+						
+						<p:dialog widgetVar="simulacao" minHeight="40" closeOnEscape="true"
+							width="350" showEffect="fade" modal="true">
+							
+						</p:dialog>
+
+					</div>
+
+					<p:commandButton value="Voltar" icon="pi pi-chevron-circle-left"
+						actionListener="#{vendaController.voltarEtapa}" process="@this"
+						update="@form" styleClass="p-ml-5 ui-button-info" />
 				</h:panelGroup>
 			</p:panel>
 		</div>
