@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 
 import br.unitins.unimacy.model.pessoa.Funcionario;
 
-@WebFilter(filterName = "SecurityFilter", urlPatterns = {"/gestao/*"})
+@WebFilter(filterName = "SecurityFilter", urlPatterns = {"/gestao/*3232"})
 public class SecurityFilter implements Filter {
 
 	@Override
@@ -24,11 +24,6 @@ public class SecurityFilter implements Filter {
 
 		HttpServletRequest servletRequest = (HttpServletRequest) request;
 		String endereco = servletRequest.getRequestURI();
-		System.out.println(servletRequest.getServerName());
-		System.out.println(servletRequest.getServletPath());
-		System.out.println(servletRequest.getServletContext());
-
-		System.out.println(endereco);
 
 		HttpSession session = servletRequest.getSession(false);
 

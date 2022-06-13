@@ -5,16 +5,26 @@ import javax.persistence.Entity;
 @Entity
 public class Cartao extends Pagamento {
 
-	private static final long serialVersionUID = -3458975552698441249L;
+	private static final long serialVersionUID = 1L;
 
+	private String titular;
 	private String numero;
 
 	public Cartao() {
 
 	}
 
-	public Cartao(String numero) {
+	public Cartao(String titular, String numero) {
+		this.titular = titular;
 		this.numero = numero;
+	}
+
+	public String getTitular() {
+		return titular;
+	}
+
+	public void setTitular(String titular) {
+		this.titular = titular;
 	}
 
 	public String getNumero() {
@@ -25,4 +35,8 @@ public class Cartao extends Pagamento {
 		this.numero = numero;
 	}
 
+	@Override
+	public String toString() {
+		return "Cartao [titular=" + titular + ", numero=" + numero + "]";
+	}
 }

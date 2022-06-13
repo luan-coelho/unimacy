@@ -23,6 +23,10 @@ import br.unitins.unimacy.model.pessoa.Funcionario;
 import br.unitins.unimacy.model.produto.Produto;
 import br.unitins.unimacy.model.venda.ProdutoVenda;
 import br.unitins.unimacy.model.venda.Venda;
+import br.unitins.unimacy.model.venda.pagamento.Cartao;
+import br.unitins.unimacy.model.venda.pagamento.Dinheiro;
+import br.unitins.unimacy.model.venda.pagamento.Pagamento;
+import br.unitins.unimacy.model.venda.pagamento.Pix;
 import br.unitins.unimacy.repository.produto.ProdutoRepository;
 import br.unitins.unimacy.repository.venda.VendaRepository;
 
@@ -48,6 +52,12 @@ public class VendaController extends Controller<Venda> {
 
 	private BigDecimal valorPago;
 	private BigDecimal valorTroco;
+
+	private Pagamento pagamento;
+
+	private Integer indexTabPagamento;
+
+	private boolean pagamentoconfirmado;
 
 	public VendaController() {
 		super(new VendaRepository());
@@ -97,35 +107,69 @@ public class VendaController extends Controller<Venda> {
 
 		abrirProdutoListing();
 	}
+
+	public void confirmarPagamento() {
+		setPagamentoconfirmado(true);
+	}
 	
 	public void calcularValorTroco() {
-		if(getValorPago().compareTo(getValorTotal()) < 0)
+		if (getValorPago().compareTo(getValorTotal()) < 0)
 			Util.addWarnMessage("Valor insuficiente");
 		else {
 			setValorTroco(getValorTotal().subtract(getValorPago()).abs());
-		}
-	}
-	
-	public void proximaEtapa() {
-		if(etapaVenda == 0){
-			etapaVenda = 1;
-		}
-	}
-	
-	public void voltarEtapa() {
-		if(etapaVenda == 1){
-			etapaVenda = 0;
+			confirmarPagamento();;
 		}
 	}
 
+	public void mudarPagamento() {
+		System.out.println(indexTabPagamento);
+
+		this.pagamento = null;
+
+		if (indexTabPagamento == 1)
+			pagamento = new Cartao();
+		else if (indexTabPagamento == 2)
+			pagamento = new Pix();
+		else {
+			pagamento = new Dinheiro();
+		}
+	}
+
+	public void proximaEtapa() {
+		if (etapaVenda == 0) {
+			etapaVenda = 1;
+		}
+	}
+
+	public void voltarEtapa() {
+		if (etapaVenda == 1) {
+			etapaVenda = 0;
+		}
+	}
+	
+
+	@Override
+	public void salvarSemLimpar() {
+		getEntity().setFuncionario((Funcionario) Session.getInstance().get("funcionarioLogado"));
+		getEntity().setProdutoVenda(getListaProdutoVenda());
+		getEntity().setPagamento(getPagamento());
+		
+		super.salvarSemLimpar();
+		limpar();
+	}
+	
 	public void limpar() {
 		funcionario = null;
+		etapaVenda = null;
+		valorPago = null;
+		valorTotal = null;
+		valorTroco = null;
 	}
 
 	@Override
 	public Venda getEntity() {
 		if (entity == null) {
-			entity = new Venda();
+			entity = new Venda(new Dinheiro());
 		}
 		return entity;
 	}
@@ -218,6 +262,34 @@ public class VendaController extends Controller<Venda> {
 
 	public void setValorTroco(BigDecimal valorTroco) {
 		this.valorTroco = valorTroco;
+	}
+
+	public Pagamento getPagamento() {
+		if (pagamento == null)
+			pagamento = new Dinheiro();
+		return pagamento;
+	}
+
+	public void setPagamento(Pagamento pagamento) {
+		this.pagamento = pagamento;
+	}
+
+	public Integer getIndexTabPagamento() {
+		if (indexTabPagamento == null)
+			indexTabPagamento = 0;
+		return indexTabPagamento;
+	}
+
+	public void setIndexTabPagamento(Integer indexTabPagamento) {
+		this.indexTabPagamento = indexTabPagamento;
+	}
+
+	public boolean isPagamentoconfirmado() {
+		return pagamentoconfirmado;
+	}
+
+	public void setPagamentoconfirmado(boolean pagamentoconfirmado) {
+		this.pagamentoconfirmado = pagamentoconfirmado;
 	}
 
 }

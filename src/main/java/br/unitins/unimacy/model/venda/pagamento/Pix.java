@@ -24,4 +24,9 @@ public class Pix extends Pagamento {
 	public void setChave(String chave) {
 		this.chave = chave;
 	}
+
+	@Override
+	public String toString() {
+		return "Pix [chave=" + chave + "]";
+	}
 }

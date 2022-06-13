@@ -43,31 +43,6 @@
 						</p:commandButton>
 					</div>
 
-					<h:panelGroup id="listingfornecedor">
-						<div class="p-mt-2">
-							<p:commandButton
-								rendered="#{vendaController.funcionario == null}"
-								value="Selecionar Funcionário" icon="pi pi-user"
-								actionListener="#{vendaController.abrirFuncionarioListing}"
-								process="@this" styleClass="ui-button-warning">
-								<p:ajax event="dialogReturn"
-									listener="#{vendaController.obterFuncionarioListing}"
-									update="@form" />
-							</p:commandButton>
-
-							<h:panelGroup rendered="#{vendaController.funcionario != null}">
-
-								<p:chip
-									label="#{funcionario.pessoaFisica.nome.trim()} #{funcionario.pessoaFisica.sobreNome.trim()}"
-									removable="true">
-
-									<p:ajax event="close" listener="#{vendaController.limpar}"
-										update="@form:listingfornecedor" />
-								</p:chip>
-
-							</h:panelGroup>
-						</div>
-					</h:panelGroup>
 
 					<div class="p-d-flex p-jc-center">
 						<p:dataTable id="dataTable" var="produtoVenda"
@@ -145,8 +120,10 @@
 
 						<div class="p-col-6">
 							<p:panel id="pagamento" header="Escolha um meio de pagamento">
-								<p:tabView id="tabview">
-									<p:tab title="Dinheiro">
+								<p:tabView id="tabview" activeIndex="0"
+									onTabShow="capturarTab()">
+
+									<p:tab ariaLabel="dinheiro" title="Dinheiro">
 										<h3 class="text-3xl font-boldy p-mr-5 p-mb-2">Valor Total
 											R$#{vendaController.valorTotal}</h3>
 										<p:inputNumber id="valorPago" placeholder="R$"
@@ -161,8 +138,10 @@
 											R$#{vendaController.valorTroco}</h3>
 									</p:tab>
 									<p:tab title="Cartão de Crédito">
-										<p:graphicImage library="images" name="digitando.gif" width="300" />
-										<p:commandButton styleClass="p-mt-2" value="Cliente digite os dados..." type="button"
+										<p:graphicImage library="images" name="digitando.gif"
+											width="300" />
+										<p:commandButton styleClass="p-mt-2"
+											value="Cliente digite os dados..." type="button"
 											icon="pi pi-external-link" onclick="PF('simulacao').show()" />
 									</p:tab>
 									<p:tab title="Pix">
@@ -173,6 +152,14 @@
 											icon="pi pi-external-link" onclick="PF('qrcode').show()" />
 									</p:tab>
 								</p:tabView>
+
+								<p:inputText id="indexTab" style="display: none;"
+									value="#{vendaController.indexTabPagamento}" />
+								<p:commandButton id="botaoAtualizar" style="display: none;">
+									<p:ajax event="click"
+										listener="#{vendaController.mudarPagamento}"
+										process="@this indexTab" update="dialog" />
+								</p:commandButton>
 							</p:panel>
 						</div>
 
@@ -180,20 +167,42 @@
 							width="350" showEffect="fade" modal="true">
 							<p:graphicImage library="images" name="pix.png" width="300" />
 						</p:dialog>
-						
-						<p:dialog widgetVar="simulacao" minHeight="40" closeOnEscape="true"
-							width="350" showEffect="fade" modal="true">
-							
-						</p:dialog>
 
+						<p:dialog header="Cartão inserido" id="dialog"
+							widgetVar="simulacao" minHeight="40" closeOnEscape="true"
+							width="300" showEffect="fade" modal="true" draggable="false">
+							<h:panelGroup
+								rendered="#{vendaController.pagamento['class'].simpleName eq 'Cartao'}">
+								<div class="ui-fluid p-formgrid p-grid">
+									<p:password type="password" placeholder="Informe a senha" />
+								</div>
+
+								<div align="right">
+									<p:commandButton value="Confirmar" icon="pi pi-paypal"
+										onclick="PF('simulacao').hide()"
+										styleClass="p-mt-4 ui-button-success"
+										actionListener="#{vendaController.confirmarPagamento}"
+										process="@this" />
+								</div>
+							</h:panelGroup>
+						</p:dialog>
 					</div>
 
-					<p:commandButton value="Voltar" icon="pi pi-chevron-circle-left"
-						actionListener="#{vendaController.voltarEtapa}" process="@this"
-						update="@form" styleClass="p-ml-5 ui-button-info" />
+					<div class="p-d-flex p-jc-xl-between">
+						<p:commandButton value="Voltar" icon="pi pi-chevron-circle-left"
+							actionListener="#{vendaController.voltarEtapa}" process="@this"
+							update="@form" styleClass="ui-button-info" />
+
+						<p:commandButton value="Finalizar venda" icon="pi pi-paypal"
+							onclick="PF('simulacao').hide()" styleClass="ui-button-success"
+							process="@this" update="@form"
+							actionListener="#{vendaController.salvarSemLimpar}" />
+					</div>
 				</h:panelGroup>
 			</p:panel>
 		</div>
+
+		<h:outputScript library="js" name="venda.js" />
 	</ui:define>
 </ui:composition>
 </html>

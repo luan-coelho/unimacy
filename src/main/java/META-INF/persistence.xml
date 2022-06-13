@@ -24,6 +24,7 @@
 		<class>br.unitins.unimacy.model.venda.ProdutoVenda</class>
 		<class>br.unitins.unimacy.model.venda.Venda</class>
 		<class>br.unitins.unimacy.model.venda.pagamento.Cartao</class>
+		<class>br.unitins.unimacy.model.venda.pagamento.Dinheiro</class>
 		<class>br.unitins.unimacy.model.venda.pagamento.Pagamento</class>
 		<class>br.unitins.unimacy.model.venda.pagamento.Pix</class>
 

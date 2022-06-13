@@ -2,8 +2,12 @@ package br.unitins.unimacy.model.venda;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import br.unitins.unimacy.model.DefaultEntity;
 import br.unitins.unimacy.model.pessoa.Cliente;
@@ -13,13 +17,21 @@ import br.unitins.unimacy.model.venda.pagamento.Pagamento;
 @Entity
 public class Venda extends DefaultEntity {
 
-	private static final long serialVersionUID = 5808795270444976757L;
+	private static final long serialVersionUID = 1L;
 
 	private LocalDateTime dataHoraVenda;
 	private BigDecimal valorTotalVenda;
+
+	@ManyToOne
 	private Cliente cliente;
+
+	@ManyToOne
 	private Funcionario funcionario;
-	private ProdutoVenda produtoVenda;
+
+	@OneToMany(cascade = CascadeType.ALL)
+	private List<ProdutoVenda> produtoVenda;
+
+	@ManyToOne(cascade = CascadeType.ALL)
 	private Pagamento pagamento;
 
 	public Venda() {
@@ -27,13 +39,16 @@ public class Venda extends DefaultEntity {
 	}
 
 	public Venda(LocalDateTime dataHoraVenda, BigDecimal valorTotalVenda, Cliente cliente, Funcionario funcionario,
-			ProdutoVenda produtoVenda, Pagamento pagamento) {
-		super();
+			List<ProdutoVenda> produtoVenda, Pagamento pagamento) {
 		this.dataHoraVenda = dataHoraVenda;
 		this.valorTotalVenda = valorTotalVenda;
 		this.cliente = cliente;
 		this.funcionario = funcionario;
 		this.produtoVenda = produtoVenda;
+		this.pagamento = pagamento;
+	}
+
+	public Venda(Pagamento pagamento) {
 		this.pagamento = pagamento;
 	}
 
@@ -69,11 +84,11 @@ public class Venda extends DefaultEntity {
 		this.funcionario = funcionario;
 	}
 
-	public ProdutoVenda getProdutoVenda() {
+	public List<ProdutoVenda> getProdutoVenda() {
 		return produtoVenda;
 	}
 
-	public void setProdutoVenda(ProdutoVenda produtoVenda) {
+	public void setProdutoVenda(List<ProdutoVenda> produtoVenda) {
 		this.produtoVenda = produtoVenda;
 	}
 
