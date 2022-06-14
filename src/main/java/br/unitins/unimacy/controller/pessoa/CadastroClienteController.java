@@ -41,8 +41,8 @@ public class CadastroClienteController extends Controller<Cliente> {
 	private FiltroPessoaFisica filtroPf = FiltroPessoaFisica.NOME;
 	private FiltroPessoaJuridica filtroPj = FiltroPessoaJuridica.NOME;
 
-	private List<Cliente> listaClientePf;
-	private List<Cliente> listaClientePj;
+	private List<Object[]> listaClientePf;
+	private List<Object[]> listaClientePj;
 
 	public CadastroClienteController() {
 		super(new ClienteRepository());
@@ -85,7 +85,20 @@ public class CadastroClienteController extends Controller<Cliente> {
 	}
 
 	public void obterPessoaFisicaListing(SelectEvent<PessoaFisica> event) {
-
+		PessoaFisica pf = event.getObject();
+		ClienteRepository repo = new ClienteRepository();
+		Cliente cliente = null;
+		try {
+			cliente = repo.findByIdPessoaFisica(pf.getId());
+		} catch (RepositoryException e) {
+			e.printStackTrace();
+		}
+		if (cliente != null)
+			setEntity(cliente);
+		else {
+			getEntity().setPessoa(pf);
+			salvar();
+		}
 	}
 
 	public void abrirPessoaJuridicaListing() {
@@ -94,26 +107,39 @@ public class CadastroClienteController extends Controller<Cliente> {
 	}
 
 	public void obterPessoaJuridicaListing(SelectEvent<PessoaJuridica> event) {
-
+		PessoaJuridica pj = event.getObject();
+		ClienteRepository repo = new ClienteRepository();
+		Cliente cliente = null;
+		try {
+			cliente = repo.findByIdPessoaFisica(pj.getId());
+		} catch (RepositoryException e) {
+			e.printStackTrace();
+		}
+		if (cliente != null)
+			setEntity(cliente);
+		else {
+			getEntity().setPessoa(pj);
+			salvar();
+		}
 	}
-	
+
 	public FiltroPessoaFisica[] getFiltroPessoaFisica() {
 		return FiltroPessoaFisica.values();
 	}
-	
+
 	public FiltroPessoaJuridica[] getFiltroPessoaJuridica() {
 		return FiltroPessoaJuridica.values();
 	}
 
 	public void pesquisaPfPorFiltro() {
-		List<Cliente> lista = null;
+		List<Object[]> lista = null;
 
 		ClienteRepository repo = (ClienteRepository) getRepository();
 
 		switch (filtroPf) {
 		case NOME: {
 			try {
-				lista = repo.findAllClientePfByNome(pesquisaPf);
+				lista = repo.findAllClientePfByNomeNativeQuery(pesquisaPf);
 			} catch (RepositoryException e) {
 				Util.addErrorMessage("Falha ao realizar consulta");
 				e.printStackTrace();
@@ -122,7 +148,7 @@ public class CadastroClienteController extends Controller<Cliente> {
 		}
 		case CPF: {
 			try {
-				lista = (List<Cliente>) repo.findAllClientePfByCpf(pesquisaPf);
+				lista = repo.findAllClientePfByCpfNativeQuery(pesquisaPf);
 			} catch (RepositoryException e) {
 				Util.addErrorMessage("Falha ao consultar CPF");
 				e.printStackTrace();
@@ -131,7 +157,7 @@ public class CadastroClienteController extends Controller<Cliente> {
 		}
 		case EMAIL: {
 			try {
-				lista = repo.findAllClientePfByEmail(pesquisaPf);
+				lista = repo.findAllClientePfByEmailNativeQuery(pesquisaPf);
 			} catch (RepositoryException e) {
 				Util.addErrorMessage("Falha ao consultar email");
 				e.printStackTrace();
@@ -140,7 +166,7 @@ public class CadastroClienteController extends Controller<Cliente> {
 		}
 		case TELEFONE: {
 			try {
-				lista = repo.findAllClientePfByTelefone(pesquisaPf);
+				lista = repo.findAllClientePfByTelefoneNativeQuery(pesquisaPf);
 			} catch (RepositoryException e) {
 				Util.addErrorMessage("Falha ao consultar telefone");
 				e.printStackTrace();
@@ -152,21 +178,21 @@ public class CadastroClienteController extends Controller<Cliente> {
 		}
 
 		if (lista.isEmpty()) {
-			Util.addWarnMessage("Nenhum produto encontrado");
+			Util.addWarnMessage("Nenhum cliente encontrado");
 			return;
 		}
 		listaClientePf = lista;
 	}
 
 	public void pesquisaPJPorFiltro() {
-		List<Cliente> lista = null;
+		List<Object[]> lista = null;
 
 		ClienteRepository repo = (ClienteRepository) getRepository();
 
 		switch (filtroPj) {
 		case NOME: {
 			try {
-				lista = repo.findAllClientePjByNome(pesquisaPj);
+				lista = repo.findAllClientePJByNomeNativeQuery(pesquisaPj);
 			} catch (RepositoryException e) {
 				Util.addErrorMessage("Falha ao realizar consulta");
 				e.printStackTrace();
@@ -175,7 +201,7 @@ public class CadastroClienteController extends Controller<Cliente> {
 		}
 		case CNPJ: {
 			try {
-				lista = (List<Cliente>) repo.findAllClientePjByCnpj(pesquisaPj);
+				lista = repo.findAllClientePJByCnpjNativeQuery(pesquisaPj);
 			} catch (RepositoryException e) {
 				Util.addErrorMessage("Falha ao consultar CNPJ");
 				e.printStackTrace();
@@ -184,7 +210,7 @@ public class CadastroClienteController extends Controller<Cliente> {
 		}
 		case EMAIL: {
 			try {
-				lista = repo.findAllClienteByEmail(pesquisaPj);
+				lista = repo.findAllClientePjByEmailNativeQuery(pesquisaPj);
 			} catch (RepositoryException e) {
 				Util.addErrorMessage("Falha ao consultar email");
 				e.printStackTrace();
@@ -193,7 +219,7 @@ public class CadastroClienteController extends Controller<Cliente> {
 		}
 		case TELEFONE: {
 			try {
-				lista = repo.findAllClientePjByTelefone(pesquisaPj);
+				lista = repo.findAllClientePjByTelefoneNativeQuery(pesquisaPj);
 			} catch (RepositoryException e) {
 				Util.addErrorMessage("Falha ao consultar telefone");
 				e.printStackTrace();
@@ -205,7 +231,7 @@ public class CadastroClienteController extends Controller<Cliente> {
 		}
 
 		if (lista.isEmpty()) {
-			Util.addWarnMessage("Nenhum produto encontrado");
+			Util.addWarnMessage("Nenhum cliente encontrado");
 			return;
 		}
 		listaClientePj = lista;
@@ -220,6 +246,13 @@ public class CadastroClienteController extends Controller<Cliente> {
 		}
 
 		return entity;
+	}
+	
+	@Override
+	public void limpar() {
+		super.limpar();
+		listaClientePf = null;
+		listaClientePj = null;
 	}
 
 	public boolean getMudarTipoCliente() {
@@ -262,23 +295,25 @@ public class CadastroClienteController extends Controller<Cliente> {
 		this.filtroPj = filtroPj;
 	}
 
-	public List<Cliente> getListaClientePf() {
+	public List<Object[]> getListaClientePf() {
 		if (listaClientePf == null)
-			listaClientePf = new ArrayList<Cliente>();
+			listaClientePf = new ArrayList<Object[]>();
 		return listaClientePf;
 	}
 
-	public void setListaClientePf(List<Cliente> listaClientePf) {
+	public void setListaClientePf(List<Object[]> listaClientePf) {
 		this.listaClientePf = listaClientePf;
 	}
 
-	public List<Cliente> getListaClientePj() {
-		if (listaClientePj == null)
-			listaClientePj = new ArrayList<Cliente>();
+	public List<Object[]> getListaClientePj() {
+		if(listaClientePj == null)
+			listaClientePj = new ArrayList<Object[]>();
 		return listaClientePj;
 	}
 
-	public void setListaClientePj(List<Cliente> listaClientePj) {
+	public void setListaClientePj(List<Object[]> listaClientePj) {
 		this.listaClientePj = listaClientePj;
 	}
+
+	
 }

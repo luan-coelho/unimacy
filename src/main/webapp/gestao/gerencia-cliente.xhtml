@@ -31,12 +31,12 @@
 								styleClass="p-mb-3">
 								<p:ajax event="dialogReturn"
 									listener="#{cadastroClienteController.obterPessoaFisicaListing}"
-									update="@form" />
+									update="form:tabview:tablepf form:growl" />
 							</p:commandButton>
 						</div>
 
 						<div class="p-d-flex p-jc-center">
-							<p:dataTable var="clientepf"
+							<p:dataTable id="tablepf" var="clientepf"
 								value="#{cadastroClienteController.listaClientePf}"
 								paginator="true" rows="10" rowSelectMode="add"
 								paginatorPosition="bottom" allowUnsorting="true"
@@ -57,44 +57,32 @@
 										<p:commandButton icon="pi pi-search"
 											styleClass="ui-button-warning"
 											actionListener="#{cadastroClienteController.pesquisaPfPorFiltro}"
-											process="pesquisapf filtropf @this" update="@form">
+											process="pesquisapf filtropf @this" update="form:tabview:tablepf form:growl">
 										</p:commandButton>
 										<p:commandButton icon="pi pi-refresh"
 											styleClass="ui-button-success p-ml-1"
 											actionListener="#{cadastroClienteController.limpar}"
-											process="@this" update="@form">
+											process="@this" update="form:tabview:tablepf">
 										</p:commandButton>
 									</div>
 								</f:facet>
 
 								<p:column headerText="Nome Completo">
 									<h:outputText
-										value="#{clientepf.pessoaFisica.nome.trim()} #{pessoa.sobreNome.trim()}" />
+										value="#{clientepf[1].trim()} #{clientepf[2].trim()}" />
 								</p:column>
 
 								<p:column headerText="CPF">
-									<h:outputText value="#{clientepf.pessoaFisica.cpf}" />
+									<h:outputText value="#{clientepf[3]}" />
 								</p:column>
-
+								
 								<p:column headerText="Ativo">
-									<p:toggleSwitch value="#{clientepf.pessoaFisica.ativo}">
-										<p:ajax
-											listener="#{cadastroClienteController.alterar(clientepf)}"
-											process="@this" update="@form" />
-									</p:toggleSwitch>
-								</p:column>
-
-								<p:column>
-									<p:commandButton icon="pi pi-search"
-										styleClass="edit-button rounded-button ui-button-help p-mr-1"
-										onclick="PF('resumo-pessoa').show()">
-										<p:ajax process="@this" update="form:tabview:confirmar"
-											listener="#{cadastroClienteController.selecionarItem(clientepf)}" />
-									</p:commandButton>
-									<p:commandButton icon="pi pi-pencil"
-										styleClass="edit-button rounded-button ui-button-info p-mr-1 p-mb-1"
-										action="#{cadastroClienteController.editarItem(pessoa)}" />
-								</p:column>
+								<p:toggleSwitch value="#{clientepf[4]}">
+									<p:ajax
+										listener="#{cadastroClienteController.alterar(clientepf[0])}"
+										process="@this" update="form:tabview:tablepf form:growl" />
+								</p:toggleSwitch>
+							</p:column>
 
 							</p:dataTable>
 
@@ -115,11 +103,11 @@
 								styleClass="p-mb-3">
 								<p:ajax event="dialogReturn"
 									listener="#{cadastroClienteController.obterPessoaJuridicaListing}"
-									update="@form" />
+									update="form:tabview:tablepj form:growl" />
 							</p:commandButton>
 						</div>
 
-						<p:dataTable var="clientepj"
+						<p:dataTable id="tablepj" var="clientepj"
 							value="#{cadastroClienteController.listaClientePj}"
 							paginator="true" rows="10" rowSelectMode="add"
 							paginatorPosition="bottom" allowUnsorting="true"
@@ -142,12 +130,12 @@
 										<p:commandButton icon="pi pi-search"
 											styleClass="ui-button-warning"
 											actionListener="#{cadastroClienteController.pesquisaPJPorFiltro}"
-											process="pesquisapj filtropj @this" update="@form">
+											process="pesquisapj filtropj @this" update="form:tabview:tablepj form:growl">
 										</p:commandButton>
 										<p:commandButton icon="pi pi-refresh"
 											styleClass="ui-button-success p-ml-1"
 											actionListener="#{cadastroClienteController.limpar}"
-											process="@this" update="@form">
+											process="@this" update="form:tabview:tablepj">
 										</p:commandButton>
 									</div>
 								</div>
@@ -155,32 +143,19 @@
 
 							<p:column headerText="Nome Fantasia">
 								<h:outputText
-									value="#{clientepj.pessoaJuridica.nomeFantasia.trim()}" />
+									value="#{clientepj[1].trim()}" />
 							</p:column>
 
 							<p:column headerText="CNPJ">
-								<h:outputText value="#{clientepj.pessoaJuridica.cnpj}" />
+								<h:outputText value="#{clientepj[2]}" />
 							</p:column>
 
 							<p:column headerText="Ativo">
-								<p:toggleSwitch value="#{clientepj.pessoaJuridica.ativo}">
+								<p:toggleSwitch value="#{clientepj[3]}">
 									<p:ajax
-										listener="#{cadastroClienteController.alterar(clientepj)}"
-										process="@this" update="@form" />
+										listener="#{cadastroClienteController.alterar(clientepj[0])}"
+										process="@this" update="form:tabview:tablepj form:growl" />
 								</p:toggleSwitch>
-							</p:column>
-
-							<p:column>
-								<p:commandButton icon="pi pi-search"
-									styleClass="edit-button rounded-button ui-button-help p-mr-1"
-									onclick="PF('resumo-pj').show()">
-									<p:ajax process="@this" update="form:tabview:confirmar-pj"
-										listener="#{cadastroClienteController.selecionarItem(clientepj)}" />
-								</p:commandButton>
-								<p:commandButton icon="pi pi-pencil"
-									action="#{cadastroClienteController.editarItem(pessoa)}"
-									styleClass="edit-button rounded-button ui-button-info p-mr-1 p-mb-1">
-								</p:commandButton>
 							</p:column>
 
 						</p:dataTable>

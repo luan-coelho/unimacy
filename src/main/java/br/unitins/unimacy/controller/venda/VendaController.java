@@ -15,7 +15,7 @@ import org.primefaces.event.SelectEvent;
 import br.unitins.unimacy.application.Session;
 import br.unitins.unimacy.application.Util;
 import br.unitins.unimacy.controller.Controller;
-import br.unitins.unimacy.controller.listing.FuncionarioListing;
+import br.unitins.unimacy.controller.listing.ClienteListing;
 import br.unitins.unimacy.controller.listing.ProdutoListingSql;
 import br.unitins.unimacy.exception.RepositoryException;
 import br.unitins.unimacy.model.pessoa.Cliente;
@@ -27,6 +27,7 @@ import br.unitins.unimacy.model.venda.pagamento.Cartao;
 import br.unitins.unimacy.model.venda.pagamento.Dinheiro;
 import br.unitins.unimacy.model.venda.pagamento.Pagamento;
 import br.unitins.unimacy.model.venda.pagamento.Pix;
+import br.unitins.unimacy.repository.pessoa.ClienteRepository;
 import br.unitins.unimacy.repository.produto.ProdutoRepository;
 import br.unitins.unimacy.repository.venda.VendaRepository;
 
@@ -88,21 +89,21 @@ public class VendaController extends Controller<Venda> {
 		calcularValorTotal();
 	}
 
-	public void abrirFuncionarioListing() {
-		FuncionarioListing listing = new FuncionarioListing();
-		listing.open(40, 70);
+	public void abrirClienteListing() {
+		ClienteListing listing = new ClienteListing();
+		listing.open(90, 90);
 	}
 
-	public void obterFuncionarioListing(SelectEvent<Funcionario> event) {
-		setFuncionario(event.getObject());
+	public void obterClienteListing(SelectEvent<Cliente> event) {
+		getEntity().setCliente(event.getObject());
 	}
 
 	public void pesquisar() {
 		Flash flash = FacesContext.getCurrentInstance().getExternalContext().getFlash();
+		
 		if (this.pesquisa != null) {
 			flash.put("pesquisaProduto", this.pesquisa);
 			flash.keep("pesquisaProduto");
-
 		}
 
 		abrirProdutoListing();
@@ -150,9 +151,14 @@ public class VendaController extends Controller<Venda> {
 
 	@Override
 	public void salvarSemLimpar() {
+		if(!pagamentoconfirmado) {
+			Util.addWarnMessage("Pagamento não confirmado!");
+			return;
+		}
 		getEntity().setFuncionario((Funcionario) Session.getInstance().get("funcionarioLogado"));
 		getEntity().setProdutoVenda(getListaProdutoVenda());
 		getEntity().setPagamento(getPagamento());
+		getEntity().setValorTotalVenda(getValorTotal());
 		
 		super.salvarSemLimpar();
 		limpar();

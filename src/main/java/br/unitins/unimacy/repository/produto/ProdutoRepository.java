@@ -116,7 +116,7 @@ public class ProdutoRepository extends Repository<Produto> {
 	public List<Object[]> findByNomeNativeSql(String nome) throws RepositoryException {
 		try {
 			StringBuffer sql = new StringBuffer();
-			sql.append("SELECT ");
+			sql.append("SELECT DISTINCT ");
 			sql.append("  p.id, ");
 			sql.append("  p.nome, ");
 			sql.append("  p.quantestoque, ");

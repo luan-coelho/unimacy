@@ -172,7 +172,7 @@ public class FuncionarioController extends Controller<Funcionario> {
 		}
 
 		if (listaPessoaAux.isEmpty()) {
-			Util.addWarnMessage("Nenhum produto encontrado");
+			Util.addWarnMessage("Nenhum funcionário encontrado");
 			return;
 		}
 		listaFuncionario = listaPessoaAux;

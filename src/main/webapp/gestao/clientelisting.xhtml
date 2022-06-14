@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:components="http://java.sun.com/jsf/composite/components">
+<h:head>
+	<title>Selecione uma Pessoa Física</title>
+	<h:outputStylesheet library="webjars"
+		name="primeflex/2.0.0/primeflex.min.css" />
+	<h:outputStylesheet library="css" name="template.css" />
+</h:head>
+<h:body>
+	<h:form>
+		<p:panel>
+			<p:toolbar>
+				<p:toolbarGroup align="left">
+
+					<div class="ui-inputgroup mt-10">
+						<p:inputText id="pesquisa" value="#{clienteListing.pesquisa}"
+							placeholder="Pesquisar por..." />
+						<p:commandButton icon="pi pi-search"
+							styleClass="ui-button-warning"
+							actionListener="#{clienteListing.pesquisar}"
+							process="pesquisa @this tipoCliente" update="@form">
+						</p:commandButton>
+					</div>
+				</p:toolbarGroup>
+
+				<p:toolbarGroup align="right">
+					<strong><p:outputLabel styleClass="p-mr-2"
+							value="Tipo de Cliente" /> 
+					</strong>
+					<p:selectOneRadio id="tipoCliente" value="#{clienteListing.tipo}">
+
+						<p:ajax event="change" />
+
+						<f:selectItems var="obj" value="#{clienteListing.tipoCliente}"
+							itemLabel="#{obj.label}" />
+					</p:selectOneRadio>
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:dataTable id="dataTable-pessoa"
+				value="#{clienteListing.list}" var="pessoa" scrollable="true"
+				scrollHeight="250">
+				
+				<p:column headerText="Nome Completo: ">
+					<p:outputLabel value="#{pessoa[1]} #{pessoa[2]}" />
+				</p:column>
+
+				<p:column headerText="CPF">
+					<h:outputText value="#{pessoa[3]}" />
+				</p:column>
+				
+				<p:column rendered="#{clienteListing.tipo eq 'PESSOA_JURIDICA'}"  headerText="Nome Fantasia: ">
+					<p:outputLabel value="#{pessoa[1]}"/>
+				</p:column>
+
+				<p:column rendered="#{clienteListing.tipo eq 'PESSOA_JURIDICA'}" headerText="CNPJ">
+					<h:outputText value="#{pessoa[2]}" />
+				</p:column>
+
+				<p:column>
+					<p:commandButton icon="pi pi-user-plus"
+						actionListener="#{clienteListing.select(pessoa[0])}"
+						process="@this" update="@form" />
+				</p:column>
+			</p:dataTable>
+		</p:panel>
+	</h:form>
+</h:body>
+</html>

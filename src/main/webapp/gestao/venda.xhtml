@@ -43,6 +43,14 @@
 						</p:commandButton>
 					</div>
 
+					<p:commandButton value="Selecionar"
+						actionListener="#{vendaController.abrirClienteListing}"
+						process="@this" styleClass="ui-button-warning link">
+						<p:ajax event="dialogReturn"
+							listener="#{vendaController.obterClienteListing}"
+							update="@form" />
+					</p:commandButton>
+
 
 					<div class="p-d-flex p-jc-center">
 						<p:dataTable id="dataTable" var="produtoVenda"
@@ -149,7 +157,9 @@
 										<h3 class="text-1xl font-boldy p-mb-2">Luan Coêlho de
 											Souza</h3>
 										<p:commandButton value="Gerar QR Code" type="button"
-											icon="pi pi-external-link" onclick="PF('qrcode').show()" />
+											icon="pi pi-external-link"
+											actionListener="#{vendaController.confirmarPagamento}"
+											process="@this" update="@this" onclick="PF('qrcode').show()" />
 									</p:tab>
 								</p:tabView>
 

@@ -19,7 +19,6 @@ public class Venda extends DefaultEntity {
 
 	private static final long serialVersionUID = 1L;
 
-	private LocalDateTime dataHoraVenda;
 	private BigDecimal valorTotalVenda;
 
 	@ManyToOne
@@ -40,7 +39,6 @@ public class Venda extends DefaultEntity {
 
 	public Venda(LocalDateTime dataHoraVenda, BigDecimal valorTotalVenda, Cliente cliente, Funcionario funcionario,
 			List<ProdutoVenda> produtoVenda, Pagamento pagamento) {
-		this.dataHoraVenda = dataHoraVenda;
 		this.valorTotalVenda = valorTotalVenda;
 		this.cliente = cliente;
 		this.funcionario = funcionario;
@@ -50,14 +48,6 @@ public class Venda extends DefaultEntity {
 
 	public Venda(Pagamento pagamento) {
 		this.pagamento = pagamento;
-	}
-
-	public LocalDateTime getDataHoraVenda() {
-		return dataHoraVenda;
-	}
-
-	public void setDataHoraVenda(LocalDateTime dataHoraVenda) {
-		this.dataHoraVenda = dataHoraVenda;
 	}
 
 	public BigDecimal getValorTotalVenda() {
