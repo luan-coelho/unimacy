@@ -33,4 +33,12 @@ public class Dinheiro extends Pagamento {
 		return "Dinheiro [valorPago=" + valorPago + "]";
 	}
 
+	public BigDecimal getValorTroco() {
+		return valorTroco;
+	}
+
+	public void setValorTroco(BigDecimal valorTroco) {
+		this.valorTroco = valorTroco;
+	}
+
 }

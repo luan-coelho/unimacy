@@ -2,6 +2,7 @@ package br.unitins.unimacy.controller.listing;
 
 import java.util.List;
 
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
@@ -24,13 +25,18 @@ public class ProdutoListing extends Listing<Produto> {
 
 	public ProdutoListing() {
 		super("produtolisting", new ProdutoRepository());
+
+		this.pesquisa = (String) FacesContext.getCurrentInstance().getExternalContext().getFlash()
+				.get("pesquisaProduto");
+
+		pesquisar();
 	}
 
 	@Override
 	public void pesquisar() {
 		ProdutoRepository repo = new ProdutoRepository();
 		try {
-			setList(repo.findAll());
+			setList(filtrarListaProduto(repo.findByNome(getPesquisa() == null ? "" : getPesquisa())));
 		} catch (RepositoryException e) {
 			e.printStackTrace();
 			Util.addErrorMessage("Problema ao realizar a consulta.");
@@ -108,7 +114,6 @@ public class ProdutoListing extends Listing<Produto> {
 	@SuppressWarnings("unchecked")
 	public List<Produto> filtrarListaProduto(List<Produto> lista) {
 		List<ProdutoVenda> listaProdutoVenda = (List<ProdutoVenda>) Session.getInstance().get("listaProduto");
-		Session.getInstance().set("listaProduto", null);
 
 		if (listaProdutoVenda != null) {
 			return lista.stream().filter(produto -> {

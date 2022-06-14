@@ -29,34 +29,26 @@
 				<p:column headerText="Nome">
 					<p:outputLabel value="#{produto.nome}" />
 				</p:column>
-				<p:column headerText="Nome" sortBy="#{produto.nome}">
-					<h:outputText value="#{produto.nome}" />
-				</p:column>
 
-				<p:column headerText="Quantidade" sortBy="#{produto.quantEstoque}">
+				<p:column headerText="Quantidade">
 					<h:outputText value="#{produto.quantEstoque}" />
 				</p:column>
 
-				<p:column headerText="Preço" sortBy="#{produto.preco}">
-					<h:outputText value="R$#{produto.preco}" />
+				<p:column headerText="Preço">
+					<h3 id="valorTroco" class="text-6xl font-boldy p-mt-2">
+						R$#{produto.preco}</h3>
 				</p:column>
 
-				<p:column headerText="Categoria" sortBy="#{produto.categoria.nome}">
-					<p:tag styleClass="p-mr-2" value="#{produto.categoria.nome}"></p:tag>
+				<p:column headerText="Categoria">
+					<p:repeat value="#{produto.categoria}" var="categoria">
+						<p:tag styleClass="p-mr-2 p-mb-1" value="#{categoria}"></p:tag>
+					</p:repeat>
 				</p:column>
 
-				<p:column headerText="Lote" sortBy="#{produto.lote}">
-					<h:outputText value="#{produto.lote}" />
-				</p:column>
-
-				<p:column headerText="Fornecedor">
-					<h:outputText value="#{produto.fornecedor}" />
-				</p:column>
-				
 				<p:column>
 					<p:commandButton value="Selecionar"
-						actionListener="#{produtoListing.select(produto.id)}" process="@this"
-						update="@form" />
+						actionListener="#{produtoListing.select(produto.id)}"
+						process="@this" update="@form" />
 				</p:column>
 			</p:dataTable>
 		</p:panel>

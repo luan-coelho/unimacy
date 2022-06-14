@@ -16,10 +16,11 @@ import br.unitins.unimacy.application.Session;
 import br.unitins.unimacy.application.Util;
 import br.unitins.unimacy.controller.Controller;
 import br.unitins.unimacy.controller.listing.ClienteListing;
-import br.unitins.unimacy.controller.listing.ProdutoListingSql;
+import br.unitins.unimacy.controller.listing.ProdutoListing;
 import br.unitins.unimacy.exception.RepositoryException;
 import br.unitins.unimacy.model.pessoa.Cliente;
 import br.unitins.unimacy.model.pessoa.Funcionario;
+import br.unitins.unimacy.model.pessoa.PessoaJuridica;
 import br.unitins.unimacy.model.produto.Produto;
 import br.unitins.unimacy.model.venda.ProdutoVenda;
 import br.unitins.unimacy.model.venda.Venda;
@@ -27,7 +28,6 @@ import br.unitins.unimacy.model.venda.pagamento.Cartao;
 import br.unitins.unimacy.model.venda.pagamento.Dinheiro;
 import br.unitins.unimacy.model.venda.pagamento.Pagamento;
 import br.unitins.unimacy.model.venda.pagamento.Pix;
-import br.unitins.unimacy.repository.pessoa.ClienteRepository;
 import br.unitins.unimacy.repository.produto.ProdutoRepository;
 import br.unitins.unimacy.repository.venda.VendaRepository;
 
@@ -48,6 +48,8 @@ public class VendaController extends Controller<Venda> {
 	private String pesquisa;
 
 	private Integer etapaVenda;
+
+	private boolean isPessoaJuridica;
 
 	/* Tela de Pagamento */
 
@@ -75,10 +77,9 @@ public class VendaController extends Controller<Venda> {
 	}
 
 	public void abrirProdutoListing() {
-		ProdutoListingSql listing = new ProdutoListingSql();
+		ProdutoListing listing = new ProdutoListing();
 		listing.open(70, 70);
 		Session.getInstance().set("listaProduto", this.listaProdutoVenda);
-		getListaProdutoRepository();
 	}
 
 	public void obterProdutoListing(SelectEvent<Produto> event) {
@@ -95,12 +96,18 @@ public class VendaController extends Controller<Venda> {
 	}
 
 	public void obterClienteListing(SelectEvent<Cliente> event) {
-		getEntity().setCliente(event.getObject());
+		setCliente(event.getObject());
+		
+		if(getCliente().getPessoa() instanceof PessoaJuridica)
+			setPessoaJuridica(true);
+		else {
+			setPessoaJuridica(false);
+		}
 	}
 
 	public void pesquisar() {
 		Flash flash = FacesContext.getCurrentInstance().getExternalContext().getFlash();
-		
+
 		if (this.pesquisa != null) {
 			flash.put("pesquisaProduto", this.pesquisa);
 			flash.keep("pesquisaProduto");
@@ -112,19 +119,24 @@ public class VendaController extends Controller<Venda> {
 	public void confirmarPagamento() {
 		setPagamentoconfirmado(true);
 	}
-	
+
 	public void calcularValorTroco() {
 		if (getValorPago().compareTo(getValorTotal()) < 0)
 			Util.addWarnMessage("Valor insuficiente");
 		else {
 			setValorTroco(getValorTotal().subtract(getValorPago()).abs());
-			confirmarPagamento();;
+
+			Dinheiro pagamento = (Dinheiro) getPagamento();
+			pagamento.setValorPago(getValorTotal());
+			pagamento.setValorTroco(getValorTroco());
+
+			getEntity().setPagamento(pagamento);
+
+			confirmarPagamento();
 		}
 	}
 
 	public void mudarPagamento() {
-		System.out.println(indexTabPagamento);
-
 		this.pagamento = null;
 
 		if (indexTabPagamento == 1)
@@ -147,29 +159,44 @@ public class VendaController extends Controller<Venda> {
 			etapaVenda = 0;
 		}
 	}
-	
 
 	@Override
 	public void salvarSemLimpar() {
-		if(!pagamentoconfirmado) {
+		if (getPagamento() instanceof Pix)
+			confirmarPagamento();
+
+		if (!pagamentoconfirmado) {
 			Util.addWarnMessage("Pagamento não confirmado!");
 			return;
 		}
+
+		if (getCliente() == null) {
+			Util.addWarnMessage("Selecione o cliente!");
+			return;
+		}
+
+		getEntity().setCliente(getCliente());
 		getEntity().setFuncionario((Funcionario) Session.getInstance().get("funcionarioLogado"));
 		getEntity().setProdutoVenda(getListaProdutoVenda());
 		getEntity().setPagamento(getPagamento());
 		getEntity().setValorTotalVenda(getValorTotal());
-		
+
 		super.salvarSemLimpar();
 		limpar();
 	}
-	
+
+	public void removerCliente() {
+		setCliente(null);
+	}
+
 	public void limpar() {
+		cliente = null;
 		funcionario = null;
 		etapaVenda = null;
 		valorPago = null;
 		valorTotal = null;
 		valorTroco = null;
+		pagamentoconfirmado = false;
 	}
 
 	@Override
@@ -297,5 +324,15 @@ public class VendaController extends Controller<Venda> {
 	public void setPagamentoconfirmado(boolean pagamentoconfirmado) {
 		this.pagamentoconfirmado = pagamentoconfirmado;
 	}
+
+	public boolean isPessoaJuridica() {
+		return isPessoaJuridica;
+	}
+
+	public void setPessoaJuridica(boolean isPessoaJuridica) {
+		this.isPessoaJuridica = isPessoaJuridica;
+	}
+	
+	
 
 }

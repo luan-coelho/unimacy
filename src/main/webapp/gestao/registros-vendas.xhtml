@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:components="http://java.sun.com/jsf/composite/components">
+
+<ui:composition template="template.xhtml">
+
+	<ui:define name="head">
+		<title>Registro de Vendas</title>
+		<h:outputStylesheet library="css" name="venda.css" />
+	</ui:define>
+
+	<ui:define name="conteudo">
+
+		<p:growl id="growl" />
+
+		<div class="p-d-flex p-jc-center p-mt-5">
+
+			<div class="p-d-flex p-jc-center">
+				<p:dataTable id="dataTable" var="venda"
+					value="#{registroVendaController.listaVenda}"
+					paginator="true" rows="10"
+					styleClass="products-table p-mt-5 p-mb-5 shadow-2xl shadow-gray-700 rounded-lg p-5 w-11/12 m-0"
+					rowSelectMode="add" paginatorPosition="bottom"
+					allowUnsorting="true" sortMode="single"
+					stickyTopAt=".layout-topbar" stripedRows="true"
+					showGridlines="true">
+
+					<f:facet name="header">
+						<div class="products-table-header">
+
+							<h2 class="p-mb-2">Registro de Vendas</h2>
+
+						</div>
+					</f:facet>
+
+					<p:column headerText="Valor Total">
+						<h:outputText value="#{venda[1]}" />
+					</p:column>
+
+					<p:column headerText="Funcionário">
+						<h:outputText value="#{venda[2]}" />
+					</p:column>
+
+					<p:column headerText="Cliente">
+						<h:outputText value="#{venda[3]}" />
+					</p:column>
+
+					<p:column headerText="Pagamento">
+						<h:outputText value="#{venda[4]}" />
+					</p:column>
+
+				</p:dataTable>
+
+			</div>
+
+		</div>
+	</ui:define>
+</ui:composition>
+</html>

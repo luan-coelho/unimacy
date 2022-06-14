@@ -39,7 +39,7 @@ public class ClienteRepository extends Repository<Cliente> {
 		try {
 			StringBuffer jpsql = new StringBuffer();
 			jpsql.append("SELECT ");
-			jpsql.append("  pf.id, ");
+			jpsql.append("  c.id, ");
 			jpsql.append("  pf.nome, ");
 			jpsql.append("  pf.sobrenome, ");
 			jpsql.append("  pf.cpf, ");
@@ -68,7 +68,7 @@ public class ClienteRepository extends Repository<Cliente> {
 		try {
 			StringBuffer jpsql = new StringBuffer();
 			jpsql.append("SELECT ");
-			jpsql.append("  pf.id, ");
+			jpsql.append("  c.id, ");
 			jpsql.append("  pf.nome, ");
 			jpsql.append("  pf.sobrenome, ");
 			jpsql.append("  pf.cpf, ");
@@ -97,7 +97,7 @@ public class ClienteRepository extends Repository<Cliente> {
 		try {
 			StringBuffer jpsql = new StringBuffer();
 			jpsql.append("SELECT ");
-			jpsql.append("  pf.id, ");
+			jpsql.append("  c.id, ");
 			jpsql.append("  pf.nome, ");
 			jpsql.append("  pf.sobrenome, ");
 			jpsql.append("  pf.cpf, ");
@@ -126,7 +126,7 @@ public class ClienteRepository extends Repository<Cliente> {
 		try {
 			StringBuffer jpsql = new StringBuffer();
 			jpsql.append("SELECT ");
-			jpsql.append("  pf.id, ");
+			jpsql.append("  c.id, ");
 			jpsql.append("  pf.nome, ");
 			jpsql.append("  pf.sobrenome, ");
 			jpsql.append("  pf.cpf, ");
@@ -385,7 +385,7 @@ public class ClienteRepository extends Repository<Cliente> {
 		try {
 			StringBuffer jpsql = new StringBuffer();
 			jpsql.append("SELECT ");
-			jpsql.append("  pj.id, ");
+			jpsql.append("  c.id, ");
 			jpsql.append("  pj.nomefantasia, ");
 			jpsql.append("  pj.cnpj, ");
 			jpsql.append("  c.ativo ");
@@ -413,7 +413,7 @@ public class ClienteRepository extends Repository<Cliente> {
 		try {
 			StringBuffer jpsql = new StringBuffer();
 			jpsql.append("SELECT ");
-			jpsql.append("  pj.id, ");
+			jpsql.append("  c.id, ");
 			jpsql.append("  pj.nomefantasia, ");
 			jpsql.append("  pj.cnpj, ");
 			jpsql.append("  c.ativo ");
@@ -441,7 +441,7 @@ public class ClienteRepository extends Repository<Cliente> {
 		try {
 			StringBuffer jpsql = new StringBuffer();
 			jpsql.append("SELECT DISTINCT ");
-			jpsql.append("  pj.id, ");
+			jpsql.append("  c.id, ");
 			jpsql.append("  pj.nomefantasia, ");
 			jpsql.append("  pj.cnpj, ");
 			jpsql.append("  c.ativo ");
@@ -469,7 +469,7 @@ public class ClienteRepository extends Repository<Cliente> {
 		try {
 			StringBuffer jpsql = new StringBuffer();
 			jpsql.append("SELECT DISTINCT ");
-			jpsql.append("  pj.id, ");
+			jpsql.append("  c.id, ");
 			jpsql.append("  pj.nomefantasia, ");
 			jpsql.append("  pj.cnpj, ");
 			jpsql.append("  c.ativo ");

@@ -5,7 +5,7 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:components="http://java.sun.com/jsf/composite/components">
 <h:head>
-	<title>Selecione uma Pessoa Física</title>
+	<title>Selecione um Cliente</title>
 	<h:outputStylesheet library="webjars"
 		name="primeflex/2.0.0/primeflex.min.css" />
 	<h:outputStylesheet library="css" name="template.css" />
@@ -33,7 +33,7 @@
 					</strong>
 					<p:selectOneRadio id="tipoCliente" value="#{clienteListing.tipo}">
 
-						<p:ajax event="change" />
+						<p:ajax event="change"/>
 
 						<f:selectItems var="obj" value="#{clienteListing.tipoCliente}"
 							itemLabel="#{obj.label}" />

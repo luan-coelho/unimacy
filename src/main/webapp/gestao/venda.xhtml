@@ -43,14 +43,26 @@
 						</p:commandButton>
 					</div>
 
-					<p:commandButton value="Selecionar"
+					<p:commandButton rendered="#{vendaController.cliente == null}" value="Selecionar Cliente"
 						actionListener="#{vendaController.abrirClienteListing}"
-						process="@this" styleClass="ui-button-warning link">
+						process="@this" update="@form" styleClass="ui-button-info p-mt-3">
 						<p:ajax event="dialogReturn"
-							listener="#{vendaController.obterClienteListing}"
-							update="@form" />
+							listener="#{vendaController.obterClienteListing}" update="@form" />
 					</p:commandButton>
 
+					<p:chip rendered="#{vendaController.cliente != null &amp;&amp; !vendaController.pessoaJuridica}" styleClass="p-mt-3"
+						removable="true" label="#{vendaController.cliente.pessoa.nome} #{vendaController.cliente.pessoa.sobreNome}">
+						
+						<p:ajax listener="#{vendaController.removerCliente}" event="close"
+							update="@form" />
+					</p:chip>
+					
+					<p:chip rendered="#{vendaController.cliente != null &amp;&amp; vendaController.pessoaJuridica}" styleClass="p-mt-3"
+						removable="true" label="#{vendaController.cliente.pessoa.nomeFantasia}">
+						
+						<p:ajax listener="#{vendaController.removerCliente}" event="close"
+							update="@form" />
+					</p:chip>
 
 					<div class="p-d-flex p-jc-center">
 						<p:dataTable id="dataTable" var="produtoVenda"
@@ -112,7 +124,7 @@
 
 								<p:column headerText="Quantidade"
 									rendered="#{!empty vendaController.listaProdutoVenda}"
-									width="20%">
+									width="30%">
 									<p:spinner id="horizontalAfter"
 										value="#{produtoVenda.quantidade}" buttons="horizontal-after"
 										upButtonStyleClass="ui-button-success"
