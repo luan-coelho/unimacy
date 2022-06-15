@@ -21,6 +21,7 @@ import br.unitins.unimacy.exception.RepositoryException;
 import br.unitins.unimacy.exception.VersionException;
 import br.unitins.unimacy.model.pessoa.Funcionario;
 import br.unitins.unimacy.repository.pessoa.FuncionarioRepository;
+import br.unitins.unimacy.repository.pessoa.PessoaFisicaRepository;
 
 @Named
 @ViewScoped
@@ -64,7 +65,7 @@ public class PerfilController extends Controller<Funcionario> {
 			Util.addErrorMessage("O tipo da image deve ser png.");
 		}
 		
-		alterarFoto();
+		alterar();
 	}
 	
 	public void buscarCep() {
@@ -99,8 +100,21 @@ public class PerfilController extends Controller<Funcionario> {
 	}
 	
 	@Override
-	public void salvar(Funcionario obj) {
-		super.salvarSemLimpar();
+	public void salvar() {
+		PessoaFisicaRepository repo = new PessoaFisicaRepository();
+		
+		try {
+			
+			getEntity().setPessoaFisica(repo.save(getEntity().getPessoaFisica()));
+			Util.addInfoMessage("Salvamento realizado com sucesso.");
+			this.isEditable = false;
+		} catch (RepositoryException e) {
+			e.printStackTrace();
+			Util.addErrorMessage(e.getMessage());
+		} catch (VersionException e) {
+			e.printStackTrace();
+			Util.addErrorMessage(e.getMessage());
+		}
 		
 		if (getFotoInputStream() != null) {
 			if (! Util.saveImageUsuario(getFotoInputStream(), "png", getEntity().getId())) {
@@ -110,7 +124,7 @@ public class PerfilController extends Controller<Funcionario> {
 		}
 	}
 
-	public void alterarFoto() {
+	public void alterar() {
 		super.salvarSemLimpar();
 			
 		if (getFotoInputStream() != null) {
@@ -119,7 +133,6 @@ public class PerfilController extends Controller<Funcionario> {
 				return;
 			}
 		}
-		limpar();
 	}
 	
 	public void alterarSenha() {
@@ -130,7 +143,7 @@ public class PerfilController extends Controller<Funcionario> {
 
 		if (Util.hash(getEntity().getPessoaFisica().getCpf()+senhaAtual).equals(getEntity().getSenha())) {
 			getEntity().setSenha(Util.hash(getEntity().getPessoaFisica().getCpf()+novaSenha));
-			salvar(getEntity());
+			salvarSemLimpar(getEntity());
 			Session.getInstance().set("funcionarioLogado", getEntity());
 			Util.addInfoMessage("Senha alterada com sucesso.");
 		} else {

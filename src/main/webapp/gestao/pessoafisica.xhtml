@@ -16,8 +16,6 @@
 
 	<ui:define name="conteudo">
 
-		<p:growl id="growl" />
-
 		<div
 			class="p-d-flex p-flex-column p-m-5 shadow-2xl shadow-gray-700 rounded-lg w-9/12">
 
@@ -28,7 +26,7 @@
 
 			<p:panel id="pessoa" header="Informações Pessoais">
 
-				<p:messages/>
+				<p:messages id="messages"/>
 
 				<p:wizard nextLabel="Prosseguir" backLabel="Voltar" widgetVar="wiz"
 					onback="buttonClickBack()" onnext="buttonClickNext();">
@@ -54,7 +52,7 @@
 									placeholder="xxx.xxx.xxx-xx">
 									<p:ajax event="blur"
 										listener="#{cadastroPessoaFisicaController.verificarCpf}"
-										process="@this" update="@this form:growl" />
+										process="@this" update="@this form:messages" />
 								</p:inputMask>
 							</div>
 
@@ -100,7 +98,7 @@
 										value="#{cadastroPessoaFisicaController.entity.endereco.cep}">
 										<p:ajax listener="#{cadastroPessoaFisicaController.buscarCep}"
 											event="blur" process="@this @form:cep"
-											update="@form:endereco @form:growl" />
+											update="@form:endereco @form:messages" />
 									</p:inputMask>
 								</div>
 

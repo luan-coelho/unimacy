@@ -4,20 +4,31 @@ import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+
+import org.hibernate.validator.constraints.br.CPF;
 
 @Entity
 public class PessoaFisica extends Pessoa {
 
 	private static final long serialVersionUID = 2489138959144990316L;
 
+	@NotBlank(message = "Informe o nome")
 	private String nome;
+	
+	@NotBlank(message = "Informe o sobrenome")
 	private String sobreNome;
 	
+	@NotNull(message = "Informe o sexo")
 	private Sexo sexo;
 
-	// @CPF(message = "Informe um CPF válido")
+	@CPF(message = "Informe um CPF válido")
 	@Column(unique = true)
 	private String cpf;
+	
+	@Past(message = "Informe uma data de nascimento anterior ao dia de hoje")
 	private LocalDate dataNascimento;
 
 	public PessoaFisica() {

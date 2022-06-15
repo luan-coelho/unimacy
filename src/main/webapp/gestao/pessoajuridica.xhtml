@@ -16,8 +16,6 @@
 
 	<ui:define name="conteudo">
 
-		<p:growl id="growl" />
-
 		<div
 			class="p-d-flex p-flex-column p-m-5 shadow-2xl shadow-gray-700 rounded-lg w-9/12">
 
@@ -27,9 +25,12 @@
 				process="@this" />
 
 			<p:panel id="pessoa" header="Informações Básicas">
+
+				<p:messages id="messages" />
+
 				<p:wizard nextLabel="Prosseguir" backLabel="Voltar" widgetVar="wiz"
 					onback="buttonClickBack()" onnext="buttonClickNext();">
-					<p:tab id="tab0" title="Dados Pessoais">
+					<p:tab id="tab0" title="Dados Pessoais" >
 
 						<div class="ui-fluid p-formgrid p-grid p-mt-3">
 							<div class="p-field p-col-12 p-md-3">
@@ -39,7 +40,7 @@
 									mask="99.999.999/9999-99" id="cnpj" maxlength="18">
 									<p:ajax event="blur"
 										listener="#{cadastroPessoaJuridicaController.verificarCnpj}"
-										process="@this" update="@form:pessoa form:growl" />
+										process="@this" update="@form:pessoa @form:messages" />
 								</p:inputMask>
 							</div>
 
@@ -48,13 +49,13 @@
 								<p:inputText id="nome-fantasia" type="text"
 									value="#{cadastroPessoaJuridicaController.entity.nomeFantasia}" />
 							</div>
-							
+
 							<div class="p-field p-col-12 p-md-4">
 								<p:outputLabel for="insc" value="Inscrição Estadual" />
 								<p:inputText id="insc" type="text"
 									value="#{cadastroPessoaJuridicaController.entity.inscEstadual}" />
 							</div>
-							
+
 							<div class="p-field p-col-12 p-md-3">
 								<p:outputLabel for="razao-social" value="Razão Social" />
 								<p:inputText id="razao-social" type="text"
@@ -86,7 +87,7 @@
 										<p:ajax
 											listener="#{cadastroPessoaJuridicaController.buscarCep}"
 											event="blur" process="@this @form:cep"
-											update="@form:endereco @form:growl" />
+											update="@form:endereco @form:messages" />
 									</p:inputMask>
 								</div>
 

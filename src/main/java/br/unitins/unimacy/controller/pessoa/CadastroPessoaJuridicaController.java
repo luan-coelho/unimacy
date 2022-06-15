@@ -57,7 +57,7 @@ public class CadastroPessoaJuridicaController extends Controller<PessoaJuridica>
 
 	}
 
-	public void verificarC() {
+	public void verificarCnpj() {
 		PessoaJuridica pessoa = ((PessoaJuridicaRepository) getRepository()).findByCpnj(entity.getCnpj());
 
 		if (pessoa != null) {
