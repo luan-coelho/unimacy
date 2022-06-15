@@ -23,8 +23,8 @@
 
 			<div class="p-d-flex p-jc-center">
 				<p:dataTable id="dataTable" var="venda"
-					value="#{registroVendaController.listaVenda}"
-					paginator="true" rows="10"
+					value="#{registroVendaController.listaVenda}" paginator="true"
+					rows="10"
 					styleClass="products-table p-mt-5 p-mb-5 shadow-2xl shadow-gray-700 rounded-lg p-5 w-11/12 m-0"
 					rowSelectMode="add" paginatorPosition="bottom"
 					allowUnsorting="true" sortMode="single"
@@ -32,15 +32,32 @@
 					showGridlines="true">
 
 					<f:facet name="header">
-						<div class="products-table-header">
+						<p:toolbar>
+							<p:toolbarGroup align="left">
+								<h2 class="text-3xl font-boldy">Relatório de Vendas</h2>
+							</p:toolbarGroup>
 
-							<h2 class="p-mb-2">Registro de Vendas</h2>
+							<p:toolbarGroup align="right">
+								<p:commandButton value="Gerar Relatório" ajax="false"
+									icon="pi pi-file-pdf"
+									styleClass="ui-button-raised ui-button-success"
+									disabled="#{registroVendaController.listaVenda.isEmpty()}"
+									actionListener="#{registroVendaController.gerarRelatorio}"
+									onclick="this.form.target='_blank'">
+								</p:commandButton>
+							</p:toolbarGroup>
 
-						</div>
+						</p:toolbar>
 					</f:facet>
 
+					<p:column headerText="Data Hora">
+						<h:outputText value="#{venda[0]}">
+							<f:convertDateTime type="time" pattern="dd/MM/yyyy HH:mm" timeZone="America/Sao_Paulo" locale="pt_BR" />
+						</h:outputText>
+					</p:column>
+
 					<p:column headerText="Valor Total">
-						<h:outputText value="#{venda[1]}" />
+						<h:outputText value="R$#{venda[1]}" />
 					</p:column>
 
 					<p:column headerText="Funcionário">
@@ -51,9 +68,7 @@
 						<h:outputText value="#{venda[3]}" />
 					</p:column>
 
-					<p:column headerText="Pagamento">
-						<h:outputText value="#{venda[4]}" />
-					</p:column>
+
 
 				</p:dataTable>
 

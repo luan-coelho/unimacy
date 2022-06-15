@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 
 import br.unitins.unimacy.model.pessoa.Funcionario;
 
-@WebFilter(filterName = "SecurityFilter", urlPatterns = {"/gestao/*3232"})
+@WebFilter(filterName = "SecurityFilter", urlPatterns = {"/gestao/*"})
 public class SecurityFilter implements Filter {
 
 	@Override

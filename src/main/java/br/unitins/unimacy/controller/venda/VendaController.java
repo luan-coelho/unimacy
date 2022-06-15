@@ -197,6 +197,8 @@ public class VendaController extends Controller<Venda> {
 		valorTotal = null;
 		valorTroco = null;
 		pagamentoconfirmado = false;
+		listaProdutoVenda = null;
+		listaProdutoRepository = null;
 	}
 
 	@Override

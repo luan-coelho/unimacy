@@ -23,12 +23,12 @@ public class Repository<T extends DefaultEntity> {
 	}
 
 	@Transactional
-	public void save(T entity) throws RepositoryException, VersionException {
+	public T save(T entity) throws RepositoryException, VersionException{
 		try {
 			getEntityManager().getTransaction().begin();
-			getEntityManager().merge(entity);
+			entity = getEntityManager().merge(entity);
 			getEntityManager().getTransaction().commit();
-
+			return entity;
 		} catch (OptimisticLockException e) {
 			// excecao do @version
 			System.out.println("Problema com o controle de concorrencia.");
@@ -38,7 +38,7 @@ public class Repository<T extends DefaultEntity> {
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
-			throw new VersionException("As informações estão desatualizadas, atualize a página");
+			throw new VersionException("As informa��es est�o antigas, d� um refresh.");			
 		} catch (Exception e) {
 			System.out.println("Problema ao executar o save.");
 			e.printStackTrace();
@@ -49,7 +49,6 @@ public class Repository<T extends DefaultEntity> {
 			}
 			throw new RepositoryException("Problema ao salvar.");
 		}
-
 	}
 
 	@Transactional

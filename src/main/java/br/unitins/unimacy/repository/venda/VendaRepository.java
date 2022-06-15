@@ -16,16 +16,19 @@ public class VendaRepository extends Repository<Venda>{
 			StringBuffer sql = new StringBuffer();
 			
 			sql.append("SELECT ");
-			sql.append("  v.id, ");
+			sql.append("  v.datacadastro, ");
 			sql.append("  v.valortotalvenda, ");
 			sql.append("  pf2.nome AS funcionario, ");
 			sql.append("  pf.nome AS Cliente ");
 			sql.append("FROM ");
 			sql.append("  Venda v, ");
 			sql.append("  PessoaFisica pf, ");
-			sql.append("  PessoaFisica pf2 ");
-			sql.append("INNER JOIN ");
-			sql.append("  Funcionario f ON pf2.id = f.pessoafisica_id ");
+			sql.append("  Cliente c, ");
+			sql.append("  PessoaFisica pf2, ");
+			sql.append("  Funcionario f ");
+			sql.append("WHERE v.cliente_id = c.id ");
+			sql.append("  AND c.pessoa_id = pf.id ");
+			sql.append("  AND f.pessoafisica_id = pf2.id ");
 			sql.append("ORDER BY v.id ");
 			
 			Query query = getEntityManager().createNativeQuery(sql.toString());

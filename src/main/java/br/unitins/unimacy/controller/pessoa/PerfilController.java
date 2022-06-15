@@ -3,7 +3,7 @@ package br.unitins.unimacy.controller.pessoa;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.enterprise.context.SessionScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.validation.constraints.NotBlank;
 
@@ -23,7 +23,7 @@ import br.unitins.unimacy.model.pessoa.Funcionario;
 import br.unitins.unimacy.repository.pessoa.FuncionarioRepository;
 
 @Named
-@SessionScoped
+@ViewScoped
 public class PerfilController extends Controller<Funcionario> {
 
 	private static final long serialVersionUID = -8919718922968640074L;
@@ -56,14 +56,15 @@ public class PerfilController extends Controller<Funcionario> {
 				fotoInputStream = uploadFile.getInputStream();
 				System.out.println("inputStream: " + uploadFile.getInputStream().toString());
 			} catch (IOException e) {
-
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			Util.addInfoMessage("Upload realizado com sucesso.");
 		} else {
 			Util.addErrorMessage("O tipo da image deve ser png.");
 		}
-
+		
+		alterarFoto();
 	}
 	
 	public void buscarCep() {
@@ -79,70 +80,15 @@ public class PerfilController extends Controller<Funcionario> {
 
 	}
 
+	
 	public void editar() {
 		this.isEditable = !this.isEditable;
 	}
 	
-//	@Override
-//	public void salvar() {
-//		try {
-//			PessoaFisicaRepository repo = new PessoaFisicaRepository();
-//			salvarSemLimpar(getEntity().getPessoaFisica());
-//			
-//			setEntity(getRepository().findById(getEntity().getId()));
-//			Session.getInstance().set("funcionarioLogado", getEntity());
-//			
-//			Util.addInfoMessage("Alterações realizadas com sucesso.");
-//			this.isEditable = false;
-//		} catch (RepositoryException e) {
-//			e.printStackTrace();
-//			Util.addErrorMessage(e.getMessage());
-//		} catch (VersionException e) {
-//			e.printStackTrace();
-//			Util.addErrorMessage(e.getMessage());
-//		}
-//
-//		
-//		// caso exista uma imagem
-//		if (getFotoInputStream() != null) {
-//			// salvando a imagem
-//			if (!Util.saveImageFuncionario(getFotoInputStream(), "png", getEntity().getId())) {
-//				Util.addErrorMessage("Erro ao salvar. Não foi possível salvar a imagem do funcionário.");
-//				return;
-//			}
-//		}
-//		limpar();
-//	}
-//
-//	@Override
-//	public void salvar() {
-//		try {
-//			PessoaFisicaRepository repo = new PessoaFisicaRepository();
-//			repo.save(getEntity().getPessoaFisica());
-//			
-//			setEntity(getRepository().findById(getEntity().getId()));
-//			Session.getInstance().set("funcionarioLogado", getEntity());
-//			
-//			Util.addInfoMessage("Alterações realizadas com sucesso.");
-//			this.isEditable = false;
-//		} catch (RepositoryException e) {
-//			e.printStackTrace();
-//			Util.addErrorMessage(e.getMessage());
-//		} catch (VersionException e) {
-//			e.printStackTrace();
-//			Util.addErrorMessage(e.getMessage());
-//		}
-//	}
-	
-	@Override
-	public void salvar(Funcionario obj) {
+	public void salvarSemLimpar() {
 		try {
-			getRepository().save(obj);
-			
-			setEntity(getRepository().findById(getEntity().getId()));
-			Session.getInstance().set("funcionarioLogado", getEntity());
-			
-			Util.addInfoMessage("Senha alterada com sucesso.");
+			setEntity(getRepository().save(getEntity()));
+			Util.addInfoMessage("Salvo com sucesso.");
 		} catch (RepositoryException e) {
 			e.printStackTrace();
 			Util.addErrorMessage(e.getMessage());
@@ -151,7 +97,31 @@ public class PerfilController extends Controller<Funcionario> {
 			Util.addErrorMessage(e.getMessage());
 		}
 	}
+	
+	@Override
+	public void salvar(Funcionario obj) {
+		super.salvarSemLimpar();
+		
+		if (getFotoInputStream() != null) {
+			if (! Util.saveImageUsuario(getFotoInputStream(), "png", getEntity().getId())) {
+				Util.addErrorMessage("Erro ao salvar. Não foi possível salvar a foto.");
+				return;
+			}
+		}
+	}
 
+	public void alterarFoto() {
+		super.salvarSemLimpar();
+			
+		if (getFotoInputStream() != null) {
+			if (! Util.saveImageUsuario(getFotoInputStream(), "png", getEntity().getId())) {
+				Util.addErrorMessage("Erro ao salvar. Não foi possível salvar a foto.");
+				return;
+			}
+		}
+		limpar();
+	}
+	
 	public void alterarSenha() {
 		if (!senha.equals(novaSenha)) {
 			Util.addErrorMessage("As senhas não coincidem");
@@ -161,6 +131,8 @@ public class PerfilController extends Controller<Funcionario> {
 		if (Util.hash(getEntity().getPessoaFisica().getCpf()+senhaAtual).equals(getEntity().getSenha())) {
 			getEntity().setSenha(Util.hash(getEntity().getPessoaFisica().getCpf()+novaSenha));
 			salvar(getEntity());
+			Session.getInstance().set("funcionarioLogado", getEntity());
+			Util.addInfoMessage("Senha alterada com sucesso.");
 		} else {
 			Util.addErrorMessage("Senha atual incorreta");
 			return;

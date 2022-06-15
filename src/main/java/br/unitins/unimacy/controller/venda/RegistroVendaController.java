@@ -8,7 +8,6 @@ import javax.inject.Named;
 
 import br.unitins.unimacy.application.Util;
 import br.unitins.unimacy.exception.RepositoryException;
-import br.unitins.unimacy.model.venda.Venda;
 import br.unitins.unimacy.repository.venda.VendaRepository;
 
 @Named
@@ -17,33 +16,10 @@ public class RegistroVendaController implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private String filtro;
 	private List<Object[]> listaVenda;
 
-//	public void pesquisar() {
-//		VendaRepository repo = new VendaRepository();
-//		try {
-//			setListaVenda(repo.findAll());
-//		} catch (RepositoryException e) {
-//			setListaVenda(null);
-//		}
-//	}
-
-	public void limpar() {
-		filtro = null;
-		setListaVenda(null);
-	}
-
 	public void gerarRelatorio() {
-		Util.redirect("/Unimacy/relatoriovendas.xhtml?NOME=" + getFiltro().trim());
-	}
-
-	public String getFiltro() {
-		return filtro;
-	}
-
-	public void setFiltro(String filtro) {
-		this.filtro = filtro;
+		Util.redirect("/Unimacy/relatoriovendas.xhtml");
 	}
 
 	public List<Object[]> getListaVenda() {

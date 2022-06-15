@@ -35,7 +35,7 @@
 						<p:inputText id="pesquisa" value="#{vendaController.pesquisa}"
 							placeholder="Pesquisar produto" />
 						<p:commandButton icon="pi pi-search"
-							styleClass="ui-button-warning"
+							styleClass="ui-button-raised ui-button-warning"
 							actionListener="#{vendaController.pesquisar}"
 							process="pesquisa @this" update="@form">
 							<p:ajax event="dialogReturn"
@@ -45,7 +45,7 @@
 
 					<p:commandButton rendered="#{vendaController.cliente == null}" value="Selecionar Cliente"
 						actionListener="#{vendaController.abrirClienteListing}"
-						process="@this" update="@form" styleClass="ui-button-info p-mt-3">
+						process="@this" update="@form" styleClass="ui-button-raised ui-button-info p-mt-3">
 						<p:ajax event="dialogReturn"
 							listener="#{vendaController.obterClienteListing}" update="@form" />
 					</p:commandButton>
@@ -101,7 +101,7 @@
 
 						<p:commandButton value="Pagamento" icon="pi pi-paypal"
 							actionListener="#{vendaController.proximaEtapa}" process="@this"
-							update="@form" styleClass="p-ml-5 ui-button-success"
+							update="@form" styleClass="rounded-button p-ml-5 ui-button-success"
 							disabled="#{empty vendaController.listaProdutoVenda}" />
 					</h:panelGroup>
 				</h:panelGroup>

@@ -31,8 +31,8 @@
 					onback="buttonClickBack()" onnext="buttonClickNext();">
 					<p:tab id="tab0" title="Dados Pessoais">
 
-						<div class="ui-fluid p-formgrid p-grid">
-							<div class="p-field p-col-12 p-md-4">
+						<div class="ui-fluid p-formgrid p-grid p-mt-3">
+							<div class="p-field p-col-12 p-md-3">
 								<p:outputLabel value="CNPJ" />
 								<p:inputMask
 									value="#{cadastroPessoaJuridicaController.entity.cnpj}"
@@ -43,12 +43,19 @@
 								</p:inputMask>
 							</div>
 
-							<div class="p-field p-col-12 p-md-5">
+							<div class="p-field p-col-12 p-md-4">
 								<p:outputLabel for="nome-fantasia" value="Nome Fantasia" />
 								<p:inputText id="nome-fantasia" type="text"
 									value="#{cadastroPessoaJuridicaController.entity.nomeFantasia}" />
 							</div>
-							<div class="p-field p-col-12 p-md-7">
+							
+							<div class="p-field p-col-12 p-md-4">
+								<p:outputLabel for="insc" value="Inscrição Estadual" />
+								<p:inputText id="insc" type="text"
+									value="#{cadastroPessoaJuridicaController.entity.inscEstadual}" />
+							</div>
+							
+							<div class="p-field p-col-12 p-md-3">
 								<p:outputLabel for="razao-social" value="Razão Social" />
 								<p:inputText id="razao-social" type="text"
 									value="#{cadastroPessoaJuridicaController.entity.razaoSocial}" />
