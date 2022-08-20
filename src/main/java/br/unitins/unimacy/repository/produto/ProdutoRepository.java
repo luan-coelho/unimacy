@@ -2,11 +2,10 @@ package br.unitins.unimacy.repository.produto;
 
 import java.util.List;
 
-import javax.persistence.Query;
-
 import br.unitins.unimacy.exception.RepositoryException;
 import br.unitins.unimacy.model.produto.Produto;
 import br.unitins.unimacy.repository.Repository;
+import jakarta.persistence.Query;
 
 public class ProdutoRepository extends Repository<Produto> {
 

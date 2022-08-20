@@ -16,7 +16,7 @@ public class CategoriaConverter implements Converter <Categoria>{
 	public Categoria getAsObject(FacesContext context, UIComponent component, String value) {
 		CategoriaRepository repo = new CategoriaRepository();
 		try {
-			return (Categoria) repo.findById(Integer.parseInt(value));
+			return repo.findById(Integer.parseInt(value));
 		} catch (RepositoryException e) {
 			e.printStackTrace();
 		}

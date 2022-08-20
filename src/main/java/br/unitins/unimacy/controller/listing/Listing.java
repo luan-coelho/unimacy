@@ -1,5 +1,6 @@
 package br.unitins.unimacy.controller.listing;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
@@ -13,10 +14,11 @@ import br.unitins.unimacy.repository.Repository;
 
 public abstract class Listing<T extends DefaultEntity> implements Serializable {
 
-	private static final long serialVersionUID = -2912482417877518288L;
-	
-	private String page;
-	private Repository<T> repository;
+	@Serial
+	private static final long serialVersionUID = 1L;
+
+	private final String page;
+	private final Repository<T> repository;
 	private List<T> list;
 
 	public Listing(String page, Repository<T> repository) {

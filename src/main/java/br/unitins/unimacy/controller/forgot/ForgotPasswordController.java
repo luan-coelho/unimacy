@@ -1,13 +1,14 @@
 package br.unitins.unimacy.controller.forgot;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.Random;
 
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Named;
 
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Named;
 import org.hibernate.validator.constraints.br.CPF;
 
 import br.unitins.unimacy.application.Email;
@@ -24,9 +25,10 @@ import br.unitins.unimacy.repository.pessoa.FuncionarioRepository;
 @RequestScoped
 public class ForgotPasswordController implements Serializable {
 
-	private static final long serialVersionUID = -4750261338101378803L;
+	@Serial
+	private static final long serialVersionUID = 1L;
 
-	@javax.validation.constraints.Email(message = "Informe um email válido")
+	@jakarta.validation.constraints.Email(message = "Informe um email válido")
 	private String email;
 	
 	@CPF
@@ -40,10 +42,10 @@ public class ForgotPasswordController implements Serializable {
 	private Funcionario buscarFuncionario(String email, String cpf) {
 		FuncionarioRepository repo = new FuncionarioRepository();
 
-		Funcionario funcionario = null;
+		Funcionario funcionario;
 
 		try {
-			funcionario = (Funcionario) repo.findOneByEmailAndCpf(email, cpf);
+			funcionario = repo.findOneByEmailAndCpf(email, cpf);
 			if (funcionario == null) {
 				return null;
 			}
@@ -68,10 +70,7 @@ public class ForgotPasswordController implements Serializable {
 		ForgotPasswordRepository repoforgotu = new ForgotPasswordRepository();
 		try {
 			repoforgotu.save(forgot);
-		} catch (RepositoryException e) {
-			Util.addErrorMessage("Erro ao gerar o código, tente novamente.");
-			e.printStackTrace();
-		} catch (VersionException e) {
+		} catch (RepositoryException | VersionException e) {
 			Util.addErrorMessage("Erro ao gerar o código, tente novamente.");
 			e.printStackTrace();
 		}

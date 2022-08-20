@@ -10,21 +10,21 @@ import br.unitins.unimacy.model.produto.Produto;
 import br.unitins.unimacy.repository.produto.ProdutoRepository;
 
 @FacesConverter(forClass = Produto.class, value = "produtoConverter")
-public class ProdutoConverter implements Converter <Produto>{
+public class ProdutoConverter implements Converter<Produto> {
 
-	@Override
-	public Produto getAsObject(FacesContext context, UIComponent component, String value) {
-		ProdutoRepository repo = new ProdutoRepository();
-		try {
-			return (Produto) repo.findByIdNativeSql(Integer.parseInt(value));
-		} catch (RepositoryException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+    @Override
+    public Produto getAsObject(FacesContext context, UIComponent component, String value) {
+        ProdutoRepository repo = new ProdutoRepository();
+        try {
+            return (Produto) repo.findByIdNativeSql(Integer.parseInt(value));
+        } catch (RepositoryException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-	@Override
-	public String getAsString(FacesContext context, UIComponent component, Produto produto) {
-		return produto.getId().toString();
-	}
+    @Override
+    public String getAsString(FacesContext context, UIComponent component, Produto produto) {
+        return produto.getId().toString();
+    }
 }

@@ -3,15 +3,14 @@ package br.unitins.unimacy.repository;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.OptimisticLockException;
-import javax.persistence.Query;
-import javax.transaction.Transactional;
-
 import br.unitins.unimacy.application.JPAUtil;
 import br.unitins.unimacy.exception.RepositoryException;
 import br.unitins.unimacy.exception.VersionException;
 import br.unitins.unimacy.model.DefaultEntity;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.OptimisticLockException;
+import jakarta.persistence.Query;
+import jakarta.transaction.Transactional;
 
 public class Repository<T extends DefaultEntity> {
 

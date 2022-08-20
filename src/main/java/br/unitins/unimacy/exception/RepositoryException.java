@@ -1,10 +1,13 @@
 package br.unitins.unimacy.exception;
 
+import java.io.Serial;
+
 public class RepositoryException extends Exception {
 
-	private static final long serialVersionUID = -2439071177254808667L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-	public RepositoryException(String message) {
-		super(message);
-	}
+    public RepositoryException(String message) {
+        super(message);
+    }
 }

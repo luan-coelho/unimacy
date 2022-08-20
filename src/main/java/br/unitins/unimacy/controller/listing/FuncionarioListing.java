@@ -1,9 +1,9 @@
 package br.unitins.unimacy.controller.listing;
 
+import java.io.Serial;
 import java.util.List;
 
 import javax.faces.view.ViewScoped;
-import javax.inject.Named;
 
 import br.unitins.unimacy.application.Session;
 import br.unitins.unimacy.application.Util;
@@ -11,12 +11,14 @@ import br.unitins.unimacy.exception.RepositoryException;
 import br.unitins.unimacy.model.filtro.FiltroFuncionario;
 import br.unitins.unimacy.model.pessoa.Funcionario;
 import br.unitins.unimacy.repository.pessoa.FuncionarioRepository;
+import jakarta.inject.Named;
 
 @Named
 @ViewScoped
 public class FuncionarioListing extends Listing<Funcionario> {
 
-	private static final long serialVersionUID = 3158818791725149829L;
+	@Serial
+	private static final long serialVersionUID = 1L;
 
 	private String pesquisa;
 	private FiltroFuncionario filtro;

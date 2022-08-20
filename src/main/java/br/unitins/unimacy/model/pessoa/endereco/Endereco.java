@@ -1,15 +1,18 @@
 package br.unitins.unimacy.model.pessoa.endereco;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 
 import br.unitins.unimacy.model.DefaultEntity;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
+
+import java.io.Serial;
 
 @Entity
 public class Endereco extends DefaultEntity {
 
-	private static final long serialVersionUID = -405804959276971037L;
+	@Serial
+	private static final long serialVersionUID = 1;
 
 	private String rua;
 	private String numero;

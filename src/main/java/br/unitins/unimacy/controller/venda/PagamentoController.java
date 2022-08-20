@@ -1,11 +1,11 @@
 package br.unitins.unimacy.controller.venda;
 
 import javax.faces.view.ViewScoped;
-import javax.inject.Named;
 
 import br.unitins.unimacy.controller.Controller;
 import br.unitins.unimacy.model.venda.pagamento.Pagamento;
 import br.unitins.unimacy.repository.venda.PagamentoRepository;
+import jakarta.inject.Named;
 
 import java.io.Serial;
 

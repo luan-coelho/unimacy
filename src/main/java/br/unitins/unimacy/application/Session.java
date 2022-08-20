@@ -4,34 +4,34 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 public class Session {
-	
-	private static Session session = null;
 
-	private Session() {
-		
-	}
+    private static Session session = null;
 
-	public static Session getInstance() {
-		if (session == null)
-			session = new Session();
-		return session;
-	}
+    private Session() {
 
-	private ExternalContext getExternalContext() {
-		if (FacesContext.getCurrentInstance() == null)
-			throw new RuntimeException("Error");
-		return FacesContext.getCurrentInstance().getExternalContext();
-	}
+    }
 
-	public void set(String key, Object value) {
-		getExternalContext().getSessionMap().put(key, value);
-	}
+    public static Session getInstance() {
+        if (session == null)
+            session = new Session();
+        return session;
+    }
 
-	public Object get(String key) {
-		return getExternalContext().getSessionMap().get(key);
-	}
+    private ExternalContext getExternalContext() {
+        if (FacesContext.getCurrentInstance() == null)
+            throw new RuntimeException("Error");
+        return FacesContext.getCurrentInstance().getExternalContext();
+    }
 
-	public void invalidateSession() {
-		getExternalContext().invalidateSession();
-	}
+    public void set(String key, Object value) {
+        getExternalContext().getSessionMap().put(key, value);
+    }
+
+    public Object get(String key) {
+        return getExternalContext().getSessionMap().get(key);
+    }
+
+    public void invalidateSession() {
+        getExternalContext().invalidateSession();
+    }
 }

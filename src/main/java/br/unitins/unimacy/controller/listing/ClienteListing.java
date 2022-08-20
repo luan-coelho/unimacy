@@ -1,12 +1,12 @@
 package br.unitins.unimacy.controller.listing;
 
 import javax.faces.view.ViewScoped;
-import javax.inject.Named;
 
 import br.unitins.unimacy.exception.RepositoryException;
 import br.unitins.unimacy.model.filtro.TipoCliente;
 import br.unitins.unimacy.model.pessoa.Cliente;
 import br.unitins.unimacy.repository.pessoa.ClienteRepository;
+import jakarta.inject.Named;
 
 @Named
 @ViewScoped

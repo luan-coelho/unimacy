@@ -2,11 +2,10 @@ package br.unitins.unimacy.repository.venda;
 
 import java.util.List;
 
-import javax.persistence.Query;
-
 import br.unitins.unimacy.exception.RepositoryException;
 import br.unitins.unimacy.model.venda.Venda;
 import br.unitins.unimacy.repository.Repository;
+import jakarta.persistence.Query;
 
 public class VendaRepository extends Repository<Venda>{
 	
@@ -30,10 +29,9 @@ public class VendaRepository extends Repository<Venda>{
 			sql.append("  AND c.pessoa_id = pf.id ");
 			sql.append("  AND f.pessoafisica_id = pf2.id ");
 			sql.append("ORDER BY v.id ");
-			
-			Query query = getEntityManager().createNativeQuery(sql.toString());
 
-			return query.getResultList();
+			Query nativeQuery = getEntityManager().createNativeQuery(sql.toString());
+			return nativeQuery.getResultList();
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RepositoryException("Erro ao executar o findAll.");

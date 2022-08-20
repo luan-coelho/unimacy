@@ -8,18 +8,18 @@ import javax.faces.convert.FacesConverter;
 import br.unitins.unimacy.model.pessoa.endereco.Cidade;
 
 @FacesConverter(forClass = Cidade.class, value = "cidadeConverter")
-public class CidadeConverter implements Converter<Cidade>  {
+public class CidadeConverter implements Converter<Cidade> {
 
-		@Override
-		public Cidade getAsObject(FacesContext context, UIComponent component, String value) {
-			Cidade cidade = new Cidade();
-			cidade.setNome(value);
-			
-			return cidade;
-		}
+    @Override
+    public Cidade getAsObject(FacesContext context, UIComponent component, String value) {
+        Cidade cidade = new Cidade();
+        cidade.setNome(value);
 
-		@Override
-		public String getAsString(FacesContext context, UIComponent component, Cidade cidade) {
-			return cidade.getNome();
-		}
+        return cidade;
+    }
+
+    @Override
+    public String getAsString(FacesContext context, UIComponent component, Cidade cidade) {
+        return cidade.getNome();
+    }
 }

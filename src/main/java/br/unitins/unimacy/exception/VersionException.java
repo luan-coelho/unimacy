@@ -1,10 +1,13 @@
 package br.unitins.unimacy.exception;
 
+import java.io.Serial;
+
 public class VersionException extends Exception {
 
-	private static final long serialVersionUID = 832490354847376331L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-	public VersionException(String message) {
-		super(message);
-	}
+    public VersionException(String message) {
+        super(message);
+    }
 }

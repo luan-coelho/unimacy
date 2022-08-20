@@ -9,8 +9,8 @@ import java.util.stream.Collectors;
 import javax.faces.context.FacesContext;
 import javax.faces.context.Flash;
 import javax.faces.view.ViewScoped;
-import javax.inject.Named;
 
+import jakarta.inject.Named;
 import org.primefaces.event.SelectEvent;
 
 import br.unitins.unimacy.application.Session;
@@ -36,303 +36,289 @@ import br.unitins.unimacy.repository.venda.VendaRepository;
 @ViewScoped
 public class VendaController extends Controller<Venda> {
 
-	@Serial
-	private static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-	private List<Produto> listaProdutoRepository;
-	private List<ProdutoVenda> listaProdutoVenda;
+    private List<Produto> listaProdutoRepository;
+    private List<ProdutoVenda> listaProdutoVenda;
 
-	private Funcionario funcionario;
-	private Cliente cliente;
+    private Funcionario funcionario;
+    private Cliente cliente;
 
-	private BigDecimal valorTotal;
+    private BigDecimal valorTotal;
 
-	private String pesquisa;
+    private String pesquisa;
 
-	private Integer etapaVenda;
+    private Integer etapaVenda;
 
-	private boolean isPessoaJuridica;
+    private boolean isPessoaJuridica;
 
-	/* Tela de Pagamento */
+    /* Tela de Pagamento */
 
-	private BigDecimal valorPago;
-	private BigDecimal valorTroco;
+    private BigDecimal valorPago;
+    private BigDecimal valorTroco;
 
-	private Pagamento pagamento;
+    private Pagamento pagamento;
 
-	private Integer indexTabPagamento;
+    private Integer indexTabPagamento;
 
-	private boolean pagamentoconfirmado;
+    private boolean pagamentoconfirmado;
 
-	public VendaController() {
-		super(new VendaRepository());
-	}
+    public VendaController() {
+        super(new VendaRepository());
+    }
 
-	public void calcularValorTotal() {
-		setValorTotal(new BigDecimal(0));
+    public void calcularValorTotal() {
+        setValorTotal(new BigDecimal(0));
 
-		setListaProdutoVenda(getListaProdutoVenda().stream().filter(item -> item.getQuantidade() > 0).map(item -> {
-			setValorTotal(item.getProduto().getPreco().multiply(BigDecimal.valueOf(item.getQuantidade()))
-					.add(getValorTotal()));
-			return item;
-		}).collect(Collectors.toList()));
-	}
+        setListaProdutoVenda(getListaProdutoVenda().stream().filter(item -> item.getQuantidade() > 0).map(item -> {
+            setValorTotal(item.getProduto().getPreco().multiply(BigDecimal.valueOf(item.getQuantidade())).add(getValorTotal()));
+            return item;
+        }).collect(Collectors.toList()));
+    }
 
-	public void abrirProdutoListing() {
-		ProdutoListing listing = new ProdutoListing();
-		listing.open(70, 70);
-		Session.getInstance().set("listaProduto", this.listaProdutoVenda);
-	}
+    public void abrirProdutoListing() {
+        ProdutoListing listing = new ProdutoListing();
+        listing.open(70, 70);
+        Session.getInstance().set("listaProduto", this.listaProdutoVenda);
+    }
 
-	public void obterProdutoListing(SelectEvent<Produto> event) {
-		Produto produto = event.getObject();
+    public void obterProdutoListing(SelectEvent<Produto> event) {
+        Produto produto = event.getObject();
 
-		getListaProdutoVenda().add(new ProdutoVenda(produto.getPreco(), 1, produto));
+        getListaProdutoVenda().add(new ProdutoVenda(produto.getPreco(), 1, produto));
 
-		calcularValorTotal();
-	}
+        calcularValorTotal();
+    }
 
-	public void abrirClienteListing() {
-		ClienteListing listing = new ClienteListing();
-		listing.open(90, 90);
-	}
+    public void abrirClienteListing() {
+        ClienteListing listing = new ClienteListing();
+        listing.open(90, 90);
+    }
 
-	public void obterClienteListing(SelectEvent<Cliente> event) {
-		setCliente(event.getObject());
+    public void obterClienteListing(SelectEvent<Cliente> event) {
+        setCliente(event.getObject());
 
-		setPessoaJuridica(getCliente().getPessoa() instanceof PessoaJuridica);
-	}
-
-	public void pesquisar() {
-		Flash flash = FacesContext.getCurrentInstance().getExternalContext().getFlash();
-
-		if (this.pesquisa != null) {
-			flash.put("pesquisaProduto", this.pesquisa);
-			flash.keep("pesquisaProduto");
-		}
-
-		abrirProdutoListing();
-	}
-
-	public void confirmarPagamento() {
-		setPagamentoconfirmado(true);
-	}
-
-	public void calcularValorTroco() {
-		if (getValorPago().compareTo(getValorTotal()) < 0)
-			Util.addWarnMessage("Valor insuficiente");
-		else {
-			setValorTroco(getValorTotal().subtract(getValorPago()).abs());
-
-			Dinheiro pagamento = (Dinheiro) getPagamento();
-			pagamento.setValorPago(getValorTotal());
-			pagamento.setValorTroco(getValorTroco());
-
-			getEntity().setPagamento(pagamento);
-
-			confirmarPagamento();
-		}
-	}
-
-	public void mudarPagamento() {
-		this.pagamento = null;
-
-		if (indexTabPagamento == 1)
-			pagamento = new Cartao();
-		else if (indexTabPagamento == 2)
-			pagamento = new Pix();
-		else {
-			pagamento = new Dinheiro();
-		}
-	}
-
-	public void proximaEtapa() {
-		if (etapaVenda == 0) {
-			etapaVenda = 1;
-		}
-	}
-
-	public void voltarEtapa() {
-		if (etapaVenda == 1) {
-			etapaVenda = 0;
-		}
-	}
-
-	@Override
-	public void salvarSemLimpar() {
-		if (getPagamento() instanceof Pix)
-			confirmarPagamento();
-
-		if (!pagamentoconfirmado) {
-			Util.addWarnMessage("Pagamento não confirmado!");
-			return;
-		}
-
-		if (getCliente() == null) {
-			Util.addWarnMessage("Selecione o cliente!");
-			return;
-		}
-
-		getEntity().setCliente(getCliente());
-		getEntity().setFuncionario((Funcionario) Session.getInstance().get("funcionarioLogado"));
-		getEntity().setProdutoVenda(getListaProdutoVenda());
-		getEntity().setPagamento(getPagamento());
-		getEntity().setValorTotalVenda(getValorTotal());
-
-		super.salvarSemLimpar();
-		limpar();
-	}
-
-	public void removerCliente() {
-		setCliente(null);
-	}
-
-	public void limpar() {
-		cliente = null;
-		funcionario = null;
-		etapaVenda = null;
-		valorPago = null;
-		valorTotal = null;
-		valorTroco = null;
-		pagamentoconfirmado = false;
-		listaProdutoVenda = null;
-		listaProdutoRepository = null;
-	}
-
-	@Override
-	public Venda getEntity() {
-		if (entity == null) {
-			entity = new Venda(new Dinheiro());
-		}
-		return entity;
-	}
-
-	public List<Produto> getListaProdutoRepository() {
-		ProdutoRepository repo = new ProdutoRepository();
-
-		if (listaProdutoRepository == null)
-			try {
-				listaProdutoRepository = repo.findAll();
-			} catch (RepositoryException e) {
-				e.printStackTrace();
-			}
-		return listaProdutoRepository;
-	}
-
-	public void setListaProdutoRepository(List<Produto> listaProdutoRepository) {
-		this.listaProdutoRepository = listaProdutoRepository;
-	}
-
-	public List<ProdutoVenda> getListaProdutoVenda() {
-		if (listaProdutoVenda == null)
-			listaProdutoVenda = new ArrayList<>();
-		return listaProdutoVenda;
-	}
-
-	public void setListaProdutoVenda(List<ProdutoVenda> listaProdutoVenda) {
-		this.listaProdutoVenda = listaProdutoVenda;
-	}
-
-	public Funcionario getFuncionario() {
-		return funcionario;
-	}
-
-	public void setFuncionario(Funcionario funcionario) {
-		this.funcionario = funcionario;
-	}
-
-	public Cliente getCliente() {
-		return cliente;
-	}
-
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
-	}
-
-	public BigDecimal getValorTotal() {
-		if (valorTotal == null)
-			valorTotal = new BigDecimal(0);
-		return valorTotal;
-	}
-
-	public void setValorTotal(BigDecimal valorTotal) {
-		this.valorTotal = valorTotal;
-	}
-
-	public String getPesquisa() {
-		return pesquisa;
-	}
-
-	public void setPesquisa(String pesquisa) {
-		this.pesquisa = pesquisa;
-	}
-
-	public Integer getEtapaVenda() {
-		if (etapaVenda == null)
-			etapaVenda = 0;
-		return etapaVenda;
-	}
-
-	public void setEtapaVenda(Integer etapaVenda) {
-		this.etapaVenda = etapaVenda;
-	}
-
-	public BigDecimal getValorPago() {
-		if (valorPago == null)
-			valorPago = new BigDecimal(0);
-		return valorPago;
-	}
-
-	public void setValorPago(BigDecimal valorPago) {
-		this.valorPago = valorPago;
-	}
-
-	public BigDecimal getValorTroco() {
-		if (valorTroco == null)
-			valorTroco = new BigDecimal(0);
-		return valorTroco;
-	}
-
-	public void setValorTroco(BigDecimal valorTroco) {
-		this.valorTroco = valorTroco;
-	}
-
-	public Pagamento getPagamento() {
-		if (pagamento == null)
-			pagamento = new Dinheiro();
-		return pagamento;
-	}
-
-	public void setPagamento(Pagamento pagamento) {
-		this.pagamento = pagamento;
-	}
-
-	public Integer getIndexTabPagamento() {
-		if (indexTabPagamento == null)
-			indexTabPagamento = 0;
-		return indexTabPagamento;
-	}
-
-	public void setIndexTabPagamento(Integer indexTabPagamento) {
-		this.indexTabPagamento = indexTabPagamento;
-	}
-
-	public boolean isPagamentoconfirmado() {
-		return pagamentoconfirmado;
-	}
-
-	public void setPagamentoconfirmado(boolean pagamentoconfirmado) {
-		this.pagamentoconfirmado = pagamentoconfirmado;
-	}
-
-	public boolean isPessoaJuridica() {
-		return isPessoaJuridica;
-	}
-
-	public void setPessoaJuridica(boolean isPessoaJuridica) {
-		this.isPessoaJuridica = isPessoaJuridica;
-	}
+        setPessoaJuridica(getCliente().getPessoa() instanceof PessoaJuridica);
+    }
+
+    public void pesquisar() {
+        Flash flash = FacesContext.getCurrentInstance().getExternalContext().getFlash();
 
+        if (this.pesquisa != null) {
+            flash.put("pesquisaProduto", this.pesquisa);
+            flash.keep("pesquisaProduto");
+        }
+
+        abrirProdutoListing();
+    }
+
+    public void confirmarPagamento() {
+        setPagamentoconfirmado(true);
+    }
+
+    public void calcularValorTroco() {
+        if (getValorPago().compareTo(getValorTotal()) < 0) Util.addWarnMessage("Valor insuficiente");
+        else {
+            setValorTroco(getValorTotal().subtract(getValorPago()).abs());
+
+            Dinheiro pagamento = (Dinheiro) getPagamento();
+            pagamento.setValorPago(getValorTotal());
+            pagamento.setValorTroco(getValorTroco());
+
+            getEntity().setPagamento(pagamento);
+
+            confirmarPagamento();
+        }
+    }
+
+    public void mudarPagamento() {
+        this.pagamento = null;
+
+        if (indexTabPagamento == 1) pagamento = new Cartao();
+        else if (indexTabPagamento == 2) pagamento = new Pix();
+        else {
+            pagamento = new Dinheiro();
+        }
+    }
+
+    public void proximaEtapa() {
+        if (etapaVenda == 0) {
+            etapaVenda = 1;
+        }
+    }
+
+    public void voltarEtapa() {
+        if (etapaVenda == 1) {
+            etapaVenda = 0;
+        }
+    }
+
+    @Override
+    public void salvarSemLimpar() {
+        if (getPagamento() instanceof Pix) confirmarPagamento();
+
+        if (!pagamentoconfirmado) {
+            Util.addWarnMessage("Pagamento não confirmado!");
+            return;
+        }
+
+        if (getCliente() == null) {
+            Util.addWarnMessage("Selecione o cliente!");
+            return;
+        }
+
+        getEntity().setCliente(getCliente());
+        getEntity().setFuncionario((Funcionario) Session.getInstance().get("funcionarioLogado"));
+        getEntity().setProdutoVenda(getListaProdutoVenda());
+        getEntity().setPagamento(getPagamento());
+        getEntity().setValorTotalVenda(getValorTotal());
+
+        super.salvarSemLimpar();
+        limpar();
+    }
+
+    public void removerCliente() {
+        setCliente(null);
+    }
+
+    public void limpar() {
+        cliente = null;
+        funcionario = null;
+        etapaVenda = null;
+        valorPago = null;
+        valorTotal = null;
+        valorTroco = null;
+        pagamentoconfirmado = false;
+        listaProdutoVenda = null;
+        listaProdutoRepository = null;
+    }
+
+    @Override
+    public Venda getEntity() {
+        if (entity == null) {
+            entity = new Venda(new Dinheiro());
+        }
+        return entity;
+    }
+
+    public List<Produto> getListaProdutoRepository() {
+        ProdutoRepository repo = new ProdutoRepository();
+
+        if (listaProdutoRepository == null) try {
+            listaProdutoRepository = repo.findAll();
+        } catch (RepositoryException e) {
+            e.printStackTrace();
+        }
+        return listaProdutoRepository;
+    }
+
+    public void setListaProdutoRepository(List<Produto> listaProdutoRepository) {
+        this.listaProdutoRepository = listaProdutoRepository;
+    }
+
+    public List<ProdutoVenda> getListaProdutoVenda() {
+        if (listaProdutoVenda == null) listaProdutoVenda = new ArrayList<>();
+        return listaProdutoVenda;
+    }
+
+    public void setListaProdutoVenda(List<ProdutoVenda> listaProdutoVenda) {
+        this.listaProdutoVenda = listaProdutoVenda;
+    }
+
+    public Funcionario getFuncionario() {
+        return funcionario;
+    }
+
+    public void setFuncionario(Funcionario funcionario) {
+        this.funcionario = funcionario;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    public BigDecimal getValorTotal() {
+        if (valorTotal == null) valorTotal = new BigDecimal(0);
+        return valorTotal;
+    }
+
+    public void setValorTotal(BigDecimal valorTotal) {
+        this.valorTotal = valorTotal;
+    }
+
+    public String getPesquisa() {
+        return pesquisa;
+    }
+
+    public void setPesquisa(String pesquisa) {
+        this.pesquisa = pesquisa;
+    }
+
+    public Integer getEtapaVenda() {
+        if (etapaVenda == null) etapaVenda = 0;
+        return etapaVenda;
+    }
+
+    public void setEtapaVenda(Integer etapaVenda) {
+        this.etapaVenda = etapaVenda;
+    }
+
+    public BigDecimal getValorPago() {
+        if (valorPago == null) valorPago = new BigDecimal(0);
+        return valorPago;
+    }
+
+    public void setValorPago(BigDecimal valorPago) {
+        this.valorPago = valorPago;
+    }
+
+    public BigDecimal getValorTroco() {
+        if (valorTroco == null) valorTroco = new BigDecimal(0);
+        return valorTroco;
+    }
+
+    public void setValorTroco(BigDecimal valorTroco) {
+        this.valorTroco = valorTroco;
+    }
+
+    public Pagamento getPagamento() {
+        if (pagamento == null) pagamento = new Dinheiro();
+        return pagamento;
+    }
+
+    public void setPagamento(Pagamento pagamento) {
+        this.pagamento = pagamento;
+    }
+
+    public Integer getIndexTabPagamento() {
+        if (indexTabPagamento == null) indexTabPagamento = 0;
+        return indexTabPagamento;
+    }
+
+    public void setIndexTabPagamento(Integer indexTabPagamento) {
+        this.indexTabPagamento = indexTabPagamento;
+    }
+
+    public boolean isPagamentoconfirmado() {
+        return pagamentoconfirmado;
+    }
+
+    public void setPagamentoconfirmado(boolean pagamentoconfirmado) {
+        this.pagamentoconfirmado = pagamentoconfirmado;
+    }
+
+    public boolean isPessoaJuridica() {
+        return isPessoaJuridica;
+    }
+
+    public void setPessoaJuridica(boolean isPessoaJuridica) {
+        this.isPessoaJuridica = isPessoaJuridica;
+    }
 
 
 }

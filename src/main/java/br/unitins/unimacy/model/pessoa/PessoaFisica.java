@@ -1,92 +1,93 @@
 package br.unitins.unimacy.model.pessoa;
 
+import java.io.Serial;
 import java.time.LocalDate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
 import org.hibernate.validator.constraints.br.CPF;
 
 @Entity
 public class PessoaFisica extends Pessoa {
 
-	private static final long serialVersionUID = 2489138959144990316L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-	@NotBlank(message = "Informe o nome")
-	private String nome;
-	
-	@NotBlank(message = "Informe o sobrenome")
-	private String sobreNome;
-	
-	@NotNull(message = "Informe o sexo")
-	private Sexo sexo;
+    @NotBlank(message = "Informe o nome")
+    private String nome;
 
-	@CPF(message = "Informe um CPF válido")
-	@Column(unique = true)
-	private String cpf;
-	
-	@Past(message = "Informe uma data de nascimento anterior ao dia de hoje")
-	private LocalDate dataNascimento;
+    @NotBlank(message = "Informe o sobrenome")
+    private String sobreNome;
 
-	public PessoaFisica() {
-		// TODO Auto-generated constructor stub
-	}
+    @NotNull(message = "Informe o sexo")
+    private Sexo sexo;
 
-	public PessoaFisica(String nome, String sobreNome, Sexo sexo, String cpf, LocalDate dataNascimento) {
-		super();
-		this.nome = nome;
-		this.sobreNome = sobreNome;
-		this.sexo = sexo;
-		this.cpf = cpf;
-		this.dataNascimento = dataNascimento;
-	}
+    @CPF(message = "Informe um CPF válido")
+    @Column(unique = true)
+    private String cpf;
 
-	public String getNome() {
-		return nome;
-	}
+    @Past(message = "Informe uma data de nascimento anterior ao dia de hoje")
+    private LocalDate dataNascimento;
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
+    public PessoaFisica() {
+        // TODO Auto-generated constructor stub
+    }
 
-	public String getSobreNome() {
-		return sobreNome;
-	}
+    public PessoaFisica(String nome, String sobreNome, Sexo sexo, String cpf, LocalDate dataNascimento) {
+        super();
+        this.nome = nome;
+        this.sobreNome = sobreNome;
+        this.sexo = sexo;
+        this.cpf = cpf;
+        this.dataNascimento = dataNascimento;
+    }
 
-	public void setSobreNome(String sobreNome) {
-		this.sobreNome = sobreNome;
-	}
+    public String getNome() {
+        return nome;
+    }
 
-	public String getCpf() {
-		return cpf;
-	}
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
+    public String getSobreNome() {
+        return sobreNome;
+    }
 
-	public LocalDate getDataNascimento() {
-		return dataNascimento;
-	}
+    public void setSobreNome(String sobreNome) {
+        this.sobreNome = sobreNome;
+    }
 
-	public void setDataNascimento(LocalDate dataNascimento) {
-		this.dataNascimento = dataNascimento;
-	}
+    public String getCpf() {
+        return cpf;
+    }
 
-	public Sexo getSexo() {
-		return sexo;
-	}
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
 
-	public void setSexo(Sexo sexo) {
-		this.sexo = sexo;
-	}
+    public LocalDate getDataNascimento() {
+        return dataNascimento;
+    }
 
-	@Override
-	public String toString() {
-		return "PessoaFisica [nome=" + nome + ", sobreNome=" + sobreNome + ", sexo=" + sexo + ", cpf=" + cpf
-				+ ", dataNascimento=" + dataNascimento + "status " + isAtivo() + "]";
-	}
+    public void setDataNascimento(LocalDate dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
+
+    public Sexo getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(Sexo sexo) {
+        this.sexo = sexo;
+    }
+
+    @Override
+    public String toString() {
+        return "PessoaFisica [nome=" + nome + ", sobreNome=" + sobreNome + ", sexo=" + sexo + ", cpf=" + cpf + ", dataNascimento=" + dataNascimento + "status " + isAtivo() + "]";
+    }
 }

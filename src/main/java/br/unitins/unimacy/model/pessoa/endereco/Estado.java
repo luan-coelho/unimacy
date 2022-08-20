@@ -1,15 +1,17 @@
 package br.unitins.unimacy.model.pessoa.endereco;
 
+import java.io.Serial;
 import java.util.Objects;
 
-import javax.persistence.Entity;
 
 import br.unitins.unimacy.model.DefaultEntity;
+import jakarta.persistence.Entity;
 
 @Entity
 public class Estado extends DefaultEntity {
 
-	private static final long serialVersionUID = 5693436511646646283L;
+	@Serial
+	private static final long serialVersionUID = 1L;
 
 	private String nome;
 	private String uf;

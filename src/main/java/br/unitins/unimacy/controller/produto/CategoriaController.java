@@ -1,59 +1,61 @@
 package br.unitins.unimacy.controller.produto;
 
+import java.io.Serial;
 import java.util.List;
 
 import javax.faces.view.ViewScoped;
-import javax.inject.Named;
 
 import br.unitins.unimacy.controller.Controller;
 import br.unitins.unimacy.exception.RepositoryException;
 import br.unitins.unimacy.model.produto.Categoria;
 import br.unitins.unimacy.repository.produto.CategoriaRepository;
+import jakarta.inject.Named;
 
 @Named
 @ViewScoped
 public class CategoriaController extends Controller<Categoria> {
 
-	private static final long serialVersionUID = -2587172429280470098L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-	private List<Categoria> listaCategoria;
+    private List<Categoria> listaCategoria;
 
-	public CategoriaController() {
-		super(new CategoriaRepository());
-	}
+    public CategoriaController() {
+        super(new CategoriaRepository());
+    }
 
-	@Override
-	public void salvar() {
-		super.salvar();
-		setListaCategoria(null);
-	}
-	
-	public List<Categoria> getListaCategoria() {
-		if (listaCategoria == null) {
-			try {
-				listaCategoria = getRepository().findAll();
-			} catch (RepositoryException e) {
-				e.printStackTrace();
-			}
-		}
+    @Override
+    public void salvar() {
+        super.salvar();
+        setListaCategoria(null);
+    }
 
-		return listaCategoria;
-	}
+    public List<Categoria> getListaCategoria() {
+        if (listaCategoria == null) {
+            try {
+                listaCategoria = getRepository().findAll();
+            } catch (RepositoryException e) {
+                e.printStackTrace();
+            }
+        }
 
-	public void setListaCategoria(List<Categoria> listaCategoria) {
-		this.listaCategoria = listaCategoria;
-	}
+        return listaCategoria;
+    }
 
-	@Override
-	public Categoria getEntity() {
-		if (entity == null) {
-			entity = new Categoria();
-		}
+    public void setListaCategoria(List<Categoria> listaCategoria) {
+        this.listaCategoria = listaCategoria;
+    }
 
-		return entity;
-	}
+    @Override
+    public Categoria getEntity() {
+        if (entity == null) {
+            entity = new Categoria();
+        }
 
-	public void selecionarItem(Categoria categoria) {
-		this.entity = categoria;
-	}
+        return entity;
+    }
+
+    public void selecionarItem(Categoria categoria) {
+        this.entity = categoria;
+    }
 }

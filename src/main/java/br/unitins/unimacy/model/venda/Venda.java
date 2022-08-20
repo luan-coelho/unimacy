@@ -1,22 +1,23 @@
 package br.unitins.unimacy.model.venda;
 
+import java.io.Serial;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
 import br.unitins.unimacy.model.DefaultEntity;
 import br.unitins.unimacy.model.pessoa.Cliente;
 import br.unitins.unimacy.model.pessoa.Funcionario;
 import br.unitins.unimacy.model.venda.pagamento.Pagamento;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Venda extends DefaultEntity {
 
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private BigDecimal valorTotalVenda;

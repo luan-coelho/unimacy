@@ -1,17 +1,20 @@
 package br.unitins.unimacy.controller.listing;
 
 import javax.faces.view.ViewScoped;
-import javax.inject.Named;
 
 import br.unitins.unimacy.application.Util;
 import br.unitins.unimacy.exception.RepositoryException;
 import br.unitins.unimacy.model.produto.Categoria;
 import br.unitins.unimacy.repository.produto.CategoriaRepository;
+import jakarta.inject.Named;
+
+import java.io.Serial;
 
 @Named
 @ViewScoped
 public class CategoriaListing extends ListingSql<Categoria> {
 
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private String pesquisa;
@@ -26,7 +29,7 @@ public class CategoriaListing extends ListingSql<Categoria> {
 		try {
 			setList(repo.findByNomeNativeSql(pesquisa)
 					.stream()
-					.filter(categoria -> (boolean) categoria[2] == true)
+					.filter(categoria -> (boolean) categoria[2])
 					.toList());
 		} catch (RepositoryException e) {
 			e.printStackTrace();

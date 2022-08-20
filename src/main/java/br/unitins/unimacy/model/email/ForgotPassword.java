@@ -1,56 +1,57 @@
 package br.unitins.unimacy.model.email;
 
+import java.io.Serial;
 import java.time.LocalDateTime;
-
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 import br.unitins.unimacy.model.DefaultEntity;
 import br.unitins.unimacy.model.pessoa.Funcionario;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class ForgotPassword extends DefaultEntity {
 
-	private static final long serialVersionUID = -8615972044922024177L;
-	
-	private String codigo;
-	@ManyToOne
-	@JoinColumn(name = "id_funcionario")
-	private Funcionario funcionario;
-	private LocalDateTime dataHoraLimite;
-	private Boolean utilizado;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-	public String getCodigo() {
-		return codigo;
-	}
+    private String codigo;
+    @ManyToOne
+    @JoinColumn(name = "id_funcionario")
+    private Funcionario funcionario;
+    private LocalDateTime dataHoraLimite;
+    private Boolean utilizado;
 
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
-	}
+    public String getCodigo() {
+        return codigo;
+    }
 
-	public Funcionario getFuncionario() {
-		return funcionario;
-	}
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
 
-	public void setFuncionario(Funcionario funcionario) {
-		this.funcionario = funcionario;
-	}
+    public Funcionario getFuncionario() {
+        return funcionario;
+    }
 
-	public LocalDateTime getDataHoraLimite() {
-		return dataHoraLimite;
-	}
+    public void setFuncionario(Funcionario funcionario) {
+        this.funcionario = funcionario;
+    }
 
-	public void setDataHoraLimite(LocalDateTime dataHoraLimite) {
-		this.dataHoraLimite = dataHoraLimite;
-	}
+    public LocalDateTime getDataHoraLimite() {
+        return dataHoraLimite;
+    }
 
-	public Boolean getUtilizado() {
-		return utilizado;
-	}
+    public void setDataHoraLimite(LocalDateTime dataHoraLimite) {
+        this.dataHoraLimite = dataHoraLimite;
+    }
 
-	public void setUtilizado(Boolean utilizado) {
-		this.utilizado = utilizado;
-	}
+    public Boolean getUtilizado() {
+        return utilizado;
+    }
+
+    public void setUtilizado(Boolean utilizado) {
+        this.utilizado = utilizado;
+    }
 
 }

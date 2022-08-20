@@ -1,44 +1,46 @@
 package br.unitins.unimacy.model.produto;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-
 import br.unitins.unimacy.model.DefaultEntity;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+
+import java.io.Serial;
 
 @Entity
 public class Unidade extends DefaultEntity {
 
-	private static final long serialVersionUID = 8191059953577957199L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-	private Integer qtd;
-	@Enumerated(EnumType.STRING)
-	private UnidadeMedida unidadeMedida;
+    private Integer qtd;
+    @Enumerated(EnumType.STRING)
+    private UnidadeMedida unidadeMedida;
 
-	public Unidade() {
-		// TODO Auto-generated constructor stub
-	}
+    public Unidade() {
+        // TODO Auto-generated constructor stub
+    }
 
-	public Unidade(Integer qtd, UnidadeMedida unidadeMedida) {
-		super();
-		this.qtd = qtd;
-		this.unidadeMedida = unidadeMedida;
-	}
+    public Unidade(Integer qtd, UnidadeMedida unidadeMedida) {
+        super();
+        this.qtd = qtd;
+        this.unidadeMedida = unidadeMedida;
+    }
 
-	public Integer getQtd() {
-		return qtd;
-	}
+    public Integer getQtd() {
+        return qtd;
+    }
 
-	public void setQtd(Integer qtd) {
-		this.qtd = qtd;
-	}
+    public void setQtd(Integer qtd) {
+        this.qtd = qtd;
+    }
 
-	public UnidadeMedida getUnidadeMedida() {
-		return unidadeMedida;
-	}
+    public UnidadeMedida getUnidadeMedida() {
+        return unidadeMedida;
+    }
 
-	public void setUnidadeMedida(UnidadeMedida unidadeMedida) {
-		this.unidadeMedida = unidadeMedida;
-	}
+    public void setUnidadeMedida(UnidadeMedida unidadeMedida) {
+        this.unidadeMedida = unidadeMedida;
+    }
 
 }

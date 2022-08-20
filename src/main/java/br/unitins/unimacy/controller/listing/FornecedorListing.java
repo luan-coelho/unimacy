@@ -1,14 +1,13 @@
 package br.unitins.unimacy.controller.listing;
 
-import java.util.stream.Collectors;
-
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
-
 import br.unitins.unimacy.application.Util;
 import br.unitins.unimacy.exception.RepositoryException;
 import br.unitins.unimacy.model.pessoa.Fornecedor;
 import br.unitins.unimacy.repository.pessoa.FornecedorRepository;
+import jakarta.inject.Named;
+
+import javax.faces.view.ViewScoped;
+import java.util.stream.Collectors;
 
 @Named
 @ViewScoped

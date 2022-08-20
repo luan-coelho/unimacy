@@ -1,5 +1,18 @@
 package br.unitins.unimacy.application;
 
+import br.unitins.unimacy.model.cep.CidadeAux;
+import br.unitins.unimacy.model.cep.EnderecoAux;
+import br.unitins.unimacy.model.cep.EstadoAux;
+import br.unitins.unimacy.model.pessoa.endereco.Cidade;
+import br.unitins.unimacy.model.pessoa.endereco.Endereco;
+import br.unitins.unimacy.model.pessoa.endereco.Estado;
+import br.unitins.unimacy.repository.pessoa.endereco.CidadeRepository;
+import br.unitins.unimacy.repository.pessoa.endereco.EstadoRepository;
+import com.google.gson.Gson;
+import com.gtbr.exception.ViaCepException;
+import com.gtbr.exception.ViaCepFormatException;
+import jakarta.persistence.NoResultException;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -9,217 +22,174 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
-
-import javax.persistence.NoResultException;
-
-import com.google.gson.Gson;
-import com.gtbr.exception.ViaCepException;
-import com.gtbr.exception.ViaCepFormatException;
-
-import br.unitins.unimacy.model.cep.CidadeAux;
-import br.unitins.unimacy.model.cep.EnderecoAux;
-import br.unitins.unimacy.model.cep.EstadoAux;
-import br.unitins.unimacy.model.pessoa.endereco.Cidade;
-import br.unitins.unimacy.model.pessoa.endereco.Endereco;
-import br.unitins.unimacy.model.pessoa.endereco.Estado;
-import br.unitins.unimacy.repository.pessoa.endereco.CidadeRepository;
-import br.unitins.unimacy.repository.pessoa.endereco.EstadoRepository;
 
 public class ApiCep {
 
-	private static final String viaCepUrl = "https://viacep.com.br/ws/";
-	private static final Gson gson = new Gson();
+    private static final String viaCepUrl = "https://viacep.com.br/ws/";
+    private static final Gson gson = new Gson();
 
-	public static Endereco findCep(String cepString) {
-		cepString = removeMascaraCep(cepString);
-		validaCep(cepString);
+    public static Endereco findCep(String cepString) {
+        cepString = removeMascaraCep(cepString);
+        validaCep(cepString);
 
-		try {
-			HttpClient httpClient = HttpClient.newBuilder().connectTimeout(Duration.ofMinutes(1L)).build();
+        try {
+            HttpClient httpClient = HttpClient.newBuilder().connectTimeout(Duration.ofMinutes(1L)).build();
 
-			HttpRequest httpRequest = HttpRequest.newBuilder().GET().uri(URI.create(viaCepUrl + cepString + "/json"))
-					.build();
+            HttpRequest httpRequest = HttpRequest.newBuilder().GET().uri(URI.create(viaCepUrl + cepString + "/json")).build();
 
-			HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
 
-			EnderecoAux enderecoAux = gson.fromJson(httpResponse.body(), EnderecoAux.class);
+            EnderecoAux enderecoAux = gson.fromJson(httpResponse.body(), EnderecoAux.class);
 
-			return montarObjetoEndereco(enderecoAux, pegarEstadoPorUf(enderecoAux.getUf()));
+            return montarObjetoEndereco(enderecoAux, pegarEstadoPorUf(enderecoAux.getUf()));
 
-		} catch (IOException e) {
-			throw new RuntimeException(e.getMessage());
-		} catch (InterruptedException e) {
-			throw new RuntimeException(e.getMessage());
-		}
-	}
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
 
-	private static Endereco montarObjetoEndereco(EnderecoAux enderecoAux, EstadoAux estadoAux) {
-		CidadeRepository cidadeRepository = new CidadeRepository();
-		EstadoRepository estadoRepository = new EstadoRepository();
-		
-		Endereco endereco = new Endereco(new Cidade(new Estado()));
+    private static Endereco montarObjetoEndereco(EnderecoAux enderecoAux, EstadoAux estadoAux) {
+        CidadeRepository cidadeRepository = new CidadeRepository();
+        EstadoRepository estadoRepository = new EstadoRepository();
 
-		endereco.setCep(enderecoAux.getCep());
-		endereco.setRua(enderecoAux.getLogradouro());
-		endereco.setBairro(enderecoAux.getBairro());
+        Endereco endereco = new Endereco(new Cidade(new Estado()));
 
-		Cidade cidade = null;
-				
-		try {
-			cidade = cidadeRepository.findOneResultByNome(enderecoAux.getLocalidade(), estadoAux.getNome());
-			endereco.setCidade(cidade);
-			
-			return endereco;
-		} catch (NoResultException e) {
-			endereco.getCidade().setNome(enderecoAux.getLocalidade());
-			endereco.getCidade().getEstado().setNome(estadoAux.getNome());
-			endereco.getCidade().getEstado().setUf(enderecoAux.getUf());
-		}
-		
-		try {
-			Estado estado = estadoRepository.findOneResultByNome(estadoAux.getNome());
-			endereco.getCidade().setEstado(estado);
-		} catch (Exception e) {
-			return endereco;
-		}
-		
-		return endereco;
-	}
+        endereco.setCep(enderecoAux.getCep());
+        endereco.setRua(enderecoAux.getLogradouro());
+        endereco.setBairro(enderecoAux.getBairro());
 
-	public static void validaCep(String cep) {
-		if (Objects.isNull(cep) || cep.isEmpty() || cep.isBlank())
-			throw new ViaCepException(null);
-		if (cep.length() > 8)
-			throw new ViaCepFormatException(null);
-		if (cep.length() < 8)
-			throw new ViaCepException(null);
-	}
+        Cidade cidade;
 
-	public static String removeMascaraCep(String cep) {
-		try {
-			validaCep(cep);
-			return cep;
-		} catch (ViaCepFormatException e) {
-			return cep.replace("-", "");
-		}
-	}
+        try {
+            cidade = cidadeRepository.findOneResultByNome(enderecoAux.getLocalidade(), estadoAux.getNome());
+            endereco.setCidade(cidade);
 
-	private static EstadoAux pegarEstadoPorUf(String uf) {
-		try {
-			HttpClient httpClient = HttpClient.newBuilder().connectTimeout(Duration.ofMinutes(1L)).build();
+            return endereco;
+        } catch (NoResultException e) {
+            endereco.getCidade().setNome(enderecoAux.getLocalidade());
+            endereco.getCidade().getEstado().setNome(estadoAux.getNome());
+            endereco.getCidade().getEstado().setUf(enderecoAux.getUf());
+        }
 
-			final String SERVICE_IBGE = "https://servicodados.ibge.gov.br/api/v1/localidades/estados/";
+        try {
+            Estado estado = estadoRepository.findOneResultByNome(estadoAux.getNome());
+            endereco.getCidade().setEstado(estado);
+        } catch (Exception e) {
+            return endereco;
+        }
 
-			HttpRequest httpRequest = HttpRequest.newBuilder().GET().uri(URI.create(SERVICE_IBGE + uf)).build();
+        return endereco;
+    }
 
-			HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+    public static void validaCep(String cep) {
+        if (Objects.isNull(cep) || cep.isEmpty() || cep.isBlank()) throw new ViaCepException(null);
+        if (cep.length() > 8) throw new ViaCepFormatException(null);
+        if (cep.length() < 8) throw new ViaCepException(null);
+    }
 
-			return gson.fromJson(httpResponse.body(), EstadoAux.class);
-		} catch (IOException e) {
-			e.printStackTrace();
-			throw new RuntimeException(e.getMessage());
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-			throw new RuntimeException(e.getMessage());
-		}
-	}
+    public static String removeMascaraCep(String cep) {
+        try {
+            validaCep(cep);
+            return cep;
+        } catch (ViaCepFormatException e) {
+            return cep.replace("-", "");
+        }
+    }
 
-	public static List<Estado> pegarEstados() {
-		try {
-			HttpClient httpClient = HttpClient.newBuilder().connectTimeout(Duration.ofMinutes(1L)).build();
+    private static EstadoAux pegarEstadoPorUf(String uf) {
+        try {
+            HttpClient httpClient = HttpClient.newBuilder().connectTimeout(Duration.ofMinutes(1L)).build();
 
-			final String SERVICE_IBGE = "https://servicodados.ibge.gov.br/api/v1/localidades/estados";
+            final String SERVICE_IBGE = "https://servicodados.ibge.gov.br/api/v1/localidades/estados/";
 
-			HttpRequest httpRequest = HttpRequest.newBuilder().GET().uri(URI.create(SERVICE_IBGE)).build();
+            HttpRequest httpRequest = HttpRequest.newBuilder().GET().uri(URI.create(SERVICE_IBGE + uf)).build();
 
-			HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
 
-			EstadoAux estados[] = gson.fromJson(httpResponse.body(), EstadoAux[].class);
+            return gson.fromJson(httpResponse.body(), EstadoAux.class);
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e.getMessage());
+        }
+    }
 
-			return converterAuxParaEstado(estados);
+    public static List<Estado> pegarEstados() {
+        try {
+            HttpClient httpClient = HttpClient.newBuilder().connectTimeout(Duration.ofMinutes(1L)).build();
 
-		} catch (IOException e) {
-			e.printStackTrace();
-			throw new RuntimeException(e.getMessage());
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-			throw new RuntimeException(e.getMessage());
-		}
-	}
+            final String SERVICE_IBGE = "https://servicodados.ibge.gov.br/api/v1/localidades/estados";
 
-	public static List<Cidade> pegarCidadePorUf(String uf) {
-		try {
-			HttpClient httpClient = HttpClient.newBuilder().connectTimeout(Duration.ofMinutes(1L)).build();
+            HttpRequest httpRequest = HttpRequest.newBuilder().GET().uri(URI.create(SERVICE_IBGE)).build();
 
-			final String SERVICE_IBGE = "https://servicodados.ibge.gov.br/api/v1/localidades/estados/" + uf
-					+ "/distritos";
+            HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
 
-			HttpRequest httpRequest = HttpRequest.newBuilder().GET().uri(URI.create(SERVICE_IBGE)).build();
+            EstadoAux[] estados = gson.fromJson(httpResponse.body(), EstadoAux[].class);
 
-			HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+            return converterAuxParaEstado(estados);
 
-			CidadeAux cidades[] = gson.fromJson(httpResponse.body(), CidadeAux[].class);
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e.getMessage());
+        }
+    }
 
-			return converterAuxParaCidade(cidades);
+    public static List<Cidade> pegarCidadePorUf(String uf) {
+        try {
+            HttpClient httpClient = HttpClient.newBuilder().connectTimeout(Duration.ofMinutes(1L)).build();
 
-		} catch (IOException e) {
-			e.printStackTrace();
-			throw new RuntimeException(e.getMessage());
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-			throw new RuntimeException(e.getMessage());
-		}
-	}
+            final String SERVICE_IBGE = "https://servicodados.ibge.gov.br/api/v1/localidades/estados/" + uf + "/distritos";
 
-	public static List<Estado> converterAuxParaEstado(EstadoAux estados[]) {
+            HttpRequest httpRequest = HttpRequest.newBuilder().GET().uri(URI.create(SERVICE_IBGE)).build();
 
-		List<Estado> listaEstados = new ArrayList<>();
+            HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
 
-		for (EstadoAux estadoAux : estados) {
-			Estado estado = new Estado();
+            CidadeAux[] cidades = gson.fromJson(httpResponse.body(), CidadeAux[].class);
 
-			estado.setId(estadoAux.getId());
-			estado.setNome(estadoAux.getNome());
-			estado.setUf(estadoAux.getSigla());
+            return converterAuxParaCidade(cidades);
 
-			listaEstados.add(estado);
-		}
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e.getMessage());
+        }
+    }
 
-		return listaEstados;
-	}
+    public static List<Estado> converterAuxParaEstado(EstadoAux[] estados) {
 
-	public static Estado converterAuxParaEstado(EstadoAux estadoAux) {
-		Estado estado = new Estado();
+        List<Estado> listaEstados = new ArrayList<>();
 
-		estado.setId(estadoAux.getId());
-		estado.setNome(estadoAux.getNome());
-		estado.setUf(estadoAux.getSigla());
+        for (EstadoAux estadoAux : estados) {
+            Estado estado = new Estado();
 
-		return estado;
-	}
+            estado.setId(estadoAux.getId());
+            estado.setNome(estadoAux.getNome());
+            estado.setUf(estadoAux.getSigla());
 
-	public static String pegarUfEstadoporNome(String nome) {
-		List<Estado> listaEstados = pegarEstados();
+            listaEstados.add(estado);
+        }
 
-		List<Estado> estado = listaEstados.stream().filter(e -> e.getNome().equals(nome)).collect(Collectors.toList());
+        return listaEstados;
+    }
 
-		if (!estado.isEmpty()) {
-			return estado.get(0).getUf();
-		}
+    public static String pegarUfEstadoporNome(String nome) {
+        List<Estado> listaEstados = pegarEstados();
 
-		return null;
-	}
+        List<Estado> estado = listaEstados.stream().filter(e -> e.getNome().equals(nome)).toList();
 
-	public static List<Cidade> converterAuxParaCidade(CidadeAux cidades[]) {
+        if (!estado.isEmpty()) {
+            return estado.get(0).getUf();
+        }
 
-		List<Cidade> listaCidades = new ArrayList<>();
+        return null;
+    }
 
-		for (CidadeAux cidade : cidades) {
-			listaCidades.add(new Cidade(cidade.getNome()));
-		}
+    public static List<Cidade> converterAuxParaCidade(CidadeAux[] cidades) {
 
-		return listaCidades;
-	}
+        List<Cidade> listaCidades = new ArrayList<>();
 
+        for (CidadeAux cidade : cidades) {
+            listaCidades.add(new Cidade(cidade.getNome()));
+        }
+
+        return listaCidades;
+    }
 }

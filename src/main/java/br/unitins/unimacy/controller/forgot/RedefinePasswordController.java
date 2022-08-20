@@ -1,11 +1,11 @@
 package br.unitins.unimacy.controller.forgot;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.faces.view.ViewScoped;
-import javax.inject.Named;
-import javax.validation.constraints.NotBlank;
+
 
 import br.unitins.unimacy.application.Util;
 import br.unitins.unimacy.controller.Controller;
@@ -16,12 +16,15 @@ import br.unitins.unimacy.model.pessoa.Funcionario;
 import br.unitins.unimacy.model.pessoa.PessoaFisica;
 import br.unitins.unimacy.repository.email.ForgotPasswordRepository;
 import br.unitins.unimacy.repository.pessoa.FuncionarioRepository;
+import jakarta.inject.Named;
+import jakarta.validation.constraints.NotBlank;
 
 @Named
 @ViewScoped
 public class RedefinePasswordController extends Controller<Funcionario> implements Serializable {
 
-	private static final long serialVersionUID = 2951252099683624290L;
+	@Serial
+	private static final long serialVersionUID = 1L;
 
 	private String codigo;
 
@@ -48,9 +51,7 @@ public class RedefinePasswordController extends Controller<Funcionario> implemen
 
 			try {
 				getForgotPasswordRepository().save(forgotPassword);
-			} catch (RepositoryException e) {
-				e.printStackTrace();
-			} catch (VersionException e) {
+			} catch (RepositoryException | VersionException e) {
 				e.printStackTrace();
 			}
 			Util.redirect("login.xhtml");
@@ -116,27 +117,10 @@ public class RedefinePasswordController extends Controller<Funcionario> implemen
 		return forgotPassword;
 	}
 
-	public void setForgotPassword(ForgotPassword forgotPassword) {
-		this.forgotPassword = forgotPassword;
-	}
-
 	public ForgotPasswordRepository getForgotPasswordRepository() {
 		if (forgotPasswordRepository == null)
 			forgotPasswordRepository = new ForgotPasswordRepository();
 		return forgotPasswordRepository;
 	}
 
-	public void setForgotPasswordRepository(ForgotPasswordRepository forgotPasswordRepository) {
-		this.forgotPasswordRepository = forgotPasswordRepository;
-	}
-
-	public FuncionarioRepository getFuncionarioRepository() {
-		if (funcionarioRepository == null)
-			funcionarioRepository = new FuncionarioRepository();
-		return funcionarioRepository;
-	}
-
-	public void setFuncionarioRepository(FuncionarioRepository funcionarioRepository) {
-		this.funcionarioRepository = funcionarioRepository;
-	}
 }
