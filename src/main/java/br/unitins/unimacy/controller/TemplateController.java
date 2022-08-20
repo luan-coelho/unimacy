@@ -1,5 +1,6 @@
 package br.unitins.unimacy.controller;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import javax.inject.Named;
@@ -12,12 +13,13 @@ import br.unitins.unimacy.model.pessoa.Cargo;
 @javax.faces.view.ViewScoped
 public class TemplateController implements Serializable{
 
+	@Serial
 	private static final long serialVersionUID = 1L;
 	
 	private boolean isAdmin;
 	
 	public TemplateController() {
-		if(((Cargo) Session.getInstance().get("cargoFuncionario")).equals(Cargo.ADMINISTRADOR)) {
+		if(Session.getInstance().get("cargoFuncionario").equals(Cargo.ADMINISTRADOR)) {
 			this.isAdmin = true;
 		}
 	}

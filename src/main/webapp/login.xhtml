@@ -1,80 +1,80 @@
 <!DOCTYPE html>
 <html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:f="http://xmlns.jcp.org/jsf/core"
-	xmlns:h="http://xmlns.jcp.org/jsf/html"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+>
 <h:head>
-	<meta charset="UTF-8" />
-	<title>Acesso ao Sistema</title>
+    <meta charset="UTF-8"/>
+    <title>Acesso ao Sistema</title>
 
-	<h:outputStylesheet library="webjars"
-		name="primeflex/2.0.0/primeflex.min.css" />
-	<h:outputStylesheet library="css" name="login.css" />
-	<link rel="stylesheet"
-		href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
+    <h:outputStylesheet library="webjars"
+                        name="primeflex/2.0.0/primeflex.min.css"/>
+    <h:outputStylesheet library="css" name="login.css"/>
+    <link rel="stylesheet"
+          href="https://unicons.iconscout.com/release/v4.0.0/css/line.css"/>
 </h:head>
 <h:body>
-	<h:form>
+    <h:form>
 
-		<p:growl id="growl" />
+        <p:growl id="growl"/>
 
-		<div class="container">
-			<div class="forms">
-				<div class="form login">
+        <div class="container">
+            <div class="forms">
+                <div class="form login">
 
-					<div class="form-image-container">
-						<p:graphicImage styleClass="form-image" library="images"
-							name="logo.png" />
-					</div>
+                    <div class="form-image-container">
+                        <p:graphicImage styleClass="form-image" library="images"
+                                        name="logo.png"/>
+                    </div>
 
-					<div>
-						<h2 class="title">Acesso ao Sistema</h2>
+                    <div>
+                        <h2 class="title">Acesso ao Sistema</h2>
 
-						<div class="input-field">
-							<div class="input-field">
-								<p:inputMask mask="999.999.999-99" id="cpf" maxlength="14"
-									value="#{loginController.funcionario.pessoaFisica.cpf}"
-									placeholder="xxx.xxx.xxx-xx"/>
-								<i class="uil uil-envelope icon"></i>
-							</div>
-						</div>
+                        <div class="input-field">
+                            <div class="input-field">
+                                <p:inputMask mask="999.999.999-99" id="cpf" maxlength="14"
+                                             value="#{loginController.funcionario.pessoaFisica.cpf}"
+                                             placeholder="xxx.xxx.xxx-xx"/>
+                                <i class="uil uil-envelope icon"></i>
+                            </div>
+                        </div>
 
-						<div class="input-field">
-							<p:password toggleMask="false" styleClass="password"
-								placeholder="Senha" required="true"
-								requiredMessage="Informe a senha"
-								value="#{loginController.funcionario.senha}" />
-							<i class="uil uil-lock icon"></i> <i
-								class="uil uil-eye-slash showHidePw"></i>
-						</div>
+                        <div class="input-field">
+                            <p:password toggleMask="false" styleClass="password"
+                                        placeholder="Senha" required="true"
+                                        requiredMessage="Informe a senha"
+                                        value="#{loginController.funcionario.senha}"/>
+                            <i class="uil uil-lock icon"></i> <i
+                                class="uil uil-eye-slash showHidePw"></i>
+                        </div>
 
-						<div class="p-mt-3">
-							<p:link tabindex="3" style="margin-bottom:0;"
-								styleClass="wdi-red" value="Esqueceu a senha?"
-								href="forgotpassword.xhtml" />
-						</div>
+                        <div class="p-mt-3">
+                            <p:link tabindex="3" style="margin-bottom:0;"
+                                    styleClass="wdi-red" value="Esqueceu a senha?"
+                                    href="forgotpassword.xhtml"/>
+                        </div>
 
-						<p:commandButton styleClass="input-field button" value="Entrar"
-							action="#{loginController.entrar}" icon="pi pi-sign-in" process="@form" update="@form" />
-					</div>
-				</div>
-			</div>
-		</div>
+                        <p:commandButton styleClass="input-field button" value="Entrar"
+                                         action="#{loginController.entrar}" icon="pi pi-sign-in" process="@form"
+                                         update="@form"/>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-		<p:ajaxStatus onstart="PF('statusDialog').show()"
-			onsuccess="PF('statusDialog').hide()" />
+        <p:ajaxStatus onstart="PF('statusDialog').show()"
+                      onsuccess="PF('statusDialog').hide()"/>
 
-		<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
-			closable="false" resizable="false" showHeader="false">
-			<div class="p-text-center">
-				<p:graphicImage height="150px" width="200px"
-					value="./resources/images/loading.gif" />
-			</div>
-		</p:dialog>
-	</h:form>
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+                  closable="false" resizable="false" showHeader="false">
+            <div class="p-text-center">
+                <p:graphicImage height="150px" width="200px"
+                                value="./resources/images/loading.gif"/>
+            </div>
+        </p:dialog>
+    </h:form>
 
-	<h:outputScript library="js" name="login.js" />
+    <h:outputScript library="js" name="login.js"/>
 </h:body>
 
 </html>

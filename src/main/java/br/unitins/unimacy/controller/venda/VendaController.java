@@ -1,5 +1,6 @@
 package br.unitins.unimacy.controller.venda;
 
+import java.io.Serial;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,8 @@ import br.unitins.unimacy.repository.venda.VendaRepository;
 @ViewScoped
 public class VendaController extends Controller<Venda> {
 
-	private static final long serialVersionUID = -2587172429280470098L;
+	@Serial
+	private static final long serialVersionUID = 1L;
 
 	private List<Produto> listaProdutoRepository;
 	private List<ProdutoVenda> listaProdutoVenda;
@@ -97,12 +99,8 @@ public class VendaController extends Controller<Venda> {
 
 	public void obterClienteListing(SelectEvent<Cliente> event) {
 		setCliente(event.getObject());
-		
-		if(getCliente().getPessoa() instanceof PessoaJuridica)
-			setPessoaJuridica(true);
-		else {
-			setPessoaJuridica(false);
-		}
+
+		setPessoaJuridica(getCliente().getPessoa() instanceof PessoaJuridica);
 	}
 
 	public void pesquisar() {
@@ -334,7 +332,7 @@ public class VendaController extends Controller<Venda> {
 	public void setPessoaJuridica(boolean isPessoaJuridica) {
 		this.isPessoaJuridica = isPessoaJuridica;
 	}
-	
-	
+
+
 
 }

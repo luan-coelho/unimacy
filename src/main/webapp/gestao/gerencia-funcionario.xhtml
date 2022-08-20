@@ -1,140 +1,137 @@
 <!DOCTYPE html>
 <html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:f="http://xmlns.jcp.org/jsf/core"
-	xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns:h="http://xmlns.jcp.org/jsf/html"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-	xmlns:pe="http://primefaces.org/ui/extensions"
-	xmlns:components="http://java.sun.com/jsf/composite/components">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+>
 
 <ui:composition template="template.xhtml">
 
-	<ui:define name="head">
-		<title>Gerência de Clientes</title>
-	</ui:define>
+    <ui:define name="head">
+        <title>Gerência de Clientes</title>
+    </ui:define>
 
-	<ui:define name="conteudo">
+    <ui:define name="conteudo">
 
-		<p:growl id="growl" />
+        <p:growl id="growl"/>
 
-		<div class="p-d-flex p-jc-center p-m-5">
+        <div class="p-d-flex p-jc-center p-m-5">
 
+            <p:dataTable id="dataTable" var="funcionario"
+                         value="#{funcionarioController.listaFuncionario}" paginator="true"
+                         rows="10"
+                         styleClass="products-table p-mt-5 p-mb-5 shadow-2xl shadow-gray-700 rounded-lg p-5 w-11/12 m-0"
+                         rowSelectMode="add" paginatorPosition="bottom" allowUnsorting="true"
+                         sortMode="single" stickyTopAt=".layout-topbar" stripedRows="true"
+                         showGridlines="true">
 
-			<p:dataTable id="dataTable" var="funcionario"
-				value="#{funcionarioController.listaFuncionario}" paginator="true"
-				rows="10"
-				styleClass="products-table p-mt-5 p-mb-5 shadow-2xl shadow-gray-700 rounded-lg p-5 w-11/12 m-0"
-				rowSelectMode="add" paginatorPosition="bottom" allowUnsorting="true"
-				sortMode="single" stickyTopAt=".layout-topbar" stripedRows="true"
-				showGridlines="true">
+                <p:ajax event="cellEdit" listener="#{dtEditView.onCellEdit}"
+                        update="@form"/>
 
-				<p:ajax event="cellEdit" listener="#{dtEditView.onCellEdit}"
-					update="@form" />
+                <f:facet name="header">
+                    <div class="products-table-header">
 
-				<f:facet name="header">
-					<div class="products-table-header">
+                        <h2 class="p-mb-2">Gerência de Funcionários</h2>
 
-						<h2 class="p-mb-2">Gerência de Funcionários</h2>
+                        <p:toolbar>
+                            <p:toolbarGroup align="left">
+                                <div>
+                                    <p:commandButton value="Adicionar novo Funcionário"
+                                                     icon="pi pi-box"
+                                                     actionListener="#{funcionarioController.abrirPessoaFisicaListing}">
+                                        <p:ajax event="dialogReturn"
+                                                listener="#{funcionarioController.obterPessoaFisicaListing}"
+                                                update="@form"/>
+                                    </p:commandButton>
+                                </div>
+                            </p:toolbarGroup>
 
-						<p:toolbar>
-							<p:toolbarGroup align="left">
-								<div>
-									<p:commandButton value="Adicionar novo Funcionário"
-										icon="pi pi-box"
-										actionListener="#{funcionarioController.abrirPessoaFisicaListing}">
-										<p:ajax event="dialogReturn"
-											listener="#{funcionarioController.obterPessoaFisicaListing}"
-											update="@form" />
-									</p:commandButton>
-								</div>
-							</p:toolbarGroup>
+                            <p:toolbarGroup align="right">
+                                <div class="ui-inputgroup mt-4">
+                                    <p:inputText id="pesquisa"
+                                                 value="#{funcionarioController.pesquisa}"
+                                                 placeholder="Pesquisar por..."/>
+                                    <p:selectOneMenu id="filtro"
+                                                     value="#{funcionarioController.filtro}">
+                                        <f:selectItems
+                                                value="#{funcionarioController.filtroPessoaFisica}"
+                                                itemValue="#{filtro}"/>
+                                    </p:selectOneMenu>
+                                    <p:commandButton icon="pi pi-search"
+                                                     styleClass="ui-button-warning"
+                                                     actionListener="#{funcionarioController.pesquisaPorFiltro}"
+                                                     process="pesquisa filtro @this" update="@form">
+                                    </p:commandButton>
+                                    <p:commandButton icon="pi pi-refresh"
+                                                     styleClass="ui-button-success p-ml-1"
+                                                     actionListener="#{funcionarioController.limpar}"
+                                                     process="@this" update="@form">
+                                    </p:commandButton>
+                                </div>
+                            </p:toolbarGroup>
 
-							<p:toolbarGroup align="right">
-								<div class="ui-inputgroup mt-4">
-									<p:inputText id="pesquisa"
-										value="#{funcionarioController.pesquisa}"
-										placeholder="Pesquisar por..." />
-									<p:selectOneMenu id="filtro"
-										value="#{funcionarioController.filtro}">
-										<f:selectItems
-											value="#{funcionarioController.filtroPessoaFisica}"
-											itemValue="#{filtro}" />
-									</p:selectOneMenu>
-									<p:commandButton icon="pi pi-search"
-										styleClass="ui-button-warning"
-										actionListener="#{funcionarioController.pesquisaPorFiltro}"
-										process="pesquisa filtro @this" update="@form">
-									</p:commandButton>
-									<p:commandButton icon="pi pi-refresh"
-										styleClass="ui-button-success p-ml-1"
-										actionListener="#{funcionarioController.limpar}"
-										process="@this" update="@form">
-									</p:commandButton>
-								</div>
-							</p:toolbarGroup>
+                            <p:toolbarGroup align="right" styleClass="p-mt-3">
+                                <p:selectBooleanCheckbox
+                                        value="#{funcionarioController.ocultarDesativados}"
+                                        itemLabel="Ocultar Funcionários Desativados">
+                                    <p:ajax update="@form"
+                                            listener="#{funcionarioController.ocultarDesativados}"/>
+                                </p:selectBooleanCheckbox>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+                    </div>
+                </f:facet>
 
-							<p:toolbarGroup align="right" styleClass="p-mt-3">
-								<p:selectBooleanCheckbox
-									value="#{funcionarioController.ocultarDesativados}"
-									itemLabel="Ocultar Funcionários Desativados">
-									<p:ajax update="@form"
-										listener="#{funcionarioController.ocultarDesativados}" />
-								</p:selectBooleanCheckbox>
-							</p:toolbarGroup>
-						</p:toolbar>
-					</div>
-				</f:facet>
+                <p:column headerText="Nome Completo">
+                    <h:outputText
+                            value="#{funcionario.pessoaFisica.nome.trim()} #{funcionario.pessoaFisica.sobreNome.trim()}"/>
+                </p:column>
 
-				<p:column headerText="Nome Completo">
-					<h:outputText
-						value="#{funcionario.pessoaFisica.nome.trim()} #{funcionario.pessoaFisica.sobreNome.trim()}" />
-				</p:column>
+                <p:column headerText="CPF">
+                    <h:outputText value="#{funcionario.pessoaFisica.cpf}"/>
+                </p:column>
 
-				<p:column headerText="CPF">
-					<h:outputText value="#{funcionario.pessoaFisica.cpf}" />
-				</p:column>
+                <p:column headerText="Email">
+                    <h:outputText value="#{funcionario.pessoaFisica.email}"/>
+                </p:column>
 
-				<p:column headerText="Email">
-					<h:outputText value="#{funcionario.pessoaFisica.email}" />
-				</p:column>
+                <p:column headerText="Telefone">
+                    <h:outputText value="#{funcionario.pessoaFisica.telefone}"/>
+                </p:column>
 
-				<p:column headerText="Telefone">
-					<h:outputText value="#{funcionario.pessoaFisica.telefone}" />
-				</p:column>
+                <p:column headerText="Salário">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText
+                                    value="R$#{funcionario.salario != null ? funcionario.salario : '---'}"/>
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText id="modelInput2" value="#{funcionario.salario}"
+                                         style="width:100%"/>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
 
-				<p:column headerText="Salário">
-					<p:cellEditor>
-						<f:facet name="output">
-							<h:outputText
-								value="R$#{funcionario.salario != null ? funcionario.salario : '---'}" />
-						</f:facet>
-						<f:facet name="input">
-							<p:inputText id="modelInput2" value="#{funcionario.salario}"
-								style="width:100%" />
-						</f:facet>
-					</p:cellEditor>
-				</p:column>
+                <p:column headerText="Ativo">
+                    <p:toggleSwitch id="toggle"
+                                    value="#{funcionario.pessoaFisica.ativo}">
+                        <p:ajax listener="#{funcionarioController.alterar(funcionario)}"
+                                process="@this" update="@form:dataTable"/>
+                        <p:tooltip for="toggle"
+                                   value="#{funcionario.pessoaFisica.ativo ? 'Desativar' : 'Ativar'}"
+                                   showEffect="clip" hideEffect="fold"/>
+                    </p:toggleSwitch>
+                </p:column>
 
-				<p:column headerText="Ativo">
-					<p:toggleSwitch id="toggle"
-						value="#{funcionario.pessoaFisica.ativo}">
-						<p:ajax listener="#{funcionarioController.alterar(funcionario)}"
-							process="@this" update="@form:dataTable" />
-						<p:tooltip for="toggle"
-							value="#{funcionario.pessoaFisica.ativo ? 'Desativar' : 'Ativar'}"
-							showEffect="clip" hideEffect="fold" />
-					</p:toggleSwitch>
-				</p:column>
+                <p:column>
+                    <p:commandButton icon="pi pi-pencil"
+                                     styleClass="edit-button rounded-button ui-button-info p-mr-1 p-mb-1"
+                                     action="#{funcionarioController.editarItem(funcionario)}"/>
+                </p:column>
 
-				<p:column>
-					<p:commandButton icon="pi pi-pencil"
-						styleClass="edit-button rounded-button ui-button-info p-mr-1 p-mb-1"
-						action="#{funcionarioController.editarItem(funcionario)}" />
-				</p:column>
-
-			</p:dataTable>
-		</div>
-	</ui:define>
+            </p:dataTable>
+        </div>
+    </ui:define>
 </ui:composition>
 </html>

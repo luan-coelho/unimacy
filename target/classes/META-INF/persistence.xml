@@ -39,11 +39,11 @@
 
 			<!-- DB User -->
 			<property name="javax.persistence.jdbc.user"
-				value="topicos2" />
+				value="postgres" />
 
 			<!-- DB Password -->
 			<property name="javax.persistence.jdbc.password"
-				value="123456" />
+				value="sigfpto" />
 
 			<!-- DB Dialect -->
 			<property name="hibernate.dialect"

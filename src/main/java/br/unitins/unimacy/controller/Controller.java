@@ -1,5 +1,6 @@
 package br.unitins.unimacy.controller;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import br.unitins.unimacy.application.Util;
@@ -10,118 +11,106 @@ import br.unitins.unimacy.repository.Repository;
 
 public abstract class Controller<T extends DefaultEntity> implements Serializable {
 
-	private static final long serialVersionUID = 3495567407787733123L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-	private Repository<T> repository;
-	protected T entity;
+    private Repository<T> repository;
+    protected T entity;
 
-	public Controller() {
-		
-	}
-	
-	public Controller(Repository<T> repository) {
-		super();
-		this.repository = repository;
-	}
+    public Controller() {
 
-	public void salvar() {
-		try {
-			getRepository().save(getEntity());
-			Util.addInfoMessage("Salvamento realizado com sucesso.");
-			limpar();
-		} catch (RepositoryException e) {
-			e.printStackTrace();
-			Util.addErrorMessage(e.getMessage());
-		} catch (VersionException e) {
-			e.printStackTrace();
-			Util.addErrorMessage(e.getMessage());
-		}
-	}
-	
-	public void salvarSemLimpar() {
-		try {
-			getRepository().save(getEntity());
-			Util.addInfoMessage("Salvamento realizado com sucesso.");
-		} catch (RepositoryException e) {
-			e.printStackTrace();
-			Util.addErrorMessage(e.getMessage());
-		} catch (VersionException e) {
-			e.printStackTrace();
-			Util.addErrorMessage(e.getMessage());
-		}
-	}
-	
-	public void salvarSemLimpar(T obj) {
-		try {
-			getRepository().save(obj);
-			Util.addInfoMessage("Salvamento realizado com sucesso.");
-		} catch (RepositoryException e) {
-			e.printStackTrace();
-			Util.addErrorMessage(e.getMessage());
-		} catch (VersionException e) {
-			e.printStackTrace();
-			Util.addErrorMessage(e.getMessage());
-		}
-	}
-	
-	public void salvar(T obj) {
-		try {
-			getRepository().save(obj);
-			Util.addInfoMessage("Salvamento realizado com sucesso.");
-			limpar();
-		} catch (RepositoryException e) {
-			e.printStackTrace();
-			Util.addErrorMessage(e.getMessage());
-		} catch (VersionException e) {
-			e.printStackTrace();
-			Util.addErrorMessage(e.getMessage());
-		}
-	}
+    }
 
-	public void alterar(T obj) {
-		this.entity = obj;
-		salvar();
-	}
+    public Controller(Repository<T> repository) {
+        super();
+        this.repository = repository;
+    }
 
-	public void excluir() {
-		try {
-			getRepository().remove(getEntity());
-			Util.addInfoMessage("Exclusão realizada com sucesso.");
-			limpar();
-		} catch (RepositoryException e) {
-			e.printStackTrace();
-			Util.addErrorMessage(e.getMessage());
-		}
-	}
+    public void salvar() {
+        try {
+            getRepository().save(getEntity());
+            Util.addInfoMessage("Salvamento realizado com sucesso.");
+            limpar();
+        } catch (RepositoryException | VersionException e) {
+            e.printStackTrace();
+            Util.addErrorMessage(e.getMessage());
+        }
+    }
 
-	public void excluir(T obj) {
-		entity = obj;
-		excluir();
-	}
+    public void salvarSemLimpar() {
+        try {
+            getRepository().save(getEntity());
+            Util.addInfoMessage("Salvamento realizado com sucesso.");
+        } catch (RepositoryException | VersionException e) {
+            e.printStackTrace();
+            Util.addErrorMessage(e.getMessage());
+        }
+    }
 
-	public void limpar() {
-		entity = null;
-	}
+    public void salvarSemLimpar(T obj) {
+        try {
+            getRepository().save(obj);
+            Util.addInfoMessage("Salvamento realizado com sucesso.");
+        } catch (RepositoryException | VersionException e) {
+            e.printStackTrace();
+            Util.addErrorMessage(e.getMessage());
+        }
+    }
 
-	public void selecionarItem(T obj) {
-		this.entity = obj;
-	}
+    public void salvar(T obj) {
+        try {
+            getRepository().save(obj);
+            Util.addInfoMessage("Salvamento realizado com sucesso.");
+            limpar();
+        } catch (RepositoryException | VersionException e) {
+            e.printStackTrace();
+            Util.addErrorMessage(e.getMessage());
+        }
+    }
 
-	public void editarItem(T obj) {
-	}
+    public void alterar(T obj) {
+        this.entity = obj;
+        salvar();
+    }
 
-	public void pesquisaPorFiltro() {
-	};
+    public void excluir() {
+        try {
+            getRepository().remove(getEntity());
+            Util.addInfoMessage("Exclusão realizada com sucesso.");
+            limpar();
+        } catch (RepositoryException e) {
+            e.printStackTrace();
+            Util.addErrorMessage(e.getMessage());
+        }
+    }
 
-	public Repository<T> getRepository() {
-		return repository;
-	}
+    public void excluir(T obj) {
+        entity = obj;
+        excluir();
+    }
 
-	public abstract T getEntity();
+    public void limpar() {
+        entity = null;
+    }
 
-	@SuppressWarnings("unchecked")
-	public void setEntity(Object obj) {
-		this.entity = (T) obj;
-	}
+    public void selecionarItem(T obj) {
+        this.entity = obj;
+    }
 
+    public void editarItem(T obj) {
+    }
+
+    public void pesquisaPorFiltro() {
+    }
+
+    public Repository<T> getRepository() {
+        return repository;
+    }
+
+    public abstract T getEntity();
+
+    @SuppressWarnings("unchecked")
+    public void setEntity(Object obj) {
+        this.entity = (T) obj;
+    }
 }

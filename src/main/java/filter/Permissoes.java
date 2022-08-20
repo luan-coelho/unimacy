@@ -30,9 +30,7 @@ public class Permissoes {
 	public boolean permitirAcesso(Funcionario funcionario, String pagina) {
 		if(funcionario.getCargo().equals(Cargo.ADMINISTRADOR))
 			return true;
-		else if(!getpaginasNaoPermitidasPorCargo().get(funcionario.getCargo()).contains(pagina))
-			return true;
-		return false;
+		else return !getpaginasNaoPermitidasPorCargo().get(funcionario.getCargo()).contains(pagina);
 	}
 
 	public Funcionario getFuncionario() {

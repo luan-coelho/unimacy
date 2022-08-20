@@ -1,5 +1,6 @@
 package br.unitins.unimacy.controller.pessoa;
 
+import java.io.Serial;
 import java.util.List;
 
 import javax.faces.view.ViewScoped;
@@ -23,7 +24,8 @@ import br.unitins.unimacy.repository.pessoa.FuncionarioRepository;
 @ViewScoped
 public class FuncionarioController extends Controller<Funcionario> {
 
-	private static final long serialVersionUID = 6941009744458527364L;
+	@Serial
+	private static final long serialVersionUID = 1L;
 
 	private List<Funcionario> listaFuncionario;
 
@@ -142,7 +144,7 @@ public class FuncionarioController extends Controller<Funcionario> {
 		}
 		case CPF: {
 			try {
-				listaPessoaAux = (List<Funcionario>) repo.findAllByCpf(pesquisa);
+				listaPessoaAux = repo.findAllByCpf(pesquisa);
 			} catch (RepositoryException e) {
 				Util.addErrorMessage("Falha ao consultar CPF");
 				e.printStackTrace();
@@ -171,6 +173,7 @@ public class FuncionarioController extends Controller<Funcionario> {
 			break;
 		}
 
+		assert listaPessoaAux != null;
 		if (listaPessoaAux.isEmpty()) {
 			Util.addWarnMessage("Nenhum funcionário encontrado");
 			return;

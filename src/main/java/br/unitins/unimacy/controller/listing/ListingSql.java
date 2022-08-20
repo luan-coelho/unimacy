@@ -14,8 +14,8 @@ import br.unitins.unimacy.repository.Repository;
 public abstract class ListingSql<T extends DefaultEntity> implements Serializable {
 
 	private static final long serialVersionUID = 7641180780489288293L;
-	private String page;
-	private Repository<T> repository;
+	private final String page;
+	private final Repository<T> repository;
 	private List<Object[]> list;
 
 	public ListingSql(String page, Repository<T> repository) {
@@ -25,7 +25,7 @@ public abstract class ListingSql<T extends DefaultEntity> implements Serializabl
 	}
 
 	public void open() {
-		Map<String, Object> options = new HashMap<String, Object>();
+		Map<String, Object> options = new HashMap<>();
 		options.put("modal", true);
 		options.put("draggable", false);
 		options.put("resizable", true);

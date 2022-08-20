@@ -1,5 +1,6 @@
 package br.unitins.unimacy.controller.venda;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import br.unitins.unimacy.repository.venda.VendaRepository;
 @ViewScoped
 public class RegistroVendaController implements Serializable {
 
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private List<Object[]> listaVenda;

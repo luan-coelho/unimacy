@@ -7,18 +7,21 @@ import br.unitins.unimacy.controller.Controller;
 import br.unitins.unimacy.model.venda.pagamento.Pagamento;
 import br.unitins.unimacy.repository.venda.PagamentoRepository;
 
+import java.io.Serial;
+
 @Named
 @ViewScoped
 public class PagamentoController extends Controller<Pagamento> {
 
-	private static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-	public PagamentoController() {
-		super(new PagamentoRepository());
-	}
+    public PagamentoController() {
+        super(new PagamentoRepository());
+    }
 
-	@Override
-	public Pagamento getEntity() {
-		return null;
-	}
+    @Override
+    public Pagamento getEntity() {
+        return null;
+    }
 }
